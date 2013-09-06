@@ -2,17 +2,18 @@
 <html>
 	<head>
 		<title>CSH Floor Map</title>
-		<link rel="stylesheet" type="text/css" href="map.css"/></link>	
-		<script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
-		<script type="text/javascript" src="jquery.js"></script>
-		<script type="text/javascript" src="WebGLShader.js"></script>
-		<script type="text/javascript" src="room.js"></script>
-		<script type="text/javascript" src="Model3D.js"></script>
-		<script type="text/javascript" src="WebGLFramebuffer.js"></script>
-		<script type="text/javascript" src="WebGLFBRenderQuad.js"></script>
-		<script type="text/javascript" src="floorMapModelDataAsJavascript.js"></script>
-		<script type="text/javascript" src="map.js"></script>
-		<script type="text/javascript" src="callbacks.js"></script>
+		<?php require_once("main.php"); ?>
+		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>	
+		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/WebGLShader.js"></script>
+		<script type="text/javascript" src="js/room.js"></script>
+		<script type="text/javascript" src="js/Model3D.js"></script>
+		<script type="text/javascript" src="js/WebGLFramebuffer.js"></script>
+		<script type="text/javascript" src="js/WebGLFBRenderQuad.js"></script>
+		<script type="text/javascript" src="js/floorMapModelDataAsJavascript.js"></script>
+		<script type="text/javascript" src="js/callbacks.js"></script>
+		<script type="text/javascript" src="js/map.js"></script>		
 		<script id="idFrag" type="x-shader/x-fragment">
 			precision lowp float; // No two pixels are less than (4, 4, 4) different from each other.
 
@@ -47,9 +48,12 @@
 			precision highp float; // High precision so that we can sample very small distances when differentiating.
 			uniform sampler2D diffableSampler;
 			uniform sampler2D colorSampler;
+			uniform int curRoomID;
 			varying vec2 texCoord;
 			float res = .0005;
 			void main(void) {
+				// Get a texel at the actual location within the diff texture.
+				vec4 center = texture2D(diffableSampler, texCoord);
 				// Sample pixels [res] distance from the actual current texture coordinate...
 				vec4 top = texture2D(diffableSampler, vec2(texCoord.x, texCoord.y-res));
 				vec4 bottom = texture2D(diffableSampler, vec2(texCoord.x, texCoord.y+res));
@@ -64,8 +68,15 @@
 					// We set our fragment colour to the line colour that we want.
 					sobel = vec4(0.0, 1.0, 0.333, 1.0);
 				}
+				
+				// If we are at the current room we highlight that shit.
+				else if(int(256.00 * center.r) == curRoomID)
+				{				
+					sobel = texture2D(colorSampler, texCoord)+texture2D(colorSampler, texCoord);
+				}
 				// Otherwise we just set it to the colour of the texel rendered in the user-intended pass.
 				else sobel = texture2D(colorSampler, texCoord);
+				
 				// Report our fragment colour.
 				gl_FragColor = sobel;//texture2D(fbSampler, texCoord);
 			}
@@ -100,48 +111,51 @@
 		<div id="map_container">
 			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		</div>
-		<div id="hud_outline">CSH 3D FLOOR MAP v0.1.5.3<br>Click and drag to rotate!<br>Hold shift, click, and drag to move!<br>Click a room to see some info about it!<br>Click a link in that info to not yet be taken to that info!</div>
+		<div id="hud_outline">CSH 3D FLOOR MAP v0.1.5.7<br>Click and drag to move!<br>Hold shift, click, and drag to rotate!<br>Click a room to see some info about it!<br>Click a link in that info to not yet be taken to that info!<br>Now with more potential info!</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">
-			<p class="datum_container">Room #: <p id="name"></p></p>
-			<p class="datum_container">Resident: <p id="res_a"></p></p>
-			<p class="datum_container">Info: <p id="res_a_link"></p></p>
-			<p class="datum_container">Resident: <p id="res_b"></p></p>
-			<p class="datum_container">Info: <p id="res_b_link"></p></p>
+			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>
+			<p class="datum_container">Resident: <p class="datum" id="res_a"></p></p>
+			<p class="datum_container">Year: <p class="datum" id="res_a_year"></p></p>
+			<p class="datum_container" id="qualificationsA">Qualifications: <p class="datum" id="res_a_qualifications"></p></p>
+			<p class="datum_container">Info: <p class="datum" id="res_a_link"></p></p>
+			<p class="datum_container">Resident: <p class="datum" id="res_b"></p></p>
+			<p class="datum_container">Year: <p class="datum" id="res_b_year"></p></p>
+			<p class="datum_container" id="qualificationsB">Qualifications: <p class="datum" id="res_b_qualifications"></p></p>
+			<p class="datum_container">Info: <p class="datum" id="res_b_link"></p></p>
 		</div>
 		<div class="base_info" id="base_spec_room">
-			<p class="datum_container">Room: <p id="name"></p></p>
-			<p class="datum_container">Info: <p id="room_link"></p></p>
-			<p class="datum_container">Relevant E-Board: <p id="eboard"></p></p>
-			<p class="datum_container">EBoard info: <p id="eb_link"></p></p>
+			<p class="datum_container">Room: <p class="datum" id="name"></p></p>
+			<p class="datum_container">Info: <p class="datum" id="room_link"></p></p>
+			<p class="datum_container">Relevant E-Board: <p class="datum" id="eboard"></p></p>
+			<p class="datum_container">EBoard info: <p class="datum" id="eb_link"></p></p>
 		</div>
 		<div class="base_info" id="base_restroom">
-			<p class="datum_container">Restroom: <p id="name"></p></p>
-			<p class="datum_container">Coed?: <p id="coed"></p></p>
+			<p class="datum_container">Restroom: <p class="datum" id="name"></p></p>
+			<p class="datum_container">Coed?: <p class="datum" id="coed"></p></p>
 		</div>
 		<div class="base_info" id="base_stairs">
-			<p class="datum_container">Stairwell: <p id="name"></p></p>
-			<p class="datum_container">Exits to: <p id="exit_to"></p></p>
+			<p class="datum_container">Stairwell: <p class="datum" id="name"></p></p>
+			<p class="datum_container">Exits to: <p class="datum" id="exit_to"></p></p>
 		</div>
 		<div class="base_info" id="base_facilities">
-			<p class="datum_container">Name: <p id="name"></p></p>
+			<p class="datum_container">Name: <p class="datum" id="name"></p></p>
 		</div>
 		<div class="base_info" id="base_utilities">
-			<p class="datum_container">Name: <p id="name"></p></p>
+			<p class="datum_container">Name: <p class="datum" id="name"></p></p>
 		</div>
 		<div class="base_info" id="base_net_room">
-			<p class="datum_container">Name: <p id="name"></p></p>		
+			<p class="datum_container">Name: <p class="datum" id="name"></p></p>		
 		</div>
 		<div class="base_info" id="base_elevator">
-			<p class="datum_container">Elevator: <p id="name"></p></p>	
+			<p class="datum_container">Elevator: <p class="datum" id="name"></p></p>	
 		</div>
 		<div class="base_info" id="base_project">
-			<p class="datum_container">Project: <p id="name"></p></p>
-			<p class="datum_container">Info: <p id="link"></p></p>
+			<p class="datum_container">Project: <p class="datum" id="name"></p></p>
+			<p class="datum_container">Info: <p class="datum" id="link"></p></p>
 		</div>
 		<div class="base_info" id="base_other">
-			<p class="datum_container">Hmm?: <p id="name"></p></p>
+			<p class="datum_container">Hmm?: <p class="datum" id="name"></p></p>
 		</div>
-		
 		</body>
 </html>

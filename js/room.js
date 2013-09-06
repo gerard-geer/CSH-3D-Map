@@ -59,11 +59,11 @@ function loadRooms(filename)
 	for(var i = 0; i < specialRooms.length; i++)
 	{
 		//console.log"RGB ID VALUE: "+specialRooms[i].getAttribute("rgb"));
-		var newRoom =new  Room(parseInt(specialRooms[i].getAttribute("rgb")), specialRooms[i].getAttribute("name"), Room.TYPE.SPECIAL);
-		newRoom.eb = specialRooms[i].getAttribute("eb");
-		newRoom.ebLink = specialRooms[i].getAttribute("eb_link");
-		newRoom.ebLinkTitle = specialRooms[i].getAttribute("eb_link_title");
-		newRoom.roomLink = specialRooms[i].getAttribute("room_link");
+		var newRoom = new Room(parseInt(specialRooms[i].getAttribute("rgb")), specialRooms[i].getAttribute("name"), Room.TYPE.SPECIAL);
+		newRoom.eb            = specialRooms[i].getAttribute("eb");
+		newRoom.ebLink        = specialRooms[i].getAttribute("eb_link");
+		newRoom.ebLinkTitle   = specialRooms[i].getAttribute("eb_link_title");
+		newRoom.roomLink      = specialRooms[i].getAttribute("room_link");
 		newRoom.roomLinkTitle = specialRooms[i].getAttribute("room_link_title");
 		roomArray.push(newRoom);
 	}
@@ -77,7 +77,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < stairs.length; i++)
 	{
-		var newRoom =new  Room(parseInt(stairs[i].getAttribute("rgb")), stairs[i].getAttribute("name"), Room.TYPE.STAIRS);
+		var newRoom = new Room(parseInt(stairs[i].getAttribute("rgb")), stairs[i].getAttribute("name"), Room.TYPE.STAIRS);
 		newRoom.exitTo = stairs[i].getAttribute("exit_to");
 		roomArray.push(newRoom);
 	}
@@ -91,7 +91,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < restrooms.length; i++)
 	{
-		var newRoom =new  Room(parseInt(restrooms[i].getAttribute("rgb")), restrooms[i].getAttribute("name"), Room.TYPE.RESTROOM);
+		var newRoom = new Room(parseInt(restrooms[i].getAttribute("rgb")), restrooms[i].getAttribute("name"), Room.TYPE.RESTROOM);
 		newRoom.coed = restrooms[i].getAttribute("coed");
 		roomArray.push(newRoom);
 	}
@@ -105,7 +105,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < elevators.length; i++)
 	{
-		var newRoom =new  Room(parseInt(elevators[i].getAttribute("rgb")), elevators[i].getAttribute("name"), Room.TYPE.ELEVATOR);
+		var newRoom = new Room(parseInt(elevators[i].getAttribute("rgb")), elevators[i].getAttribute("name"), Room.TYPE.ELEVATOR);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -118,7 +118,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < facilities.length; i++)
 	{
-		var newRoom =new  Room(parseInt(facilities[i].getAttribute("rgb")), facilities[i].getAttribute("name"), Room.TYPE.FACILITIES);
+		var newRoom = new Room(parseInt(facilities[i].getAttribute("rgb")), facilities[i].getAttribute("name"), Room.TYPE.FACILITIES);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -131,7 +131,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < utilities.length; i++)
 	{
-		var newRoom =new  Room(parseInt(utilities[i].getAttribute("rgb")), utilities[i].getAttribute("name"), Room.TYPE.UTILITIES);
+		var newRoom = new Room(parseInt(utilities[i].getAttribute("rgb")), utilities[i].getAttribute("name"), Room.TYPE.UTILITIES);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -144,7 +144,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < netRooms.length; i++)
 	{
-		var newRoom =new  Room(parseInt(netRooms[i].getAttribute("rgb")), netRooms[i].getAttribute("name"), Room.TYPE.NETWORKING);
+		var newRoom = new Room(parseInt(netRooms[i].getAttribute("rgb")), netRooms[i].getAttribute("name"), Room.TYPE.NETWORKING);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -157,7 +157,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < others.length; i++)
 	{
-		var newRoom =new  Room(parseInt(others[i].getAttribute("rgb")), others[i].getAttribute("name"), Room.TYPE.OTHER);
+		var newRoom = new Room(parseInt(others[i].getAttribute("rgb")), others[i].getAttribute("name"), Room.TYPE.OTHER);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -170,8 +170,8 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < projects.length; i++)
 	{
-		var newRoom =new  Room(parseInt(projects[i].getAttribute("rgb")), projects[i].getAttribute("name"), Room.TYPE.PROJECT);
-		newRoom.link = projects[i].getAttribute("link");
+		var newRoom = new Room(parseInt(projects[i].getAttribute("rgb")), projects[i].getAttribute("name"), Room.TYPE.PROJECT);
+		newRoom.link      = projects[i].getAttribute("link");
 		newRoom.linkTitle = projects[i].getAttribute("link_title");
 		roomArray.push(newRoom);
 	}
@@ -185,13 +185,17 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < residentials.length; i++)
 	{
-		var newRoom =new  Room(parseInt(residentials[i].getAttribute("rgb")), residentials[i].getAttribute("name"), Room.TYPE.RESIDENTIAL);
-		newRoom.resA          = residentials[i].getAttribute("resA");
-		newRoom.resB          = residentials[i].getAttribute("resB");
-		newRoom.resALink      = residentials[i].getAttribute("resA_link");
-		newRoom.resBLink      = residentials[i].getAttribute("resB_link");
-		newRoom.resALinkTitle = residentials[i].getAttribute("resA_link_title");
-		newRoom.resBLinkTitle = residentials[i].getAttribute("resB_link_title");
+		var newRoom = new Room(parseInt(residentials[i].getAttribute("rgb")), residentials[i].getAttribute("name"), Room.TYPE.RESIDENTIAL);
+		newRoom.resA          	   = residentials[i].getAttribute("resA");
+		newRoom.resB          	   = residentials[i].getAttribute("resB");
+		newRoom.resAYear      	   = residentials[i].getAttribute("resA_year");
+		newRoom.resBYear      	   = residentials[i].getAttribute("resB_year");
+		newRoom.resAQualifications = residentials[i].getAttribute("resA_qualifications");
+		newRoom.resBQualifications = residentials[i].getAttribute("resB_qualifications");
+		newRoom.resALink           = residentials[i].getAttribute("resA_link");
+		newRoom.resBLink           = residentials[i].getAttribute("resB_link");
+		newRoom.resALinkTitle      = residentials[i].getAttribute("resA_link_title");
+		newRoom.resBLinkTitle      = residentials[i].getAttribute("resB_link_title");
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);

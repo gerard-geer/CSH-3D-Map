@@ -36,40 +36,6 @@ var mvmat = mat4.create();
 // The perspective matrix that quantifies the view frustum.
 var pmat = mat4.create();
 
-// A variable to store the current degreesX of rotation.
-var degreesX = 0;
-var degreesY = -40;
-
-// Translation variables.
-var xTrans = -50.0;
-var yTrans = 800.0;
-var zTrans = -600;
-
-// Camera variables.
-var camX = 0;
-var camY = 0;
-var camZ = -1000;
-
-// Whether or not shift is pressed.
-var shiftPressed = false;
-
-// The current mouse position.
-var curMouseX;
-var curMouseY;
-
-// The mouse position at the last successful call to the mouseMove listener.
-var preMouseX;
-var preMouseY;
-
-// Factor by which to scale the mouse movement when applying rotation changes.
-var rotateScale = .3;
-
-// Factor by which to scale the mouse movement when applying translation changes.
-var dragScale = 1.25;
-
-// Whether or not the mouse is pressed.
-var mouseIsDown = false;
-
 // Canvas size scale factor.
 var canvasScale = .975;
 
@@ -85,11 +51,18 @@ function initContext()
 	canvas.height = window.innerHeight*canvasScale;
 	
 	// Register all our callbacks.
-	window.addEventListener('mousedown', mouseDownFunction, false);
-	window.addEventListener('mouseup', mouseUpFunction, false);
-	window.addEventListener('mousemove', mouseMoveFunction, false);
+	hudOutline = document.getElementById("hud_outline");
+	hudOutline.addEventListener('mousedown', mouseDownFunction, false);
+	hudOutline.addEventListener('mouseup', mouseUpFunction, false);
+	hudOutline.addEventListener('mousemove', mouseMoveFunction, false);
+	canvas.addEventListener('mousedown', mouseDownFunction, false);
+	canvas.addEventListener('mouseup', mouseUpFunction, false);
+	canvas.addEventListener('mousemove', mouseMoveFunction, false);
 	window.addEventListener('keydown', keyDownFunction, false);
 	window.addEventListener('keyup', keyUpFunction, false);
+	window.addEventListener('mousewheel', scrollWheelFunction, false);
+	window.addEventListener('DOMMouseScroll', scrollWheelFunction, false);
+	window.onkeypress = keyPressedFunction;
 	
 	// Register a callback to handle window resizing.
 	// You know, so it stays big.
@@ -161,6 +134,9 @@ function initShaders()
 	// framebuffer.
 	sobelPassProgram.diffableSampler = glContext.getUniformLocation(sobelPassProgram, "diffableSampler");
 	sobelPassProgram.colorSampler = glContext.getUniformLocation(sobelPassProgram, "colorSampler");
+	
+	// Store the location of the current room ID uniform.
+	sobelPassProgram.curIDUniform = glContext.getUniformLocation(sobelPassProgram, "curRoomID");
 }
 
 function initFBsAndQuads()
@@ -279,6 +255,8 @@ function renderVisPass()
 	// Tell the shader what's up.
 	glContext.uniform1i(sobelPassProgram.colorSampler, 1);
 	
+	glContext.uniform1i(sobelPassProgram.curIDUniform, curRoom);
+	
 	// Draw the quad. 
 	glContext.drawArrays(glContext.TRIANGLE_STRIP, 0, 4);
 	
@@ -288,6 +266,9 @@ function renderVisPass()
 
 function renderFrame()
 {
+	// Call the stupid key pressed function because of how slow keyboard callbacks are.
+	keyPressedFunction();
+	
 	// Start using the ID pass program, which is used to simply render models.
 	glContext.useProgram(idPassProgram);
 	

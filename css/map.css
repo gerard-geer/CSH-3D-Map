@@ -17,10 +17,27 @@ div.base_info
 p.datum_container
 {
 	display: inline;
+	margin-top: 3px;
+	margin-bottom: 3px;
 }
-a{color:#00ff30;}
-a:link {text-decoration:none;}
-a:visited {text-decoration:none;}
+p.datum
+{
+	display: inline;
+}
+
+#qualificationsA
+{
+	display: none;
+}
+
+#qualificationsB
+{
+	display: none;
+}
+
+a{color:#00ff10;}
+a:link {text-decoration:underline;}
+a:visited {text-decoration:underline;}
 a:hover {text-decoration:underline;}
 a:active {text-decoration:underline;}
 
@@ -39,6 +56,7 @@ a:active {text-decoration:underline;}
 	width: 25%;
 	
 	color: #00ff30;
+	background-color: rgba(0, 0, 0, .66);
 	border-style: solid;
 	border-style: solid;
 	border-color: #00ff30;
@@ -54,4 +72,5 @@ a:active {text-decoration:underline;}
 	color: #00ff30;
 	border-style: solid;
 }
+
 
