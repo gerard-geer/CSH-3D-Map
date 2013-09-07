@@ -1,12 +1,12 @@
 <?php
 	
 	// Include the Resident class.
-	require_once('resident.class.php');	
+	require_once('php/resident.class.php');	
 	
 	/*
 	A CSH Room. Just two Residents and a room number.
 	*/
-	class Room
+	class Room implements JsonSerializeable
 	{
 		// The number of this Room.
 		private $number = 0;
@@ -20,31 +20,46 @@
 		// Constructs the Room.
 		function Room($roomNumber)
 		{
-			$this->$number    = $roomNumber;
+			$this->number    = $roomNumber;
 		}
 		
 		// Returns the first Resident.
 		function getResA()
 		{
-			return $this->$residentA;
+			return $this->residentA;
 		}
 		
 		// Sets afresh the first Resident.
 		function setResA(&$roomResidentA)
 		{
-			$this->$residentA = $roomResidentA;
+			$this->residentA = $roomResidentA;
 		}
 		
 		// Returns the second Resident.
 		function getResB()
 		{
-			return $this->$residentB;
+			return $this->residentB;
 		}
 		
 		// Sets anew the second Resident.
 		function setResB($roomResidentB)
 		{
-			$this->$residentB = $roomResidentB;
+			$this->residentB = $roomResidentB;
+		}
+		
+		// Returns the room number.
+		function getNumber()
+		{
+			return $this->number;
+		}
+		
+		public function jsonSerialize()
+		{
+			return [
+				'resA' => json_encode($this->getResA()),
+				'resB' => json_encode($this->getResB()),
+				'number' => $this->getNumber()
+			];
 		}
 	}
 ?>

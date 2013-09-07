@@ -1,5 +1,5 @@
 <?php
-
+	require_once('constants.php');
 	class LdapHelper {
 		private $ldap_conn = null;
 
@@ -46,8 +46,6 @@
 				# Adjust for school years
 				$curyear--;
 			}
-
-
 			# Insert them into the members array
 			foreach ($onfloors as $person) {
 				if (!isset($person['dn']))
@@ -58,18 +56,21 @@
 				preg_match('/^(\d{4})/', $person['membersince'][0], $matches);
 				$yearLevel = $curyear - $matches[1] + 1;
 
-				# Get the user name from the DN and store it in $matches.
+				# Get the user name from the DN
 				preg_match('/^uid=(.*),o.*\z/', $person['dn'], $matches);
 				$username = $matches[1];
 
-				$members[$person['dn']] = array(
-					'name' => (!empty($person['nickname'][0])) ? $person['nickname'][0] : $person['givenname'][0],
-					'username' => $username,
-					'room' => $person['roomnumber'][0],
-					'year' => $yearLevel,
-					'rtp' => false,
-					'eboard' => false,
-					'drinkadmin' => $person['drinkadmin'][0]);
+				if(isset($person['roomnumber'][0]))
+				{
+					$members[$person['dn']] = array(
+						'name' => (!empty($person['nickname'][0])) ? $person['nickname'][0] : $person['givenname'][0],
+						'username' => $username,
+						'room' => $person['roomnumber'][0],
+						'year' => $yearLevel,
+						'rtp' => false,
+						'eboard' => false,
+						'drinkadmin' => $person['drinkadmin'][0]);
+				}
 			}
 		}
 

@@ -1,4 +1,4 @@
-<?php require_once('main.php'); ?>
+<?php require_once('php/main.php'); ?>
 <!DOCTYPE html>
 <html>
 	<head>
