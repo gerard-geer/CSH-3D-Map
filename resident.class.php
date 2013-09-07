@@ -12,10 +12,10 @@
 	class Resident
 	{
 		// The name of the Resident.
-		private $name = null;
+		private $name = "";
 		
 		// The username of the Resident.
-		private $username = null;
+		private $username = "";
 		
 		// Whether or not the Resident is a member of EBoard.
 		private $eboard = false;
@@ -26,6 +26,7 @@
 		// The check in date of the Resident.
 		private $memberSince = 0;
 		
+		// The number of this Resident's Room.
 		private $roomNumber = 0;
 		
 		// Constructs the Resident.
@@ -46,7 +47,7 @@
 		// Sets the name of Rowdy.
 		function setName($residentName)
 		{
-			this->$name = $residentName;
+			$this->$name = $residentName;
 		}
 		
 		// Returns to the Motherland.
@@ -58,7 +59,7 @@
 		// Provides safe access to the north.
 		function setUsername($residentUsername)
 		{
-			this->$username = $residentUsername;
+			$this->$username = $residentUsername;
 		}
 		
 		// Constipates CSHNet bandwidth.
@@ -106,9 +107,9 @@
 		// Removes ketchup from all hot-dogs.
 		function getQualifications()
 		{
-			returnMe = "";
-			if($this->$rtp) returnMe = returnMe . TAG_RTP . " ";
-			if($this->$rtp) returnMe = returnMe . TAG_EBOARD . " ";
+			$returnMe = "";
+			if($this->$rtp) $returnMe = $returnMe . TAG_RTP . " ";
+			if($this->$rtp) $returnMe = $returnMe . TAG_EBOARD . " ";
 		}
 	}
 ?>

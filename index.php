@@ -1,8 +1,8 @@
+<?php require_once('main.php'); ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>CSH Floor Map</title>
-		<?php require_once("main.php"); ?>
 		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>	
 		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
 		<script type="text/javascript" src="js/jquery.js"></script>

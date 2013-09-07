@@ -323,8 +323,8 @@ function handleRoomCheck(id)
 		case Room.TYPE.PROJECT: 		
 			//console.log"updating PROJECT room");	 	
 			roomElement = $("#base_project");
-			roomElement.children("#name").html(room.name);
-			roomElement.children("#link").html("<a href="+room.link+">"+room.linkTitle+"</a>");
+			roomElement.children("#name").html("<a href="+room.projectLink+">"+room.name+"</a>");
+			roomElement.children("#link").html("<a href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
 			hudElement.innerHTML = roomElement.html();
 			hudElement.style.display = "inline";
 			break;

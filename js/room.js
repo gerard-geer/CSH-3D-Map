@@ -24,6 +24,40 @@ Room.prototype.getID = function()
 	return this.id;
 }
 
+function loadResRooms(rooms)
+{
+	var resNode = xmlDoc.getElementsByTagName("residentials")[0];
+	var residentials = resNode.getElementsByTagName("room");
+	//console.log"Number of residential rooms: "+residentials.length);
+	
+	/*var phpRooms = $.ajax({
+							url: "<?php echo site_url('json_encode($rooms);'); ?>",
+							type: "POST",
+							data: phpRooms,
+							dataType: "json", 
+							success: function(data) {console.log(data);}});*/
+	//console.log(phpRooms);
+	for(var i = 0; i < residentials.length; i++)
+	{
+		var newRoom = new Room(parseInt(residentials[i].getAttribute("rgb")), residentials[i].getAttribute("name"), Room.TYPE.RESIDENTIAL);
+		newRoom.resA 			   = "<?php echo $rooms["+newRoom.id+"]->getResA()->getName() . ' (' . echo $rooms["+newRoom.id+"]->getResA()->getUsername() . ')'; ?>";
+		newRoom.resB          	   = "<?php echo $rooms["+newRoom.id+"]->getResB()->getName() . ' (' . echo $rooms["+newRoom.id+"]->getResB()->getUsername() . ')'; ?>";
+		
+		newRoom.resAYear      	   = "<?php echo $rooms["+newRoom.id+"]->getResA()->getMemberSince();?>";
+		newRoom.resBYear      	   = "<?php echo $rooms["+newRoom.id+"]->getResB()->getMemberSince();?>";
+		
+		newRoom.resAQualifications = "<?php echo $rooms["+newRoom.id+"]->getResA()->getQualifications();?>";
+		newRoom.resBQualifications = "<?php echo $rooms["+newRoom.id+"]->getResB()->getQualifications();?>";
+		
+		newRoom.resALink           = "<?php echo $MEMBERS_URL . $rooms["+newRoom.id+"]->getResA()->getUsername();?>";
+		newRoom.resBLink           = "<?php echo $MEMBERS_URL . $rooms["+newRoom.id+"]->getResB()->getUsername();?>";
+		newRoom.resALinkTitle      = "<?php echo $rooms["+newRoom.id+"]->getResA()->getUsername();?>" + " on Members";
+		newRoom.resBLinkTitle      = "<?php echo $rooms["+newRoom.id+"]->getResB()->getUsername();?>" + " on Members";
+		rooms.push(newRoom);
+	}
+	return rooms;
+}
+
 // I absolutely dread loading from XML.
 function loadRooms(filename)
 {
@@ -171,35 +205,16 @@ function loadRooms(filename)
 	for(var i = 0; i < projects.length; i++)
 	{
 		var newRoom = new Room(parseInt(projects[i].getAttribute("rgb")), projects[i].getAttribute("name"), Room.TYPE.PROJECT);
-		newRoom.link      = projects[i].getAttribute("link");
-		newRoom.linkTitle = projects[i].getAttribute("link_title");
+		newRoom.projectLink		= projects[i].getAttribute("project_link");
+		newRoom.infoLink		= projects[i].getAttribute("info_link");
+		newRoom.infoLinkTitle 	= projects[i].getAttribute("link_title");
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	var resNode = xmlDoc.getElementsByTagName("residentials")[0];
-	var residentials = resNode.getElementsByTagName("room");
-	//console.log"Number of residential rooms: "+residentials.length);
-	
-	for(var i = 0; i < residentials.length; i++)
-	{
-		var newRoom = new Room(parseInt(residentials[i].getAttribute("rgb")), residentials[i].getAttribute("name"), Room.TYPE.RESIDENTIAL);
-		newRoom.resA          	   = residentials[i].getAttribute("resA");
-		newRoom.resB          	   = residentials[i].getAttribute("resB");
-		newRoom.resAYear      	   = residentials[i].getAttribute("resA_year");
-		newRoom.resBYear      	   = residentials[i].getAttribute("resB_year");
-		newRoom.resAQualifications = residentials[i].getAttribute("resA_qualifications");
-		newRoom.resBQualifications = residentials[i].getAttribute("resB_qualifications");
-		newRoom.resALink           = residentials[i].getAttribute("resA_link");
-		newRoom.resBLink           = residentials[i].getAttribute("resB_link");
-		newRoom.resALinkTitle      = residentials[i].getAttribute("resA_link_title");
-		newRoom.resBLinkTitle      = residentials[i].getAttribute("resB_link_title");
-		roomArray.push(newRoom);
-	}
-	//console.log"Current size of room array: "+roomArray.length);
-	
+	roomArray = loadResRooms(roomArray);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// AT LONG LAST

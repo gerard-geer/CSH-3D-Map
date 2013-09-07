@@ -301,6 +301,7 @@ function renderFrame()
 
 function initWebGLComponents()
 {
+	
 	// Call the initialization function of all the things!
 	initContext();
 	initShaders();
