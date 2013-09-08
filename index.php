@@ -111,7 +111,7 @@
 		<div id="map_container">
 			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		</div>
-		<div id="hud_outline">CSH 3D FLOOR MAP v0.1.5.7<br>Click and drag to move!<br>Hold shift, click, and drag to rotate!<br>Click a room to see some info about it!<br>Click a link in that info to not yet be taken to that info!<br>Now with more potential info!</div>
+		<div id="hud_outline">CSH 3D FLOOR MAP v0.1.6.0<br>Click and drag to move!<br>Hold shift, click, and drag to rotate!<br>Click a room to see some info about it!<br>Click a link in that info to be taken to that info!<br>Now with LDAP connectivity.</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>

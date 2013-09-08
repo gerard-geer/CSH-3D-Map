@@ -9,7 +9,7 @@
 	/*
 		A Resident of CSH, summed up as only PHP can.
 	*/
-	class Resident implements JsonSerializable 
+	class Resident //implements JsonSerializable
 	{
 		// The name of the Resident.
 		private $name = "";
@@ -110,17 +110,18 @@
 			$returnMe = "";
 			if($this->rtp) $returnMe = $returnMe . TAG_RTP . " ";
 			if($this->eboard) $returnMe = $returnMe . TAG_EBOARD . " ";
+			return $returnMe;
 		}
 		
-		public function jsonSerialize()
+		public function to_json()
 		{
-			return array(
+			return json_encode(array(
 				'name' => $this->getName(),
 				'username' => $this->getUsername(),
 				'memberSince' => $this->getMemberSince(),
 				'roomNumber' => $this->getRoomNumber(),
 				'qualifications' => $this->getQualifications()
-			);
+			));
 		}
 	}
 ?>

@@ -10,6 +10,9 @@ Room.TYPE = {
 	OTHER:			128,
 	STAIRS: 		256 	//I forgot it, okay?!
 };
+
+// Create a basic JSON object of a place-holder resident, just in case the actual resident does not exist.
+var baseJSONResident = "{\"name\":\"TittiesNToots\",\"username\":\"D.N.E.\",\"memberSince\":0,\"roomNumber\":0,\"qualifications\":\"\"}";
 	
 // Construct a room with properties that are common to all.
 function Room(colorID, roomName, roomType)
@@ -24,35 +27,70 @@ Room.prototype.getID = function()
 	return this.id;
 }
 
+// Load the residential rooms from our PHP work.
 function loadResRooms(rooms)
 {
 	var resNode = xmlDoc.getElementsByTagName("residentials")[0];
 	var residentials = resNode.getElementsByTagName("room");
-	//console.log"Number of residential rooms: "+residentials.length);
 	
-	/*var phpRooms = $.ajax({
-							url: "<?php echo site_url('json_encode($rooms);'); ?>",
-							type: "POST",
-							data: phpRooms,
-							dataType: "json", 
-							success: function(data) {console.log(data);}});*/
-	//console.log(phpRooms);
 	for(var i = 0; i < residentials.length; i++)
 	{
+		// Create a new Room instance to house our data.
 		var newRoom = new Room(parseInt(residentials[i].getAttribute("rgb")), residentials[i].getAttribute("name"), Room.TYPE.RESIDENTIAL);
-		newRoom.resA 			   = "<?php echo $rooms["+newRoom.id+"]->getResA()->getName() . ' (' . echo $rooms["+newRoom.id+"]->getResA()->getUsername() . ')'; ?>";
-		newRoom.resB          	   = "<?php echo $rooms["+newRoom.id+"]->getResB()->getName() . ' (' . echo $rooms["+newRoom.id+"]->getResB()->getUsername() . ')'; ?>";
 		
-		newRoom.resAYear      	   = "<?php echo $rooms["+newRoom.id+"]->getResA()->getMemberSince();?>";
-		newRoom.resBYear      	   = "<?php echo $rooms["+newRoom.id+"]->getResB()->getMemberSince();?>";
+		// Pre-emptively store the place-holder resident just in case we can't get any actual information for them.
+		var resA = $.parseJSON(baseJSONResident);
+		var resB = $.parseJSON(baseJSONResident);
 		
-		newRoom.resAQualifications = "<?php echo $rooms["+newRoom.id+"]->getResA()->getQualifications();?>";
-		newRoom.resBQualifications = "<?php echo $rooms["+newRoom.id+"]->getResB()->getQualifications();?>";
+		// Try to pull the first resident out of JSON. json_encode doesn't do well with json object arrays of json objects,
+		// so it just stores all but the top level as mere Strings. (wtf). This means we have to re-parse it.
+		try{
+			resA = $.parseJSON(jsonResidents[newRoom.id][0]);
+		}
+		catch(e){
+			// Don't worry about a thing.
+		}
+		// Do the same parsing dance with the second resident.
+		try{
+			resB = $.parseJSON(jsonResidents[newRoom.id][1]);
+		}
+		catch(e){
+			// Don't worry about a thing.
+		}
+		// I don't think someone named TittiesNToots would be able to afford college.
+		// It's also a Veety story, b-t-dubs.
+		if(resA.name == 'TittiesNToots')
+		{
+			newRoom.resA 			   = "unknown";
+			newRoom.resAYear      	   = "unknown";
+			newRoom.resAQualifications = "";
+			newRoom.resALink           = "";
+			newRoom.resALinkTitle      = "No member? No link.";
+		}
+		else{
+			newRoom.resA 			   = resA.name+" ("+resA.username+")";
+			newRoom.resAYear      	   = resA.memberSince;
+			newRoom.resAQualifications = resA.qualifications;
+			newRoom.resALink           = "https://members.csh.rit.edu/profiles/members/"+resA.username;
+			newRoom.resALinkTitle      = resA.name + " on Members";
+		}
 		
-		newRoom.resALink           = "<?php echo $MEMBERS_URL . $rooms["+newRoom.id+"]->getResA()->getUsername();?>";
-		newRoom.resBLink           = "<?php echo $MEMBERS_URL . $rooms["+newRoom.id+"]->getResB()->getUsername();?>";
-		newRoom.resALinkTitle      = "<?php echo $rooms["+newRoom.id+"]->getResA()->getUsername();?>" + " on Members";
-		newRoom.resBLinkTitle      = "<?php echo $rooms["+newRoom.id+"]->getResB()->getUsername();?>" + " on Members";
+		if(resB.name == 'TittiesNToots')
+		{
+			newRoom.resB          	   = "unknown";
+			newRoom.resBYear      	   = "unknown";
+			newRoom.resBQualifications = "";
+			newRoom.resBLink       	   = "";
+			newRoom.resBLinkTitle      = "No member? No link.";
+		}
+		else
+		{
+			newRoom.resB 			   = resB.name+" ("+resB.username+")";
+			newRoom.resBYear      	   = resB.memberSince;
+			newRoom.resBQualifications = resB.qualifications;
+			newRoom.resBLink           = "https://members.csh.rit.edu/profiles/members/"+resB.username;
+			newRoom.resBLinkTitle      = resB.name + " on Members";
+		}
 		rooms.push(newRoom);
 	}
 	return rooms;

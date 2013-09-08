@@ -1,5 +1,5 @@
 <?php	
 	// Titties and toots.
-	define('LDAP_USERNAME', 'xxxxxxx');
-	define('LDAP_PASSWORD', 'xxxxxxx');
+	define('LDAP_USERNAME', 'xxxxxxxx');
+	define('LDAP_PASSWORD', 'xxxxxxxx');
 ?>
