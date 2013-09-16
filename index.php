@@ -52,6 +52,8 @@
 			void main(void) {
 				// THIS LINE IS JIZZ CAKE. SURFACE NORMALS IN 1 LINE.
 				vec3 n = normalize( vec3(dFdx(gl_FragCoord.z), dFdy(gl_FragCoord.z), 0) );
+				// Make sure that we don't have any negative colour channels.
+				n.xy = (n.xy/2.0)+.5;
 				gl_FragColor = vec4( n, 1.0);
 			}
 		</script>
@@ -78,7 +80,7 @@
 			uniform sampler2D colorSampler;		// The sampler that contains the user-visible pass.
 			
 			
-			uniform int curRoomID;	// The color-ID of the currently selected room. (For highlighting.)
+			uniform int curRoomID;	// The colour-ID of the currently selected room. (For highlighting.)
 			varying vec2 texCoord;	// The texture coordinate ascribed to the current fragment.
 			
 			float res = .0005;		// The normalized gap between texture2D calls in creating the wire-frame effect.
