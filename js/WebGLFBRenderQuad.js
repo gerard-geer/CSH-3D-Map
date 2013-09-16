@@ -1,7 +1,7 @@
-function FBRenderQuad(wglContext, framebuffer)
+function FBRenderQuad(wglContext, shaderProgram)
 {	
-	this.fb = framebuffer;
 	this.context = wglContext;
+	this.program = shaderProgram;
 	
 	// Create data for the position of each of the vertices in the quad.
 	var posBufferData = [0.0, 1.0, 0.0,		0.0, 0.0, 0.0,		1.0, 1.0, 0.0,		1.0, 0.0, 0.0];
@@ -49,13 +49,6 @@ FBRenderQuad.prototype.render = function()
 	// Give it too a reference to the UV data.
 	this.context.bindBuffer(this.context.ARRAY_BUFFER, this.uvBuffer);
 	this.context.vertexAttribPointer(this.program.vertUVAttribute, this.uvBuffer.itemSize, this.context.FLOAT, false, 0, 0);
-	
-	// Activate a texture unit to pass in the framebuffer texture.
-	this.context.activeTexture(this.context.TEXTURE0);
-	// Bind to our framebuffer's texture.
-	this.context.bindTexture(this.context.TEXTURE_2D, this.fb.getTex());
-	// Give the sampler uniform the ID of the texture unit that we are using.
-	this.context.uniform1i(this.program.samplerUniform, 0);
 	
 	// Draw the quad. 
 	this.context.drawArrays(this.context.TRIANGLE_STRIP, 0, 4);

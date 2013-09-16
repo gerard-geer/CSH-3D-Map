@@ -10,6 +10,9 @@ Room.TYPE = {
 	OTHER:			128,
 	STAIRS: 		256 	//I forgot it, okay?!
 };
+
+// Create a basic JSON object of a place-holder resident, just in case the actual resident does not exist.
+var baseJSONResident = "{\"name\":\"TittiesNToots\",\"username\":\"D.N.E.\",\"memberSince\":0,\"roomNumber\":0,\"qualifications\":\"\"}";
 	
 // Construct a room with properties that are common to all.
 function Room(colorID, roomName, roomType)
@@ -22,6 +25,75 @@ function Room(colorID, roomName, roomType)
 Room.prototype.getID = function()
 {
 	return this.id;
+}
+
+// Load the residential rooms from our PHP work.
+function loadResRooms(rooms)
+{
+	var resNode = xmlDoc.getElementsByTagName("residentials")[0];
+	var residentials = resNode.getElementsByTagName("room");
+	
+	for(var i = 0; i < residentials.length; i++)
+	{
+		// Create a new Room instance to house our data.
+		var newRoom = new Room(parseInt(residentials[i].getAttribute("rgb")), residentials[i].getAttribute("name"), Room.TYPE.RESIDENTIAL);
+		
+		// Pre-emptively store the place-holder resident just in case we can't get any actual information for them.
+		var resA = $.parseJSON(baseJSONResident);
+		var resB = $.parseJSON(baseJSONResident);
+		
+		// Try to pull the first resident out of JSON. json_encode doesn't do well with json object arrays of json objects,
+		// so it just stores all but the top level as mere Strings. (wtf). This means we have to re-parse it.
+		try{
+			resA = $.parseJSON(jsonResidents[newRoom.id][0]);
+		}
+		catch(e){
+			// Don't worry about a thing.
+		}
+		// Do the same parsing dance with the second resident.
+		try{
+			resB = $.parseJSON(jsonResidents[newRoom.id][1]);
+		}
+		catch(e){
+			// Don't worry about a thing.
+		}
+		// I don't think someone named TittiesNToots would be able to afford college.
+		// It's also a Veety story, b-t-dubs.
+		if(resA.name == 'TittiesNToots')
+		{
+			newRoom.resA 			   = "unknown";
+			newRoom.resAYear      	   = "unknown";
+			newRoom.resAQualifications = "";
+			newRoom.resALink           = "";
+			newRoom.resALinkTitle      = "No member? No link.";
+		}
+		else{
+			newRoom.resA 			   = resA.name+" ("+resA.username+")";
+			newRoom.resAYear      	   = resA.memberSince;
+			newRoom.resAQualifications = resA.qualifications;
+			newRoom.resALink           = "https://members.csh.rit.edu/profiles/members/"+resA.username;
+			newRoom.resALinkTitle      = resA.name + " on Members";
+		}
+		
+		if(resB.name == 'TittiesNToots')
+		{
+			newRoom.resB          	   = "unknown";
+			newRoom.resBYear      	   = "unknown";
+			newRoom.resBQualifications = "";
+			newRoom.resBLink       	   = "";
+			newRoom.resBLinkTitle      = "No member? No link.";
+		}
+		else
+		{
+			newRoom.resB 			   = resB.name+" ("+resB.username+")";
+			newRoom.resBYear      	   = resB.memberSince;
+			newRoom.resBQualifications = resB.qualifications;
+			newRoom.resBLink           = "https://members.csh.rit.edu/profiles/members/"+resB.username;
+			newRoom.resBLinkTitle      = resB.name + " on Members";
+		}
+		rooms.push(newRoom);
+	}
+	return rooms;
 }
 
 // I absolutely dread loading from XML.
@@ -59,11 +131,11 @@ function loadRooms(filename)
 	for(var i = 0; i < specialRooms.length; i++)
 	{
 		//console.log"RGB ID VALUE: "+specialRooms[i].getAttribute("rgb"));
-		var newRoom =new  Room(parseInt(specialRooms[i].getAttribute("rgb")), specialRooms[i].getAttribute("name"), Room.TYPE.SPECIAL);
-		newRoom.eb = specialRooms[i].getAttribute("eb");
-		newRoom.ebLink = specialRooms[i].getAttribute("eb_link");
-		newRoom.ebLinkTitle = specialRooms[i].getAttribute("eb_link_title");
-		newRoom.roomLink = specialRooms[i].getAttribute("room_link");
+		var newRoom = new Room(parseInt(specialRooms[i].getAttribute("rgb")), specialRooms[i].getAttribute("name"), Room.TYPE.SPECIAL);
+		newRoom.eb            = specialRooms[i].getAttribute("eb");
+		newRoom.ebLink        = specialRooms[i].getAttribute("eb_link");
+		newRoom.ebLinkTitle   = specialRooms[i].getAttribute("eb_link_title");
+		newRoom.roomLink      = specialRooms[i].getAttribute("room_link");
 		newRoom.roomLinkTitle = specialRooms[i].getAttribute("room_link_title");
 		roomArray.push(newRoom);
 	}
@@ -77,7 +149,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < stairs.length; i++)
 	{
-		var newRoom =new  Room(parseInt(stairs[i].getAttribute("rgb")), stairs[i].getAttribute("name"), Room.TYPE.STAIRS);
+		var newRoom = new Room(parseInt(stairs[i].getAttribute("rgb")), stairs[i].getAttribute("name"), Room.TYPE.STAIRS);
 		newRoom.exitTo = stairs[i].getAttribute("exit_to");
 		roomArray.push(newRoom);
 	}
@@ -91,7 +163,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < restrooms.length; i++)
 	{
-		var newRoom =new  Room(parseInt(restrooms[i].getAttribute("rgb")), restrooms[i].getAttribute("name"), Room.TYPE.RESTROOM);
+		var newRoom = new Room(parseInt(restrooms[i].getAttribute("rgb")), restrooms[i].getAttribute("name"), Room.TYPE.RESTROOM);
 		newRoom.coed = restrooms[i].getAttribute("coed");
 		roomArray.push(newRoom);
 	}
@@ -105,7 +177,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < elevators.length; i++)
 	{
-		var newRoom =new  Room(parseInt(elevators[i].getAttribute("rgb")), elevators[i].getAttribute("name"), Room.TYPE.ELEVATOR);
+		var newRoom = new Room(parseInt(elevators[i].getAttribute("rgb")), elevators[i].getAttribute("name"), Room.TYPE.ELEVATOR);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -118,7 +190,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < facilities.length; i++)
 	{
-		var newRoom =new  Room(parseInt(facilities[i].getAttribute("rgb")), facilities[i].getAttribute("name"), Room.TYPE.FACILITIES);
+		var newRoom = new Room(parseInt(facilities[i].getAttribute("rgb")), facilities[i].getAttribute("name"), Room.TYPE.FACILITIES);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -131,7 +203,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < utilities.length; i++)
 	{
-		var newRoom =new  Room(parseInt(utilities[i].getAttribute("rgb")), utilities[i].getAttribute("name"), Room.TYPE.UTILITIES);
+		var newRoom = new Room(parseInt(utilities[i].getAttribute("rgb")), utilities[i].getAttribute("name"), Room.TYPE.UTILITIES);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -144,7 +216,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < netRooms.length; i++)
 	{
-		var newRoom =new  Room(parseInt(netRooms[i].getAttribute("rgb")), netRooms[i].getAttribute("name"), Room.TYPE.NETWORKING);
+		var newRoom = new Room(parseInt(netRooms[i].getAttribute("rgb")), netRooms[i].getAttribute("name"), Room.TYPE.NETWORKING);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -157,7 +229,7 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < others.length; i++)
 	{
-		var newRoom =new  Room(parseInt(others[i].getAttribute("rgb")), others[i].getAttribute("name"), Room.TYPE.OTHER);
+		var newRoom = new Room(parseInt(others[i].getAttribute("rgb")), others[i].getAttribute("name"), Room.TYPE.OTHER);
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
@@ -170,32 +242,17 @@ function loadRooms(filename)
 	
 	for(var i = 0; i < projects.length; i++)
 	{
-		var newRoom =new  Room(parseInt(projects[i].getAttribute("rgb")), projects[i].getAttribute("name"), Room.TYPE.PROJECT);
-		newRoom.link = projects[i].getAttribute("link");
-		newRoom.linkTitle = projects[i].getAttribute("link_title");
+		var newRoom = new Room(parseInt(projects[i].getAttribute("rgb")), projects[i].getAttribute("name"), Room.TYPE.PROJECT);
+		newRoom.projectLink		= projects[i].getAttribute("project_link");
+		newRoom.infoLink		= projects[i].getAttribute("info_link");
+		newRoom.infoLinkTitle 	= projects[i].getAttribute("link_title");
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	var resNode = xmlDoc.getElementsByTagName("residentials")[0];
-	var residentials = resNode.getElementsByTagName("room");
-	//console.log"Number of residential rooms: "+residentials.length);
-	
-	for(var i = 0; i < residentials.length; i++)
-	{
-		var newRoom =new  Room(parseInt(residentials[i].getAttribute("rgb")), residentials[i].getAttribute("name"), Room.TYPE.RESIDENTIAL);
-		newRoom.resA          = residentials[i].getAttribute("resA");
-		newRoom.resB          = residentials[i].getAttribute("resB");
-		newRoom.resALink      = residentials[i].getAttribute("resA_link");
-		newRoom.resBLink      = residentials[i].getAttribute("resB_link");
-		newRoom.resALinkTitle = residentials[i].getAttribute("resA_link_title");
-		newRoom.resBLinkTitle = residentials[i].getAttribute("resB_link_title");
-		roomArray.push(newRoom);
-	}
-	//console.log"Current size of room array: "+roomArray.length);
-	
+	roomArray = loadResRooms(roomArray);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// AT LONG LAST
