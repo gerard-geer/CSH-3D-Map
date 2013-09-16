@@ -26,7 +26,7 @@
 	</restrooms>
 	<elevators>
 		<room name="Northside Elevator"	rgb="108"></room>
-		<room name="Southside Elevator"	rgb=""></room>
+		<room name="Southside Elevator"	rgb="104"></room>
 	</elevators>
 	<facilities>
 		<room name="Garbage Room" 				rgb="28"></room>

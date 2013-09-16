@@ -4,9 +4,9 @@ var degreesX = 30;
 var degreesY = -40;
 
 // Translation variables.
-var xTrans = -400.0;
+var xTrans = -200.0;
 var yTrans = 800.0;
-var zTrans = -600;
+var zTrans = -950;
 
 // Maximum translations bumper values.
 var xMin = -1000, xMax = 1000;

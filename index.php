@@ -44,41 +44,91 @@
 			}
 		</script>
 		
+		<script id="normalFrag" type="x-shader/x-fragment">
+			#extension GL_OES_standard_derivatives : enable	// sht srs yo.
+			
+			precision highp float; // High precision because we can.
+
+			void main(void) {
+				// THIS LINE IS JIZZ CAKE. SURFACE NORMALS IN 1 LINE.
+				vec3 n = normalize( vec3(dFdx(gl_FragCoord.z), dFdy(gl_FragCoord.z), 0) );
+				gl_FragColor = vec4( n, 1.0);
+			}
+		</script>
+
+		<script id="normalVert" type="x-shader/x-vertex">
+			precision highp float;	// high precision since we are relying on minute differences between interpolations.
+			attribute vec3 vertPos; // Incoming vertex position.
+			attribute vec4 vertColor;	// Incoming vertex colour.
+
+			uniform mat4 mvmat;	// Model view matrix, used to typify geometry transformations.
+			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
+			
+			void main(void) {
+				// Transform the incoming vertex position by the transformation matrices and report it.
+				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
+			}
+		</script>
+		
 		<script id="sobelFrag" type="x-shader/x-fragment">
 			precision highp float; // High precision so that we can sample very small distances when differentiating.
-			uniform sampler2D diffableSampler;
-			uniform sampler2D colorSampler;
-			uniform int curRoomID;
-			varying vec2 texCoord;
-			float res = .0005;
-			void main(void) {
-				// Get a texel at the actual location within the diff texture.
-				vec4 center = texture2D(diffableSampler, texCoord);
-				// Sample pixels [res] distance from the actual current texture coordinate...
-				vec4 top = texture2D(diffableSampler, vec2(texCoord.x, texCoord.y-res));
-				vec4 bottom = texture2D(diffableSampler, vec2(texCoord.x, texCoord.y+res));
-				vec4 left = texture2D(diffableSampler, vec2(texCoord.x-res, texCoord.y));
-				vec4 right = texture2D(diffableSampler, vec2(texCoord.x+res, texCoord.y));
-				// And take the absolute difference between them.
-				vec4 sobel = abs(top-bottom) + abs(left-right);
+			
+			uniform sampler2D diffableSampler;	// The sampler that contains the ID pass.
+			uniform sampler2D normalSampler; 	// The sampler that contains the differentiated-normal pass.
+			uniform sampler2D colorSampler;		// The sampler that contains the user-visible pass.
+			
+			
+			uniform int curRoomID;	// The color-ID of the currently selected room. (For highlighting.)
+			varying vec2 texCoord;	// The texture coordinate ascribed to the current fragment.
+			
+			float res = .0005;		// The normalized gap between texture2D calls in creating the wire-frame effect.
+			
+			// Returns the sobel-differentiated result of a given texture.
+			//
+			// tex  (sampler2D)	: The texture object sampler to sample. (Fun with words)
+			// l	(vec2)		: The texture coordinate to sample around.
+			// d	(float)		: The distance with which to sample points in the texture.
+			vec4 getSobel(sampler2D tex, vec2 l, float d)
+			{
+				// Sample from above, below, and adjacent to the current location...
+				vec4 vert 	= abs( texture2D(tex, vec2(l.x, l.y-d)) - texture2D(tex, vec2(l.x, l.y+d)) );
+				vec4 horiz 	= abs( texture2D(tex, vec2(l.x-d, l.y)) - texture2D(tex, vec2(l.x+d, l.y)) );
 				
-				// If we have pretty much any difference,
-				if(sobel.r > 1.0/256.0)
+				// ...And return the absolute difference of it all.
+				return vert+horiz;
+			}
+			
+			void main(void) {
+				// Get a texel at the actual location within the user-colour framebuffer texture
+				// for final display.
+				vec4 outputColor = texture2D(colorSampler, texCoord);
+				
+				// Get a texel at the actual location within the differentiable framebuffer to
+				// check the current RoomID against.
+				vec4 fragID = texture2D(diffableSampler, texCoord);
+				
+				// Get a Sobel differentiated texel from the ID pass for use.
+				vec4 idSobel = getSobel(diffableSampler, texCoord, res);
+				
+				// We do the same with the Normal pass, but since we
+				// might not always be able to perform that pass, we have
+				// to do some checking.
+				vec4 normalSobel = getSobel(normalSampler, texCoord, res);
+				
+				// If we have pretty much any difference in either the ID or Normal Sobel passes,
+				if(idSobel.r > 1.0/256.0 || normalSobel.r > 1.5/256.0 || normalSobel.g > 1.5/256.0)
 				{
 					// We set our fragment colour to the line colour that we want.
-					sobel = vec4(0.0, 1.0, 0.333, 1.0);
-				}
-				
-				// If we are at the current room we highlight that shit.
-				else if(int(256.00 * center.r) == curRoomID)
+					outputColor = vec4(0.0, 1.0, 0.333, 1.0);
+				}				
+				// Otherwise if we are at the current room we highlight that shit.
+				else if(int(256.00 * fragID.r) == curRoomID)
 				{				
-					sobel = texture2D(colorSampler, texCoord)+texture2D(colorSampler, texCoord);
+					outputColor = outputColor*2.0;
 				}
-				// Otherwise we just set it to the colour of the texel rendered in the user-intended pass.
-				else sobel = texture2D(colorSampler, texCoord);
 				
-				// Report our fragment colour.
-				gl_FragColor = sobel;//texture2D(fbSampler, texCoord);
+				// Report our final fragment colour.
+				gl_FragColor = outputColor;
 			}
 		</script>
 
@@ -111,7 +161,15 @@
 		<div id="map_container">
 			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		</div>
-		<div id="hud_outline">CSH 3D FLOOR MAP v0.1.6.0<br>Click and drag to move!<br>Hold shift, click, and drag to rotate!<br>Click a room to see some info about it!<br>Click a link in that info to be taken to that info!<br>Now with LDAP connectivity.</div>
+		<div id="hud_outline">
+			CSH 3D FLOOR MAP v0.1.6.1<br>
+			Click and drag to move!<br>
+			Hold shift, click, and drag to rotate!<br>
+			Click a room to see some info about it!<br>
+			Click a link in that info to be taken to that info!<br>
+			Now with LDAP connectivity that's user dependent.<br>
+			(and procedural normal-mapping.)
+		</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>

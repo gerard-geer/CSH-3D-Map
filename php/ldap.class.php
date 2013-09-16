@@ -19,11 +19,25 @@
 
 		}
 
-		function connect($username, $password, $ldap_url, $ldap_port) {
-			# Connect to LDAP
-			$this->ldap_conn = ldap_connect($ldap_url, $ldap_port) or die('Could not connect to LDAP');
-			# Bind to LDAP
-			ldap_bind($this->ldap_conn, $username, $password) or die('Could not bind to LDAP');
+		function connect($ldap_url) {
+			# Set some LDAP options.
+			ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+			# Connect to LDAP.
+			$this->ldap_conn = ldap_connect($ldap_url);
+			# Bind to LDAP.
+			ldap_bind($this->ldap_conn);
+			
+			# Try to log in using the currently authenticated Webauth user.
+			if(isset($_ENV["KRB5CCNAME"]))
+			{
+				putenv("KRB5CCNAME=" . getenv("KRB5CCNAME"));
+				ldap_sasl_bind($this->ldap_conn,"","","GSSAPI") or die("Could not bind to LDAP 2: ");
+			} 
+			else 
+			{
+				echo "FATAL ERROR: WEBAUTH inproperly configured (missing KRB5CCNAME).";
+				die(0);
+			}	
 		}
 
 
@@ -86,7 +100,11 @@
 
 			# Set the member to be on eboard
 			foreach ($eboard as $person) {
-				$members[$person]['eboard'] = true;
+				if(isset($members[$person['dn']]))
+				{
+					echo '<br>found an EBOARD member!';
+					$members[$person]['eboard'] = true;
+				}
 			}
 		}
 
@@ -102,7 +120,11 @@
 
 			# Set the member to be an rtp
 			foreach ($rtps as $person) {
-				$members[$person]['rtp'] = true;
+				if(isset($members[$person['dn']]))
+				{
+					echo '<br>found an RTP!';
+					$members[$person]['rtp'] = true;
+				}
 			}
 		}
 	}

@@ -2,7 +2,6 @@
 
 	header ('Content-type: text/html; charset=utf-8');
 	//echo '<p>starting php</p>';
-	require_once('php/credentials.php');	// Credentials used to log into LDAP.
 	require_once('php/constants.php');		// Some constants for stability in life.
 	require_once('php/ldap.class.php');		// The LDAP helper class definition.
 	require_once('php/resident.class.php'); // The Resident class definition.
@@ -14,7 +13,7 @@
 	$ldap = new LdapHelper(); // Thanks Crawford, btdubs.
 	
 	// Connect to LDAP.
-	$ldap->connect('uid=' . LDAP_USERNAME . ','. USERS_DN, LDAP_PASSWORD, LDAP_URL, LDAP_PORT);
+	$ldap->connect(LDAP_URL);
 	
 	// Query the entries of all on floor members.
 	$ldap->fetch_on_floors(USERS_DN, $memberEntries);
