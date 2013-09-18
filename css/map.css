@@ -17,10 +17,27 @@ div.base_info
 p.datum_container
 {
 	display: inline;
+	margin-top: 3px;
+	margin-bottom: 3px;
 }
-a{color:#00ff30;}
-a:link {text-decoration:none;}
-a:visited {text-decoration:none;}
+p.datum
+{
+	display: inline;
+}
+
+#qualificationsA
+{
+	display: none;
+}
+
+#qualificationsB
+{
+	display: none;
+}
+
+a{color:#E3A024;}
+a:link {text-decoration:underline;}
+a:visited {text-decoration:underline;}
 a:hover {text-decoration:underline;}
 a:active {text-decoration:underline;}
 
@@ -38,10 +55,11 @@ a:active {text-decoration:underline;}
 	padding: 10px 10px 10px 10px;
 	width: 25%;
 	
-	color: #00ff30;
+	color: #E3A024;
+	background-color: rgba(0, 0, 0, .66);
 	border-style: solid;
 	border-style: solid;
-	border-color: #00ff30;
+	border-color: #E3A024;
 	display: none;
 }
 #hud_outline
@@ -51,7 +69,8 @@ a:active {text-decoration:underline;}
 	right: 5%;
 	height: 85%;
 	width: 90%;
-	color: #00ff30;
+	color: #E3A024;
 	border-style: solid;
 }
+
 
