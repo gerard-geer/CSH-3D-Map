@@ -60,8 +60,10 @@
 				# Adjust for school years
 				$curyear--;
 			}
+			
 			# Insert them into the members array
 			foreach ($onfloors as $person) {
+				#echo "<br>".$person['dn'];
 				if (!isset($person['dn']))
 					continue;
 
@@ -90,6 +92,7 @@
 
 		function fetch_eboard($eboardDN, &$members) {
 			# Find all eboard members
+			#echo '<br>searching for eboard';
 			$results = ldap_search($this->ldap_conn,
 			                       $eboardDN,
 			                       $this->FIND_ALL_EBOARD_QUERY,
@@ -100,9 +103,10 @@
 
 			# Set the member to be on eboard
 			foreach ($eboard as $person) {
-				if(isset($members[$person['dn']]))
+				#echo '<br>'.$person;
+				if(isset($members[$person]))
 				{
-					echo '<br>found an EBOARD member!';
+					#echo '<br>found an EBOARD member!';
 					$members[$person]['eboard'] = true;
 				}
 			}
@@ -110,6 +114,7 @@
 
 		function fetch_rtps($rtpDN, &$members) {
 			# Find all RTPs
+			#echo '<br>searching for RTPs';
 			$results = ldap_search($this->ldap_conn,
 			                       $rtpDN,
 			                       $this->FIND_ALL_RTPS_QUERY,
@@ -120,9 +125,10 @@
 
 			# Set the member to be an rtp
 			foreach ($rtps as $person) {
-				if(isset($members[$person['dn']]))
+				#echo '<br>'.$person;
+				if(isset($members[$person]))
 				{
-					echo '<br>found an RTP!';
+					#echo '<br>found an RTP!';
 					$members[$person]['rtp'] = true;
 				}
 			}

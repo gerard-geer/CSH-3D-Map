@@ -12,6 +12,8 @@
 		<script type="text/javascript" src="js/WebGLFramebuffer.js"></script>
 		<script type="text/javascript" src="js/WebGLFBRenderQuad.js"></script>
 		<script type="text/javascript" src="js/floorMapModelDataAsJavascript.js"></script>
+		<script type="text/javascript" src="js/vars.js"></script>
+		<script type="text/javascript" src="js/rendering.js"></script>
 		<script type="text/javascript" src="js/callbacks.js"></script>
 		<script type="text/javascript" src="js/map.js"></script>		
 		<script id="idFrag" type="x-shader/x-fragment">
@@ -72,18 +74,46 @@
 			}
 		</script>
 		
-		<script id="sobelFrag" type="x-shader/x-fragment">
+		<script id="depthFrag" type="x-shader/x-fragment">
+			precision highp float; // High precision because we can.
+			
+			void main(void) {
+				// Output the fraction of the depth of the scene this fragment is set.
+				// We the depth to a power to get more resolution close up.
+				gl_FragColor = vec4( vec3(pow(gl_FragCoord.z, .6666)), 1 );
+			}
+		</script>
+
+		<script id="depthVert" type="x-shader/x-vertex">
+			precision highp float;	// high precision since we are relying on minute differences between interpolations.
+			attribute vec3 vertPos; // Incoming vertex position.
+			attribute vec4 vertColor;	// Incoming vertex colour.
+
+			uniform mat4 mvmat;	// Model view matrix, used to typify geometry transformations.
+			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
+			
+			void main(void) {
+				// Transform the incoming vertex position by the transformation matrices and report it.
+				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
+			}
+		</script>
+		
+		<script id="wireframeFrag" type="x-shader/x-fragment">
 			precision highp float; // High precision so that we can sample very small distances when differentiating.
 			
 			uniform sampler2D diffableSampler;	// The sampler that contains the ID pass.
 			uniform sampler2D normalSampler; 	// The sampler that contains the differentiated-normal pass.
-			uniform sampler2D colorSampler;		// The sampler that contains the user-visible pass.
+			uniform sampler2D depthSampler;		// The sampler that contains the depth data about the model.
+			uniform sampler2D diffuseSampler;	// The sampler that contains the user-visible pass.
 			
 			
 			uniform int curRoomID;	// The colour-ID of the currently selected room. (For highlighting.)
 			varying vec2 texCoord;	// The texture coordinate ascribed to the current fragment.
 			
-			float res = .0005;		// The normalized gap between texture2D calls in creating the wire-frame effect.
+			const float res = .0005;	// The normalized gap between texture2D calls in creating the wire-frame effect.
+			const float edgeThresh_normal = .005;// The threshold difference for what constitutes an edge in the normal sampler.
+			const float edgeThresh_depth = .0135;// The threshold difference for what constitutes an edge in the depth sampler.
+			const float edgeThresh_id = .004;	 // The threshold difference for what constitutes an edge in the ID sampler.
 			
 			// Returns the sobel-differentiated result of a given texture.
 			//
@@ -103,14 +133,17 @@
 			void main(void) {
 				// Get a texel at the actual location within the user-colour framebuffer texture
 				// for final display.
-				vec4 outputColor = texture2D(colorSampler, texCoord);
+				vec4 outputColor = vec4(0.0);
 				
 				// Get a texel at the actual location within the differentiable framebuffer to
 				// check the current RoomID against.
 				vec4 fragID = texture2D(diffableSampler, texCoord);
 				
-				// Get a Sobel differentiated texel from the ID pass for use.
+				// Get a Sobel differentiated texel from the ID pass to use in marking the borders between rooms.
 				vec4 idSobel = getSobel(diffableSampler, texCoord, res);
+				
+				// Get another differentiated texel from the depth pass to highlight corners along parallel faces.
+				vec4 depthSobel = getSobel(depthSampler, texCoord, res);
 				
 				// We do the same with the Normal pass, but since we
 				// might not always be able to perform that pass, we have
@@ -118,15 +151,18 @@
 				vec4 normalSobel = getSobel(normalSampler, texCoord, res);
 				
 				// If we have pretty much any difference in either the ID or Normal Sobel passes,
-				if(idSobel.r > 1.0/256.0 || normalSobel.r > 1.5/256.0 || normalSobel.g > 1.5/256.0)
+				if( idSobel.r     > edgeThresh_id	  ||
+					normalSobel.r > edgeThresh_normal || 
+					normalSobel.g > edgeThresh_normal || 
+					depthSobel.r  > edgeThresh_depth)
 				{
 					// We set our fragment colour to the line colour that we want.
-					outputColor = vec4(0.0, 1.0, 0.333, 1.0);
+					outputColor = vec4(0.9, 0.6, 0.15, 1.0);
 				}				
 				// Otherwise if we are at the current room we highlight that shit.
 				else if(int(256.00 * fragID.r) == curRoomID)
 				{				
-					outputColor = outputColor*2.0;
+					outputColor += texture2D(diffuseSampler, texCoord);
 				}
 				
 				// Report our final fragment colour.
@@ -134,7 +170,158 @@
 			}
 		</script>
 
-		<script id="sobelVert" type="x-shader/x-vertex">
+		<script id="wireframeVert" type="x-shader/x-vertex">
+			precision lowp float;	// Low precision because, hell, they're just verts.
+			attribute vec3 vertPos; // incoming vertex position.
+			attribute vec2 vertUV;	// incoming vertex texture coordinate.
+
+			varying vec2 texCoord;	// Texture coordinate variable sent to the fragment shader.
+
+			void main(void) {
+				vec3 vert = vec3(vertPos);
+				
+				// Stretch the quad to the size of the screen.
+				vert.x *= 2.0;
+				vert.x -= 1.0;
+				vert.y *= 2.0;
+				vert.y -= 1.0;
+				
+				// Pass along the UV coordinate, interpolating it by way of using varying variable.
+				texCoord = vertUV;
+				
+				// Report the final transformed location of this vertex to the GL state.
+				gl_Position = vec4(vert, 1.0);
+			}
+		</script>
+		
+		<script id="horizBlurFrag" type="x-shader/x-fragment">
+			precision highp float; 	// High precision because we can.
+			
+			varying vec2 texCoord;	// Texture coordinate variable sent from the vertex shader.
+			uniform sampler2D inputSampler;	// The sampler that contains the original wire-frame render.
+			
+			// Blur spread factor.
+			const float sizeFactor = 2.0;
+			const float strengthFactor = 0.5;
+			
+			void main(void) {
+				gl_FragColor = vec4(0.0);
+				// Accumulate a Gaussian distribution on the current fragment along the horizontal axis.
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(-0.00175*sizeFactor, 0.0))*strengthFactor*0.0044299121055113265;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(-0.00150*sizeFactor, 0.0))*strengthFactor*0.00895781211794;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(-0.00125*sizeFactor, 0.0))*strengthFactor*0.0215963866053;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(-0.00100*sizeFactor, 0.0))*strengthFactor*0.0443683338718;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(-0.00075*sizeFactor, 0.0))*strengthFactor*0.0776744219933;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(-0.00050*sizeFactor, 0.0))*strengthFactor*0.115876621105;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(-0.00025*sizeFactor, 0.0))*strengthFactor*0.147308056121;
+				gl_FragColor += texture2D(inputSampler, texCoord         	        			 )*strengthFactor*0.159576912161;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2( 0.00025*sizeFactor, 0.0))*strengthFactor*0.147308056121;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2( 0.00050*sizeFactor, 0.0))*strengthFactor*0.115876621105;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2( 0.00075*sizeFactor, 0.0))*strengthFactor*0.0776744219933;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2( 0.00100*sizeFactor, 0.0))*strengthFactor*0.0443683338718;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2( 0.00125*sizeFactor, 0.0))*strengthFactor*0.0215963866053;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2( 0.00150*sizeFactor, 0.0))*strengthFactor*0.00895781211794;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2( 0.00175*sizeFactor, 0.0))*strengthFactor*0.0044299121055113265;
+			}
+		</script>
+
+		<script id="horizBlurVert" type="x-shader/x-vertex">
+			precision lowp float;	// Low precision because, hell, they're just verts.
+			attribute vec3 vertPos; // incoming vertex position.
+			attribute vec2 vertUV;	// incoming vertex texture coordinate.
+
+			varying vec2 texCoord;			// Texture coordinate variable sent to the fragment shader.
+
+			void main(void) {
+				vec3 vert = vec3(vertPos);
+				
+				// Stretch the quad to the size of the screen.
+				vert.x *= 2.0;
+				vert.x -= 1.0;
+				vert.y *= 2.0;
+				vert.y -= 1.0;
+				
+				// Pass along the UV coordinate, interpolating it by way of using varying variable.
+				texCoord = vertUV;
+				
+				// Report the final transformed location of this vertex to the GL state.
+				gl_Position = vec4(vert, 1.0);
+			}
+		</script>
+		
+		<script id="vertBlurFrag" type="x-shader/x-fragment">
+			precision highp float; // High precision because we can.
+			
+			varying vec2 texCoord;			// Texture coordinate variable sent from the vertex shader.
+			uniform sampler2D inputSampler; // A sampler containing the horizontal blur result.
+	
+			const float sizeFactor = 2.0;
+			const float strengthFactor = 0.5;
+			
+			void main(void) {
+				gl_FragColor = vec4(0.0);
+				// Accumulate the same sum along the Y axis.
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0, -0.00175*sizeFactor))*strengthFactor*0.0044299121055113265;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0, -0.00150*sizeFactor))*strengthFactor*0.00895781211794;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0, -0.00125*sizeFactor))*strengthFactor*0.0215963866053;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0, -0.00100*sizeFactor))*strengthFactor*0.0443683338718;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0, -0.00075*sizeFactor))*strengthFactor*0.0776744219933;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0, -0.00050*sizeFactor))*strengthFactor*0.115876621105;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0, -0.00025*sizeFactor))*strengthFactor*0.147308056121;
+				gl_FragColor += texture2D(inputSampler, texCoord     			    		 	 )*strengthFactor*0.159576912161;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0,  0.00025*sizeFactor))*strengthFactor*0.147308056121;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0,  0.00050*sizeFactor))*strengthFactor*0.115876621105;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0,  0.00075*sizeFactor))*strengthFactor*0.0776744219933;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0,  0.00100*sizeFactor))*strengthFactor*0.0443683338718;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0,  0.00125*sizeFactor))*strengthFactor*0.0215963866053;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0,  0.00150*sizeFactor))*strengthFactor*0.00895781211794;
+				gl_FragColor += texture2D(inputSampler, texCoord + vec2(0.0,  0.00175*sizeFactor))*strengthFactor*0.0044299121055113265;
+			}
+		</script>
+
+		<script id="vertBlurVert" type="x-shader/x-vertex">
+			precision lowp float;	// Low precision because, hell, they're just verts.
+			attribute vec3 vertPos; // incoming vertex position.
+			attribute vec2 vertUV;	// incoming vertex texture coordinate.
+
+			varying vec2 texCoord;			// Texture coordinate variable sent to the fragment shader.
+
+			void main(void) {
+				vec3 vert = vec3(vertPos);
+				
+				// Stretch the quad to the size of the screen.
+				vert.x *= 2.0;
+				vert.x -= 1.0;
+				vert.y *= 2.0;
+				vert.y -= 1.0;
+				
+				// Pass along the UV coordinate, interpolating it by way of using varying variable.
+				texCoord = vertUV;
+				
+				// Report the final transformed location of this vertex to the GL state.
+				gl_Position = vec4(vert, 1.0);
+			}
+		</script>
+		
+		<script id="compositingFrag" type="x-shader/x-fragment">
+			precision highp float; // High precision because we can.
+			
+			varying vec2 texCoord;
+
+			uniform sampler2D normalSampler;	// The sampler that contains the differentiated-normal pass.
+			uniform sampler2D depthSampler;		// The sampler that contains the depth data about the model.
+			uniform sampler2D diffuseSampler;	// The sampler that contains the user-visible pass.
+			uniform sampler2D gaussianSampler;	// The sampler that contains the blurred wire-frame and highlight pass.
+			uniform sampler2D wireframeSampler; // The sampler that contains the wire-frame rendering.
+			
+			void main(void) {
+				gl_FragColor = 	texture2D(wireframeSampler, texCoord) + 
+								texture2D(gaussianSampler, texCoord) + 
+								texture2D(diffuseSampler, texCoord);
+			}
+		</script>
+
+		<script id="compositingVert" type="x-shader/x-vertex">
 			precision lowp float;	// Low precision because, hell, they're just verts.
 			attribute vec3 vertPos; // incoming vertex position.
 			attribute vec2 vertUV;	// incoming vertex texture coordinate.
@@ -164,13 +351,13 @@
 			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		</div>
 		<div id="hud_outline">
-			CSH 3D FLOOR MAP v0.1.6.1<br>
+			CSH 3D FLOOR MAP v0.1.7.9(ORANGE)<br>
 			Click and drag to move!<br>
 			Hold shift, click, and drag to rotate!<br>
 			Click a room to see some info about it!<br>
 			Click a link in that info to be taken to that info!<br>
 			Now with LDAP connectivity that's user dependent.<br>
-			(and procedural normal-mapping.)
+			(and a bunch of underlying graphics additions to make things fun.)
 		</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">

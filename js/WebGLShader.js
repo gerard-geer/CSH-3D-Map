@@ -94,6 +94,8 @@ function createShaderProgram(wglContext, vertID, fragID)
 		try{
 			console.log("Could not attach and/or link shader program. Perhaps a shader object didn't compile.");
 			console.log(wglContext.getProgramParameter(program, wglContext.ATTACHED_SHADERS));
+			console.log("Vert Source:\n"+vertSource);
+			console.log("Frag Source:\n"+fragSource);
 		}
 		catch(e){}
 		return null;

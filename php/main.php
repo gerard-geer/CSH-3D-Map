@@ -5,6 +5,7 @@
 	require_once('php/constants.php');		// Some constants for stability in life.
 	require_once('php/ldap.class.php');		// The LDAP helper class definition.
 	require_once('php/resident.class.php'); // The Resident class definition.
+	require_once('php/extras.php');			// Fun stuff extras.
 	
 	// Create an empty array to store the member entries.
 	$memberEntries = array();
@@ -18,9 +19,9 @@
 	// Query the entries of all on floor members.
 	$ldap->fetch_on_floors(USERS_DN, $memberEntries);
 	// Append to those entries whether or not they are EBoard.
-	//$ldap->fetch_eboard(EBOARD_DN, $memberEntries);
+	$ldap->fetch_eboard(EBOARD_DN, $memberEntries);
 	// And do the same for whether or not they are and RTP.
-	//$ldap->fetch_rtps(RTP_DN, $memberEntries);
+	$ldap->fetch_rtps(RTP_DN, $memberEntries);
 	// Close the connection to LDAP so people don't shit themselves.
 	$ldap->disconnect();
 	
@@ -62,8 +63,11 @@
 	// Create a JSON string that concatenates every resident.
 	$encodedResidents = json_encode($encodedResidentsIndependent, JSON_FORCE_OBJECT);
 	
-	// Use PHP's naughty "heredoc" syntax to poop out our encoded Residents to JavaScript. Look
-	// at how our PHP variable is interpolated! Sexy...
+	// Get the current temperature.
+	$temp = 0;//getTemperature(76118);
+	
+	// Use PHP's naughty "heredoc" syntax to poop out our data to JavaScript. Look
+	// at how our PHP variables are interpolated! Sexy...
 	$str = <<< JS
 <script type="text/javascript">
   var jsonResidents = $encodedResidents;
@@ -71,5 +75,6 @@
 JS;
 			// Echo out that String so it gets included in the HTML.
 			echo $str;
+			#echo $encodedResidents;
 	
 ?>
