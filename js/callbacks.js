@@ -363,5 +363,17 @@ function checkTrans(diffX, diffZ)
 	if(transZTrans < zMin) zTrans = zMin+(2*diffZ);
 	else if(transZTrans > zMax) zTrans = zMax-(2*diffZ);
 }
+
+function onContextLost(event)
+{
+	alert("WebGL context lost.");
+	event.preventDefault();
+}
+
+function onContextRestored(event)
+{
+	alert("Recreating GL stuff at context restoration.");
+	initWebGLComponents();
+}
 	
 	

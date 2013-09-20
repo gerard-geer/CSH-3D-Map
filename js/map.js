@@ -22,6 +22,8 @@ function initContext()
 	window.addEventListener('keyup', keyUpFunction, false);
 	window.addEventListener('mousewheel', scrollWheelFunction, false);
 	window.addEventListener('DOMMouseScroll', scrollWheelFunction, false);
+	canvas.addEventListener("webglcontextlost", onContextLost, false);
+	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
 	window.onkeypress = keyPressedFunction;
 	
 	// Register a callback to handle window resizing.
@@ -182,12 +184,6 @@ function initModel()
 	colorModel = new Model3D(glContext, colorModelPosData, colorModelColorData);
 }
 
-function initTemp()
-{
-	var info = $("#hud_outline");
-	info.append("<br>Current temperature: "+currentTemp+" F");
-}
-
 function degToRad(degreesX) {
     return degreesX * Math.PI / 180;
 }
@@ -215,11 +211,10 @@ function performCameraTransformations()
 function initWebGLComponents()
 {
 	
-	// Call the initialization function of all the things!
+	// Call the initialization functions of all the things!
 	initContext();
 	initShaders();
 	initFBsAndQuads();
-	//initTemp();
 	initModel();
 	rooms = loadRooms("rooms.xml");
 	// Register a timed interval to draw a new frame every 1/60th of a second.

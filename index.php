@@ -47,7 +47,7 @@
 		</script>
 		
 		<script id="normalFrag" type="x-shader/x-fragment">
-			#extension GL_OES_standard_derivatives : enable	// sht srs yo.
+			#extension GL_OES_standard_derivatives : require	// sht srs yo.
 			
 			precision highp float; // High precision because we can.
 
@@ -111,8 +111,8 @@
 			varying vec2 texCoord;	// The texture coordinate ascribed to the current fragment.
 			
 			const float res = .0005;	// The normalized gap between texture2D calls in creating the wire-frame effect.
-			const float edgeThresh_normal = .005;// The threshold difference for what constitutes an edge in the normal sampler.
-			const float edgeThresh_depth = .0135;// The threshold difference for what constitutes an edge in the depth sampler.
+			const float edgeThresh_normal = .008;// The threshold difference for what constitutes an edge in the normal sampler.
+			const float edgeThresh_depth = .0205;// The threshold difference for what constitutes an edge in the depth sampler.
 			const float edgeThresh_id = .004;	 // The threshold difference for what constitutes an edge in the ID sampler.
 			
 			// Returns the sobel-differentiated result of a given texture.
@@ -150,20 +150,45 @@
 				// to do some checking.
 				vec4 normalSobel = getSobel(normalSampler, texCoord, res);
 				
-				// If we have pretty much any difference in either the ID or Normal Sobel passes,
-				if( idSobel.r     > edgeThresh_id	  ||
+				// Branching is evil in shader programming, since all instances of the shader program
+				// run in lock-step with each other. That means that this simple if-statement below
+				// has to exist in a non-conditional manner for optimum performance.
+				// What you see here is edge testing. We check to see if the resultant texel of the
+				// sobel filtering is greater than the threshold that constitutes an edge for the wireframe
+				// across several buffers.
+				/*if( idSobel.r     > edgeThresh_id	  ||
 					normalSobel.r > edgeThresh_normal || 
 					normalSobel.g > edgeThresh_normal || 
 					depthSobel.r  > edgeThresh_depth)
 				{
 					// We set our fragment colour to the line colour that we want.
 					outputColor = vec4(0.9, 0.6, 0.15, 1.0);
-				}				
-				// Otherwise if we are at the current room we highlight that shit.
-				else if(int(256.00 * fragID.r) == curRoomID)
+				}*/
+				
+				// Here is the second half of the branching code that I was using. It checks if the current corresponding
+				// texel from the ID buffer is equal to the current room's ID. If it is, we add the corresponding texel from
+				// the diffuse buffer, as this fragment is part of the room. (When this buffer is overlaid with the diffuse
+				// buffer, the room will appear highlighted.
+				/*else if(int(256.00 * fragID.r) == curRoomID)
 				{				
 					outputColor += texture2D(diffuseSampler, texCoord);
-				}
+				}*/
+				
+				// To make that same logic happen outside of conditionality, we must use the step function,
+				// which returns 0.0 if the second parameter is less than the first, and 1.0 if otherwise.
+				float hasWireframe = step(1.0, step(edgeThresh_id, idSobel.r)+	// we check to see if any Sobel result is
+										step(edgeThresh_normal, normalSobel.r)+	// greater than its corresponding threshold,
+										step(edgeThresh_normal, normalSobel.g)+ // and add the results. We then send this to
+										step(edgeThresh_depth, depthSobel.r));  // the outer step function, which checks to
+																				// see if we have an edge. We multiply this
+				outputColor = 			hasWireframe*vec4(0.9, 0.6, 0.15, 1.0);	// result by the edge colour to get a wire in the frame.	
+					
+				// To test equality without comparison, we multiply by the inverse of the absolute value of the sign of
+				// the ID fragment minus the value of the current ID.
+				int i_fragID = int(fragID.r*256.0);
+				outputColor += texture2D(diffuseSampler, texCoord) * 	// Add the diffuse texel...
+				(1.0-abs( sign( float(curRoomID) - float(i_fragID) ) )) // if the texel from the ID buffer matches the ID...
+				*(1.0-hasWireframe);									// and if we don't already have a wireframe.
 				
 				// Report our final fragment colour.
 				gl_FragColor = outputColor;
