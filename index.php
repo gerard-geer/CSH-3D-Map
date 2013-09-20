@@ -181,12 +181,12 @@
 										step(edgeThresh_normal, normalSobel.g)+ // and add the results. We then send this to
 										step(edgeThresh_depth, depthSobel.r));  // the outer step function, which checks to
 																				// see if we have an edge. We multiply this
-				outputColor = 			hasWireframe*vec4(0.9, 0.6, 0.15, 1.0);	// result by the edge colour to get a wire in the frame.	
+				outputColor = 			hasWireframe*vec4(1.0, 0.05, 0.43, 1.0);	// result by the edge colour to get a wire in the frame.	
 					
 				// To test equality without comparison, we multiply by the inverse of the absolute value of the sign of
 				// the ID fragment minus the value of the current ID.
 				int i_fragID = int(fragID.r*256.0);
-				outputColor += texture2D(diffuseSampler, texCoord) * 	// Add the diffuse texel...
+				outputColor += texture2D(diffuseSampler, texCoord)*.5 *	// Add half of the diffuse texel...
 				(1.0-abs( sign( float(curRoomID) - float(i_fragID) ) )) // if the texel from the ID buffer matches the ID...
 				*(1.0-hasWireframe);									// and if we don't already have a wireframe.
 				
@@ -376,13 +376,12 @@
 			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		</div>
 		<div id="hud_outline">
-			CSH 3D FLOOR MAP v0.1.7.9(ORANGE)<br>
+			CSH 3D FLOOR MAP v0.1.8.0<br>
 			Click and drag to move!<br>
 			Hold shift, click, and drag to rotate!<br>
 			Click a room to see some info about it!<br>
 			Click a link in that info to be taken to that info!<br>
-			Now with LDAP connectivity that's user dependent.<br>
-			(and a bunch of underlying graphics additions to make things fun.)
+			Now with updated and sort-of coded colors.
 		</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">

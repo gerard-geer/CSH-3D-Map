@@ -35,7 +35,7 @@ p.datum
 	display: none;
 }
 
-a{color:#E3A024;}
+a{color:#FF006E;}
 a:link {text-decoration:underline;}
 a:visited {text-decoration:underline;}
 a:hover {text-decoration:underline;}
@@ -55,11 +55,11 @@ a:active {text-decoration:underline;}
 	padding: 10px 10px 10px 10px;
 	width: 25%;
 	
-	color: #E3A024;
+	color: #D88AFC;
 	background-color: rgba(0, 0, 0, .66);
 	border-style: solid;
 	border-style: solid;
-	border-color: #E3A024;
+	border-color: #D88AFC;
 	display: none;
 }
 #hud_outline
@@ -69,7 +69,7 @@ a:active {text-decoration:underline;}
 	right: 5%;
 	height: 85%;
 	width: 90%;
-	color: #E3A024;
+	color: #D88AFC;
 	border-style: solid;
 }
 
