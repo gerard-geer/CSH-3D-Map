@@ -63,10 +63,9 @@
 			
 			# Insert them into the members array
 			foreach ($onfloors as $person) {
-				#echo "<br>".$person['dn'];
 				if (!isset($person['dn']))
 					continue;
-
+					
 				# Get the year level from the home directory
 				$matches = null;
 				preg_match('/^(\d{4})/', $person['membersince'][0], $matches);
@@ -78,6 +77,7 @@
 
 				if(isset($person['roomnumber'][0]))
 				{
+					# echo '"'.$person['dn'].'"<br>';
 					$members[$person['dn']] = array(
 						'name' => (!empty($person['nickname'][0])) ? $person['nickname'][0] : $person['givenname'][0],
 						'username' => $username,
@@ -122,10 +122,10 @@
 			$entries = ldap_get_entries($this->ldap_conn, $results);
 
 			$rtps = $entries[0]['member'];
-
+			
 			# Set the member to be an rtp
 			foreach ($rtps as $person) {
-				#echo '<br>'.$person;
+				# echo '<br>"'.$person.'"';
 				if(isset($members[$person]))
 				{
 					#echo '<br>found an RTP!';

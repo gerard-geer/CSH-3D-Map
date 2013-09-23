@@ -165,6 +165,8 @@ function loadRooms(filename)
 	{
 		var newRoom = new Room(parseInt(restrooms[i].getAttribute("rgb")), restrooms[i].getAttribute("name"), Room.TYPE.RESTROOM);
 		newRoom.coed = restrooms[i].getAttribute("coed");
+		newRoom.soapLink  = restrooms[i].getAttribute("soap_link");
+		newRoom.soapTitle = restrooms[i].getAttribute("soap_title");
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);

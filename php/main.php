@@ -138,12 +138,18 @@ JS;
 		$resUsername = (isset($member['username'])) ? $member['username'] : "D.N.E.";	// Get the username of the member.
 		$resYear = (isset($member['year'])) ? $member['year'] : "Unknown";			// Get the year of the member.
 		
+		if(isset($member['drinkadmin'][0]))
+		{
+			$resDrinkAdmin = $member['drinkadmin'][0]==1 ? true : false;
+		}
+		
 		// Create the Resident instance to house this member.
 		$curResident = new Resident($resRoomNumber, $resName, $resUsername, $resYear);
 		
 		// Set EBoard and RTP status.
 		if($member['eboard']) $curResident->setEboard(true);
 		if($member['rtp']) $curResident->setRTP(true);
+		if($resDrinkAdmin) $curResident->setDrinkAdmin(true);
 		
 		//echo '<br>Before: '.$curResident->getRoomNumber();
 		$curResident->setRoomNumber($ROOM_NUMBER_TO_COLOR[$curResident->getRoomNumber()]);

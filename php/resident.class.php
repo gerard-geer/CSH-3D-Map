@@ -5,6 +5,7 @@
 	supplemental qualifications.*/
 	define('TAG_RTP', "R.T.P.");
 	define('TAG_EBOARD', "EBoard Member");
+	define('TAG_DRINK', "Drink Admin");
 	
 	/*
 		A Resident of CSH, summed up as only PHP can.
@@ -22,6 +23,9 @@
 		
 		// Whether or not the Resident is an RTP.
 		private $rtp = false;
+		
+		// Whether or not the Resident is a drink admin.
+		private $drink = false;
 		
 		// The check in date of the Resident.
 		private $memberSince = 0;
@@ -86,6 +90,12 @@
 			$this->rtp = $isRTP;
 		}
 		
+		// Combusts and burns for 1000 days.
+		public function setDrinkAdmin($isDrink)
+		{
+			$this->drink = $isDrink;
+		}
+		
 		// Builds a brick house.
 		public function getRoomNumber()
 		{
@@ -108,8 +118,9 @@
 		public function getQualifications()
 		{
 			$returnMe = "";
-			if($this->rtp) $returnMe = $returnMe . TAG_RTP . " ";
-			if($this->eboard) $returnMe = $returnMe . TAG_EBOARD . " ";
+			if($this->rtp) $returnMe = $returnMe . "#" . TAG_RTP . " ";
+			if($this->eboard) $returnMe = $returnMe . "#" . TAG_EBOARD . " ";
+			if($this->drink) $returnMe = $returnMe . "#" . TAG_DRINK . " ";
 			return $returnMe;
 		}
 		

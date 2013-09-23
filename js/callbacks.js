@@ -289,6 +289,7 @@ function handleRoomCheck(id)
 			roomElement = $("#base_restroom");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#coed").html(room.coed);
+			roomElement.children("#soap").html("<a href="+room.soapLink+">"+room.soapTitle+"</a>");
 			hudElement.innerHTML = roomElement.html();
 			hudElement.style.display = "inline";
 			break;

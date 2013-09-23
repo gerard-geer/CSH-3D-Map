@@ -398,6 +398,7 @@
 		</div>
 		<div class="base_info" id="base_restroom">
 			<p class="datum_container">Restroom: <p class="datum" id="name"></p></p>
+			<p class="datum_container">SOAP: <p class="datum" id="soap"></p></p>
 			<p class="datum_container">Coed?: <p class="datum" id="coed"></p></p>
 		</div>
 		<div class="base_info" id="base_stairs">

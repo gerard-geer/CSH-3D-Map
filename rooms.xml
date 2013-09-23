@@ -17,12 +17,12 @@
 		<room name="Southside Stairs"			exit_to="C-Lot"		rgb="92"></room>
 	</stairs>
 	<restrooms>
-		<room name="Handicrapper"		coed="Yes"						rgb="40"></room>
-		<room name="L Mens'"			coed="Yes (If you are brave)"	rgb="60"></room>
-		<room name="Northside Mens'"	coed="Yes"						rgb="56"></room>
-		<room name="Northside Womens'"	coed="No"						rgb="52"></room>
-		<room name="Southside Mens'"	coed="Yes"						rgb="48"></room>
-		<room name="Southside Womens'"	coed="Yes"						rgb="44"></room>
+		<room name="Handicrapper"		coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="40"></room>
+		<room name="L Mens'"			coed="Yes (If you are brave)"	soap_link="" soap_title="No SOAP in this shower" rgb="60"></room>
+		<room name="Northside Mens'"	coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="56"></room>
+		<room name="Northside Womens'"	coed="No"						soap_link="" soap_title="Come back when SOAP is up" rgb="52"></room>
+		<room name="Southside Mens'"	coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="48"></room>
+		<room name="Southside Womens'"	coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="44"></room>
 	</restrooms>
 	<elevators>
 		<room name="Northside Elevator"	rgb="108"></room>
