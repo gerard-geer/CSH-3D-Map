@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="js/WebGLFBRenderQuad.js"></script>
 		<script type="text/javascript" src="js/floorMapModelDataAsJavascript.js"></script>
 		<script type="text/javascript" src="js/vars.js"></script>
+		<script type="text/javascript" src="js/shaders.js"></script>
 		<script type="text/javascript" src="js/rendering.js"></script>
 		<script type="text/javascript" src="js/callbacks.js"></script>
 		<script type="text/javascript" src="js/map.js"></script>		
@@ -107,15 +108,20 @@
 			uniform sampler2D diffuseSampler;	// The sampler that contains the user-visible pass.
 			
 			
-			uniform int curRoomID;	// The colour-ID of the currently selected room. (For highlighting.)
-			varying vec2 texCoord;	// The texture coordinate ascribed to the current fragment.
+			uniform int curRoomID;		// The colour-ID of the currently selected room. (For highlighting.)
+			uniform float framecount;	// The current frame count.
+			uniform float isRainbow;		// Whether or not to do the rainbow jig.
+			
+			varying vec2 texCoord;		// The texture coordinate ascribed to the current fragment.
 			
 			const float res = .0005;	// The normalized gap between texture2D calls in creating the wire-frame effect.
 			const float edgeThresh_normal = .008;// The threshold difference for what constitutes an edge in the normal sampler.
 			const float edgeThresh_depth = .0205;// The threshold difference for what constitutes an edge in the depth sampler.
 			const float edgeThresh_id = .004;	 // The threshold difference for what constitutes an edge in the ID sampler.
 			
-			// Returns the sobel-differentiated result of a given texture.
+			vec4 wireframeColor = vec4(.1, .9, .2, 1.0);// The colour of the wire-frame, stored as an RGBA vector.
+			
+			// Returns the Sobel-differentiated result of a given texture.
 			//
 			// tex  (sampler2D)	: The texture object sampler to sample. (Fun with words)
 			// l	(vec2)		: The texture coordinate to sample around.
@@ -150,45 +156,28 @@
 				// to do some checking.
 				vec4 normalSobel = getSobel(normalSampler, texCoord, res);
 				
-				// Branching is evil in shader programming, since all instances of the shader program
-				// run in lock-step with each other. That means that this simple if-statement below
-				// has to exist in a non-conditional manner for optimum performance.
-				// What you see here is edge testing. We check to see if the resultant texel of the
-				// sobel filtering is greater than the threshold that constitutes an edge for the wireframe
-				// across several buffers.
-				/*if( idSobel.r     > edgeThresh_id	  ||
-					normalSobel.r > edgeThresh_normal || 
-					normalSobel.g > edgeThresh_normal || 
-					depthSobel.r  > edgeThresh_depth)
-				{
-					// We set our fragment colour to the line colour that we want.
-					outputColor = vec4(0.9, 0.6, 0.15, 1.0);
-				}*/
+				// Handle the rainbow. Taste the rainbow.
+				wireframeColor = ( ( 1.0-step(0.999, isRainbow) )*wireframeColor ) + step(.999, isRainbow)*vec4( 
+					pow( sin((framecount/600.0)+texCoord.x), 2.0 ), 
+					pow( sin((framecount/600.0)+.785+texCoord.y), 2.0 ), 
+					pow( cos((framecount/600.0)+ texCoord.x*texCoord.y), 2.0 ),  
+					1.0);
 				
-				// Here is the second half of the branching code that I was using. It checks if the current corresponding
-				// texel from the ID buffer is equal to the current room's ID. If it is, we add the corresponding texel from
-				// the diffuse buffer, as this fragment is part of the room. (When this buffer is overlaid with the diffuse
-				// buffer, the room will appear highlighted.
-				/*else if(int(256.00 * fragID.r) == curRoomID)
-				{				
-					outputColor += texture2D(diffuseSampler, texCoord);
-				}*/
-				
-				// To make that same logic happen outside of conditionality, we must use the step function,
+				// To make if-greater-than logic happen outside of conditionality, we must use the step function,
 				// which returns 0.0 if the second parameter is less than the first, and 1.0 if otherwise.
 				float hasWireframe = step(1.0, step(edgeThresh_id, idSobel.r)+	// we check to see if any Sobel result is
 										step(edgeThresh_normal, normalSobel.r)+	// greater than its corresponding threshold,
 										step(edgeThresh_normal, normalSobel.g)+ // and add the results. We then send this to
 										step(edgeThresh_depth, depthSobel.r));  // the outer step function, which checks to
 																				// see if we have an edge. We multiply this
-				outputColor = 			hasWireframe*vec4(1.0, 0.05, 0.43, 1.0);	// result by the edge colour to get a wire in the frame.	
+				outputColor = 			hasWireframe*wireframeColor;			// result by the edge colour to get a wire in the frame.	
 					
 				// To test equality without comparison, we multiply by the inverse of the absolute value of the sign of
 				// the ID fragment minus the value of the current ID.
 				int i_fragID = int(fragID.r*256.0);
-				outputColor += texture2D(diffuseSampler, texCoord)*.5 *	// Add half of the diffuse texel...
+				outputColor += texture2D(diffuseSampler, texCoord)*	// Add the diffuse texel...
 				(1.0-abs( sign( float(curRoomID) - float(i_fragID) ) )) // if the texel from the ID buffer matches the ID...
-				*(1.0-hasWireframe);									// and if we don't already have a wireframe.
+				*(1.0-hasWireframe);									// and if we don't already have wire-frame.
 				
 				// Report our final fragment colour.
 				gl_FragColor = outputColor;
@@ -226,8 +215,8 @@
 			uniform sampler2D inputSampler;	// The sampler that contains the original wire-frame render.
 			
 			// Blur spread factor.
-			const float sizeFactor = 2.0;
-			const float strengthFactor = 0.5;
+			const float sizeFactor = 3.0;
+			const float strengthFactor = 0.9;
 			
 			void main(void) {
 				gl_FragColor = vec4(0.0);
@@ -280,8 +269,8 @@
 			varying vec2 texCoord;			// Texture coordinate variable sent from the vertex shader.
 			uniform sampler2D inputSampler; // A sampler containing the horizontal blur result.
 	
-			const float sizeFactor = 2.0;
-			const float strengthFactor = 0.5;
+			const float sizeFactor = 3.0;
+			const float strengthFactor = 0.9;
 			
 			void main(void) {
 				gl_FragColor = vec4(0.0);
@@ -338,6 +327,12 @@
 			uniform sampler2D diffuseSampler;	// The sampler that contains the user-visible pass.
 			uniform sampler2D gaussianSampler;	// The sampler that contains the blurred wire-frame and highlight pass.
 			uniform sampler2D wireframeSampler; // The sampler that contains the wire-frame rendering.
+			
+			
+			vec4 setScanline(vec2 coord, vec4 existingFrag, float strength)
+			{
+				return existingFrag * clamp(pow(sin(coord.y*1024.0), 2.0)+(1.0-strength), 0.0, 1.0);
+			}
 			
 			void main(void) {
 				gl_FragColor = 	texture2D(wireframeSampler, texCoord) + 

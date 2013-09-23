@@ -1,3 +1,6 @@
+// The current frame count.
+var framecount;
+
 // The framebuffer in which the ID pass is rendered.
 var idFramebuffer;
 

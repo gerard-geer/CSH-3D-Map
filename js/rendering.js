@@ -86,6 +86,12 @@ function renderWireframePass()
 	// Give the shader the Id of the current room.
 	glContext.uniform1i(wireframePassProgram.curIDUniform, curRoom);
 	
+	// Give the shader the current frame count.
+	glContext.uniform1f(wireframePassProgram.framecountUniform, framecount);
+	
+	// Give the shader the rainbow status.
+	glContext.uniform1f(wireframePassProgram.isRainbowUniform, isRainbow ? 1.0 : 0.0);
+	
 	// Draw the quad. 
 	fbQuad.render(glContext, wireframePassProgram);
 	
@@ -199,24 +205,31 @@ function renderFrame()
 	renderModel(colorModel, baseRenderProgram, colorFramebuffer, 0.0, 0.0, 0.0);
 	
 	//NORMALING PASS////////////////////////////////////////////////////////////////////////
-	if(normalSupported)
+	if(normalSupported && !basicMode)
 	{
 		renderModel(colorModel, normalPassProgram, normalFramebuffer, 1.0, 1.0, 1.0);
 	}
 	//DEPTH PASS////////////////////////////////////////////////////////////////////////////
-	
-	renderModel(colorModel, depthPassProgram, depthFramebuffer, 1.0, 1.0, 1.0);
-	
+	if(!basicMode)
+	{
+		renderModel(colorModel, depthPassProgram, depthFramebuffer, 1.0, 1.0, 1.0);
+	}
 	//WIREFRAME PASS////////////////////////////////////////////////////////////////////////
 	
 	renderWireframePass();
 	
 	//BLUR PASS/////////////////////////////////////////////////////////////////////////////
-	
-	renderBlurPass();
-	
+	if(!basicMode)
+	{
+		renderBlurPass();
+	}
 	//COMPOSITING PASS//////////////////////////////////////////////////////////////////////
 	
 	renderCompositingPass();
+	
+	//OTHER STUFF TO DO/////////////////////////////////////////////////////////////////////
+	
+	framecount += 1.0;
+	if(framecount > 60.0*10000.0)framecount = 0.0;
 
 }

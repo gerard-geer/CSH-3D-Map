@@ -48,6 +48,6 @@ FBRenderQuad.prototype.render = function(wglContext, program)
 	wglContext.vertexAttribPointer(program.vertUVAttribute, this.uvBuffer.itemSize, wglContext.FLOAT, false, 0, 0);
 	
 	// Draw the quad. 
-	wglContext.drawArrays(this.context.TRIANGLE_STRIP, 0, 4);
+	wglContext.drawArrays(wglContext.TRIANGLE_STRIP, 0, 4);
 }
 

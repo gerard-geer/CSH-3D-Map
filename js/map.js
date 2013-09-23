@@ -59,121 +59,68 @@ function initContext()
 	
 	// Store whether or not we have derivation capabilities on the GPU.
 	normalSupported = glContext.getExtension("OES_standard_derivatives");
+	
+	// Initialize the frame counter.
+	framecount = 0.0;
 }
 
 function initShaders()
 {
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// Create the shader that will be used to render the original pass onto the
-	// framebuffer.
-	baseRenderProgram = createShaderProgram(glContext, "idVert", "idFrag");
-	
-	// Store the location within the shader of its vertex position entry point.
-	baseRenderProgram.vertPosAttribute = glContext.getAttribLocation(baseRenderProgram, "vertPos");	
-	// Enable the use of this entry point.
-	glContext.enableVertexAttribArray(baseRenderProgram.vertPosAttribute);
-	
-	// We also store the location of the colour data entry point...
-	baseRenderProgram.vertColorAttribute = glContext.getAttribLocation(baseRenderProgram, "vertColor");
-	// ..and store it as well.
-	glContext.enableVertexAttribArray(baseRenderProgram.vertColorAttribute);
-	
-	// Store the locations within the shader of the two transformation matrices.
-	baseRenderProgram.pmatUniform = glContext.getUniformLocation(baseRenderProgram, "pmat");
-	baseRenderProgram.mvmatUniform = glContext.getUniformLocation(baseRenderProgram, "mvmat");
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// If the current hardware supports the derivatives extension, we create the derivative shader.
-	if(normalSupported)
+	// If the current hardware supports the derivatives extension, and the user wants it,
+	// we create the derivative shader.
+	if(normalSupported && !basicMode)
 	{
-		normalPassProgram = createShaderProgram(glContext, "normalVert", "normalFrag");
-		normalPassProgram.vertPosAttribute = glContext.getAttribLocation(normalPassProgram, "vertPos");	
-		glContext.enableVertexAttribArray(normalPassProgram.vertPosAttribute);
-		normalPassProgram.vertColorAttribute = glContext.getAttribLocation(normalPassProgram, "vertColor");
-		glContext.enableVertexAttribArray(normalPassProgram.vertColorAttribute);
-		normalPassProgram.pmatUniform = glContext.getUniformLocation(normalPassProgram, "pmat");
-		normalPassProgram.mvmatUniform = glContext.getUniformLocation(normalPassProgram, "mvmat");
+		initNormalShader();
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// We will never render a depth pass if we are in basic mode. We leave its framebuffer empty, untouched, virgin.
+	if(!basicMode)
+	{
+		initDepthShader();
+	}
 	
-	depthPassProgram = createShaderProgram(glContext, "depthVert", "depthFrag");
-	depthPassProgram.vertPosAttribute = glContext.getAttribLocation(depthPassProgram, "vertPos");	
-	glContext.enableVertexAttribArray(depthPassProgram.vertPosAttribute);
-	depthPassProgram.vertColorAttribute = glContext.getAttribLocation(depthPassProgram, "vertColor");
-	glContext.enableVertexAttribArray(depthPassProgram.vertColorAttribute);
-	depthPassProgram.pmatUniform = glContext.getUniformLocation(depthPassProgram, "pmat");
-	depthPassProgram.mvmatUniform = glContext.getUniformLocation(depthPassProgram, "mvmat");
+	// We will also not need the blur shader if we are in basic mode.
+	if(!basicMode)
+	{
+		initBlurShaders();
+	}
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	
-	// Create the shader that will be used to render the framebuffer onto the framebuffer quad.
-	wireframePassProgram = createShaderProgram(glContext, "wireframeVert", "wireframeFrag");
-	
-	// We store and enable the vertex position attribute and entry point for this shader as well.
-	wireframePassProgram.vertPosAttribute = glContext.getAttribLocation(wireframePassProgram, "vertPos");
-	glContext.enableVertexAttribArray(wireframePassProgram.vertPosAttribute);
-	// However with this shader we don't have a vertex colour entry point and attribute; rather,
-	// we have an entry point for texture coordinates to be fed in. This allows us to render
-	// the framebuffer texture accurately.
-	wireframePassProgram.vertUVAttribute = glContext.getAttribLocation(wireframePassProgram, "vertUV");
-	glContext.enableVertexAttribArray(wireframePassProgram.vertUVAttribute);
-	
-	// Store the location of the framebuffer sampler uniforms so we can feed the texture data of the
-	// framebuffer.
-	wireframePassProgram.diffableSampler = glContext.getUniformLocation(wireframePassProgram, "diffableSampler");
-	wireframePassProgram.normalSampler = glContext.getUniformLocation(wireframePassProgram, "normalSampler");
-	wireframePassProgram.depthSampler = glContext.getUniformLocation(wireframePassProgram, "depthSampler");
-	wireframePassProgram.diffuseSampler = glContext.getUniformLocation(wireframePassProgram, "diffuseSampler");
-	
-	// Store the location of the current room ID uniform.
-	wireframePassProgram.curIDUniform = glContext.getUniformLocation(wireframePassProgram, "curRoomID");
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	horizBlurProgram = createShaderProgram(glContext, "horizBlurVert", "horizBlurFrag");
-	horizBlurProgram.vertPosAttribute = glContext.getAttribLocation(horizBlurProgram, "vertPos");	
-	glContext.enableVertexAttribArray(horizBlurProgram.vertPosAttribute);
-	horizBlurProgram.vertUVAttribute = glContext.getAttribLocation(horizBlurProgram, "vertUV");
-	glContext.enableVertexAttribArray(horizBlurProgram.vertUVAttribute);
-	horizBlurProgram.inputSampler = glContext.getUniformLocation(horizBlurProgram, "inputSampler");
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	vertBlurProgram = createShaderProgram(glContext, "vertBlurVert", "vertBlurFrag");
-	vertBlurProgram.vertPosAttribute = glContext.getAttribLocation(vertBlurProgram, "vertPos");	
-	glContext.enableVertexAttribArray(vertBlurProgram.vertPosAttribute);
-	vertBlurProgram.vertUVAttribute = glContext.getAttribLocation(vertBlurProgram, "vertUV");
-	glContext.enableVertexAttribArray(vertBlurProgram.vertUVAttribute);
-	vertBlurProgram.inputSampler = glContext.getUniformLocation(vertBlurProgram, "inputSampler");
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	compositingPassProgram = createShaderProgram(glContext, "compositingVert", "compositingFrag");
-	compositingPassProgram.vertPosAttribute = glContext.getAttribLocation(compositingPassProgram, "vertPos");	
-	glContext.enableVertexAttribArray(compositingPassProgram.vertPosAttribute);
-	compositingPassProgram.vertUVAttribute = glContext.getAttribLocation(compositingPassProgram, "vertUV");
-	glContext.enableVertexAttribArray(compositingPassProgram.vertUVAttribute);
-	compositingPassProgram.normalSampler = glContext.getUniformLocation(compositingPassProgram, "normalSampler");
-	compositingPassProgram.depthSampler = glContext.getUniformLocation(compositingPassProgram, "depthSampler");
-	compositingPassProgram.diffuseSampler = glContext.getUniformLocation(compositingPassProgram, "diffuseSampler");
-	compositingPassProgram.gaussianSampler = glContext.getUniformLocation(compositingPassProgram, "gaussianSampler");
-	compositingPassProgram.wireframeSampler = glContext.getUniformLocation(compositingPassProgram, "wireframeSampler");
+	// Initialize the rest of the shaders.
+	initBaseShader();
+	initWireframeShader();
+	initCompositingShader();
 }
 
 function initFBsAndQuads()
 {
-	// Create the various framebuffers used to render each frame.
-	idFramebuffer = new WGLFramebuffer(glContext, 1024, 1024);
-	normalFramebuffer = new WGLFramebuffer(glContext, 1024, 1024);
-	depthFramebuffer = new WGLFramebuffer(glContext, 1024, 1024);
-	colorFramebuffer = new WGLFramebuffer(glContext, 1024, 1024);
-	horizBlurFramebuffer = new WGLFramebuffer(glContext, 1024, 1024);
-	vertBlurFramebuffer = new WGLFramebuffer(glContext, 1024, 1024);
-	wireframeFramebuffer = new WGLFramebuffer(glContext, 1024, 1024);
+	// Set up the resolution as specified.
+	var res = 1024;
+	var wireframeRes = 1024;
+	if(lowRes)
+	{
+		res = 256;
+		wireframeRes = 2048;
+	}
+	
+	// Create the various framebuffers used to render each frame, according
+	// to the mode used.
+	if(basicMode)
+	{
+		normalFramebuffer = new WGLFramebuffer(glContext, 4, 4);
+		horizBlurFramebuffer = new WGLFramebuffer(glContext, 4, 4);
+		vertBlurFramebuffer = new WGLFramebuffer(glContext, 4, 4);
+		depthFramebuffer = new WGLFramebuffer(glContext, 4, 4);
+	}
+	else
+	{
+		normalFramebuffer = new WGLFramebuffer(glContext, res, res);
+		horizBlurFramebuffer = new WGLFramebuffer(glContext, res, res);
+		vertBlurFramebuffer = new WGLFramebuffer(glContext, res, res);
+		depthFramebuffer = new WGLFramebuffer(glContext, res, res);
+	}
+	idFramebuffer = new WGLFramebuffer(glContext, res, res);
+	colorFramebuffer = new WGLFramebuffer(glContext, res, res);
+	wireframeFramebuffer = new WGLFramebuffer(glContext, wireframeRes, wireframeRes);
 	fbQuad = new FBRenderQuad(glContext);
 }
 

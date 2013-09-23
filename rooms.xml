@@ -36,10 +36,10 @@
 		<room name="Janitorial Closet" 			rgb="68"></room>
 	</utilities>
 	<networking>
-		<room name="L Networking Closet A" 			rgb="76"></room>
-		<room name="L Networking Closet B" 			rgb="80"></room>
-		<room name="Southside Networking Closet"	rgb="84"></room>
-		<room name="Southside Networking Room"		rgb="88"></room>
+		<room name="L Power/Storage Closet A" 	rgb="76"></room>
+		<room name="L Power/Storage Closet B" 	rgb="80"></room>
+		<room name="Southside Storage Closet"	rgb="84"></room>
+		<room name="Southside Networking Room"	rgb="88"></room>
 	</networking>
 	<other>
 		<room name="Air-Conditioning Column" 	rgb="112"></room>

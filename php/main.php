@@ -7,6 +7,107 @@
 	require_once('php/resident.class.php'); // The Resident class definition.
 	require_once('php/extras.php');			// Fun stuff extras.
 	
+	// Store "Basic Mode" status.
+	$isBasic = false;
+	if(isset($_GET["basicMode"]))
+	{
+		echo $_GET["basicMode"];
+		if($_GET["basicMode"]) 
+		{
+			$isBasic = true;
+		}
+		else 
+		{
+			$isBasic = false;
+		}
+	}
+	else {$isBasic = false;}
+	
+	if($isBasic)
+	{
+		echo <<< JS
+<script type="text/javascript">
+  var basicMode = true;
+</script>
+JS;
+	}
+	else
+	{
+		echo <<< JS
+<script type="text/javascript">
+  var basicMode = false;
+</script>
+JS;
+	}
+	
+	// Store "Low Resolution" status.
+	$lowRes = false;
+	if(isset($_GET["lowRes"]))
+	{
+		echo $_GET["lowRes"];
+		if($_GET["lowRes"]) 
+		{
+			$lowRes = true;
+		}
+		else 
+		{
+			$lowRes = false;
+		}
+	}
+	else {$lowRes = false;}
+	
+	if($lowRes)
+	{
+		echo <<< JS
+<script type="text/javascript">
+  var lowRes = true;
+</script>
+JS;
+	}
+	else
+	{
+		echo <<< JS
+<script type="text/javascript">
+  var lowRes = false;
+</script>
+JS;
+	}
+	
+	// Store "taste the rainbow" status.
+	$rainbow = false;
+	if(isset($_GET["tasteTheRainbow"]))
+	{
+		echo $_GET["tasteTheRainbow"];
+		if($_GET["tasteTheRainbow"]) 
+		{
+			$rainbow = true;
+		}
+		else 
+		{
+			$rainbow = false;
+		}
+	}
+	else {$rainbow = false;}
+	
+	if($rainbow)
+	{
+		echo <<< JS
+<script type="text/javascript">
+  var isRainbow = true;
+</script>
+JS;
+	}
+	else
+	{
+		echo <<< JS
+<script type="text/javascript">
+  var isRainbow = false;
+</script>
+JS;
+	}
+	
+		
+	
 	// Create an empty array to store the member entries.
 	$memberEntries = array();
 	
