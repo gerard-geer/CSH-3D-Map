@@ -378,13 +378,15 @@
 				Click and drag to move.
 			<br>Hold shift while dragging to rotate.
 			<br>Click a room for info about it.
-			<br><script>
+			<br>
+			<br>
+		</div>
+		<div id="subtle_links">
+		<script>
 			if(!basicMode){
-				document.write("Click <a href=\"?basicMode=yes\"> here </a> if you are experiencing framerate issues.");
+				document.write("<a id=subtle_link href=\"?basicMode=yes\"> Framerate issues? </a>");
 			}
 			</script>
-			<br>
-			<br>
 		</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">

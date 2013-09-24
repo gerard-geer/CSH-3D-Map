@@ -108,6 +108,21 @@ a:active {text-decoration:underline;}
 	
 	display: none;
 }
+
+#subtle_links
+{
+	font-size: 10px;
+	position: absolute;
+	bottom: 2%;
+	left: 2%;
+	
+	color: #20402A;
+}
+
+#subtle_link
+{
+	color: #20402A;
+}
 	
 
 
