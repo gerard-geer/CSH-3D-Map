@@ -86,6 +86,9 @@ function mouseDownFunction(e)
 		curRoom = 512;
 	}
 	
+	// Make sure that the text pop-up is gone.
+	$("#text").fadeOut(400);
+	
 }
 
 function mouseUpFunction(e)

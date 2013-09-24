@@ -11,10 +11,6 @@ function initContext()
 	canvas.height = window.innerHeight*canvasScale;
 	
 	// Register all our callbacks.
-	hudOutline = document.getElementById("hud_outline");
-	hudOutline.addEventListener('mousedown', mouseDownFunction, false);
-	hudOutline.addEventListener('mouseup', mouseUpFunction, false);
-	hudOutline.addEventListener('mousemove', mouseMoveFunction, false);
 	canvas.addEventListener('mousedown', mouseDownFunction, false);
 	canvas.addEventListener('mouseup', mouseUpFunction, false);
 	canvas.addEventListener('mousemove', mouseMoveFunction, false);
@@ -34,7 +30,8 @@ function initContext()
 																drawLoadingBar(1.0);
 																$("#loading_canvas_container").fadeOut();
 																$("#map_container").fadeIn();																
-																$("#hud_outline").fadeIn();																
+																$("#hud_outline").fadeIn();
+																$("#text").fadeIn();
 															}, false);
 	
 	

@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<title>CSH Floor Map</title>
-		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>	
+		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>
 		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/WebGLShader.js"></script>
@@ -373,8 +373,18 @@
 		<div id="loading_canvas_container">
 			<canvas id="loading_canvas" width="400" height="100"></canvas>
 		</div>
-		<div id="hud_outline">
-			CSH 3D FLOOR MAP v0.1.8.2
+		<div id="text">
+			<h1>CSH 3D Floor Map</h1>
+				Click and drag to move.
+			<br>Hold shift while dragging to rotate.
+			<br>Click a room for info about it.
+			<br><script>
+			if(!basicMode){
+				document.write("Click <a href=\"?basicMode=yes\"> here </a> if you are experiencing framerate issues.");
+			}
+			</script>
+			<br>
+			<br>
 		</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">
