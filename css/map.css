@@ -45,6 +45,7 @@ a:active {text-decoration:underline;}
 {
 	margin: auto;
 	text-align:center;
+	display: none;
 }
 #hud_info_popup
 {
@@ -78,6 +79,14 @@ a:active {text-decoration:underline;}
 	border-bottom-color: #10F820;
 	border-left-color: #10F060;
 	border-right-color: #10F060;
+	display: none;
+}
+
+#loading_canvas_container
+{
+	margin: auto;
+	text-align:center;
+	display: block;
 }
 
 

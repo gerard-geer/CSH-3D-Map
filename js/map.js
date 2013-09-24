@@ -18,13 +18,26 @@ function initContext()
 	canvas.addEventListener('mousedown', mouseDownFunction, false);
 	canvas.addEventListener('mouseup', mouseUpFunction, false);
 	canvas.addEventListener('mousemove', mouseMoveFunction, false);
+	canvas.addEventListener("webglcontextlost", onContextLost, false);
+	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
 	window.addEventListener('keydown', keyDownFunction, false);
 	window.addEventListener('keyup', keyUpFunction, false);
 	window.addEventListener('mousewheel', scrollWheelFunction, false);
 	window.addEventListener('DOMMouseScroll', scrollWheelFunction, false);
-	canvas.addEventListener("webglcontextlost", onContextLost, false);
-	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
 	window.onkeypress = keyPressedFunction;
+	document.addEventListener("canvasDoneLoading", function(event){drawLoadingBar(.2);}, false);
+	document.addEventListener("shadersDoneLoading", function(event){drawLoadingBar(.4);}, false);
+	document.addEventListener("buffersDoneLoading", function(event){drawLoadingBar(.6);}, false);
+	document.addEventListener("modelsDoneLoading", function(event){drawLoadingBar(.8);}, false);
+	document.addEventListener("roomsDoneLoading", function(event)
+															{
+																drawLoadingBar(1.0);
+																$("#loading_canvas_container").fadeOut();
+																$("#map_container").fadeIn();																
+																$("#hud_outline").fadeIn();																
+															}, false);
+	
+	
 	
 	// Register a callback to handle window resizing.
 	// You know, so it stays big.
@@ -153,17 +166,44 @@ function performCameraTransformations()
 	mat4.rotate(mvmat, degToRad(degreesX), [0, 1, 0]);
 }
 
+function initLoadingCanvas()
+{
+	loadingCanvas  = document.getElementById("loading_canvas");
+	loadingContext = loadingCanvas.getContext("2d");
+	loadingContext.fillStyle = "black";
+	loadingContext.fillRect(0, 0, loadingCanvas.width, loadingCanvas.height);
+}
+
+function drawLoadingBar(percentageComplete)
+{
+	loadingContext.fillStyle = "black";
+	loadingContext.fillRect(0, 0, loadingCanvas.width, loadingCanvas.height);
+	loadingContext.fillStyle = "green";
+	loadingContext.fillRect(0, 0, loadingCanvas.width*percentageComplete, loadingCanvas.height);
+}
+	
 
 
 function initWebGLComponents()
 {
+	initLoadingCanvas();
 	
-	// Call the initialization functions of all the things!
+	// Call the initialization functions of all the things, and dispatch events when each happens!
 	initContext();
+	document.dispatchEvent(canvasLoadedEvent);
+	
 	initShaders();
+	document.dispatchEvent(shadersLoadedEvent);
+	
 	initFBsAndQuads();
+	document.dispatchEvent(buffersCreatedEvent);
+	
 	initModel();
+	document.dispatchEvent(modelsLoadedEvent);
+	
 	rooms = loadRooms("rooms.xml");
+	document.dispatchEvent(roomsLoadedEvent);
+	
 	// Register a timed interval to draw a new frame every 1/60th of a second.
 	// Janky, but it works.
 	window.setInterval(renderFrame, 1000/60);	

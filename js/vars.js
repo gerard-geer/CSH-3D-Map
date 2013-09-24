@@ -57,8 +57,14 @@ var colorModel;
 // The canvas element that we are going to be rendering to.
 var canvas;
 
+// The canvas of the loading animation.
+var loadingCanvas;
+
 // The WebGL context that we will be extracting from the canvas.
 var glContext;
+
+// The 2D context that we will grab from the loading canvas.
+var loadingContext;
 
 // The array of room information objects.
 var rooms;
@@ -75,3 +81,10 @@ var canvasScale = .975;
 // The near and far clipping plane z-coordinates.
 var zNear = 725;
 var zFar = 2200;
+
+// Loading events.
+var canvasLoadedEvent	= new CustomEvent("canvasDoneLoading");
+var shadersLoadedEvent	= new CustomEvent("shadersDoneLoading");
+var buffersCreatedEvent	= new CustomEvent("buffersDoneLoading");
+var modelsLoadedEvent	= new CustomEvent("modelsDoneLoading");
+var roomsLoadedEvent	= new CustomEvent("roomsDoneLoading");

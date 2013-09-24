@@ -73,7 +73,7 @@ function mouseDownFunction(e)
 	glContext.readPixels(fbMouseX, fbMouseY, 1, 1, glContext.RGBA, glContext.UNSIGNED_BYTE, sample);
 	
 	// Display the data.
-	var popup = document.getElementById("hud_info_popup");
+	var popup = $("#hud_info_popup");
 	
 	if(sample[0] == sample[2]) // Since the background is yellow if R and B match then we know the sampling is not the background.
 	{
@@ -82,7 +82,7 @@ function mouseDownFunction(e)
 	}
 	else
 	{
-		popup.style.display = "none";
+		popup.fadeOut(100);
 		curRoom = 512;
 	}
 	
@@ -233,7 +233,7 @@ function handleRoomCheck(id)
 	//console.log"FOUND ROOM");
 	
 	var roomElement;
-	var hudElement = document.getElementById("hud_info_popup");
+	var hudElement = $("#hud_info_popup");
 	switch(room.type)
 	{
 		case Room.TYPE.RESIDENTIAL:
@@ -270,9 +270,11 @@ function handleRoomCheck(id)
 				roomElement.children("#qualificationsB").css("display", "none");
 				roomElement.children("#res_b_qualifications").html("");
 			}
-			
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.SPECIAL:
 			//console.log"updating SPECIAL room");
@@ -281,8 +283,11 @@ function handleRoomCheck(id)
 			roomElement.children("#room_link").html("<a href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
 			roomElement.children("#eboard").html(room.eb);
 			roomElement.children("#eb_link").html("<a href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.RESTROOM:
 			//console.log"updating RESTROOM room");
@@ -290,59 +295,83 @@ function handleRoomCheck(id)
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#coed").html(room.coed);
 			roomElement.children("#soap").html("<a href="+room.soapLink+">"+room.soapTitle+"</a>");
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.ELEVATOR:
 			//console.log"updating ELEVATOR room");
 			roomElement = $("#base_elevator");
 			roomElement.children("#name").html(room.name);
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.FACILITIES: 
 			//console.log"updating FACILITY room");
 			roomElement = $("#base_facilities");
 			roomElement.children("#name").html(room.name);
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.UTILITIES: 	
 			//console.log"updating UTILITIES room");
 			roomElement = $("#base_utilities");
 			roomElement.children("#name").html(room.name);
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.NETWORKING:  	
 			//console.log"updating NET room");
 			roomElement = $("#base_net_room");
-			roomElement.children("#name").html(room.name);
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			roomElement.children("#name").html(room.name);	
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.PROJECT: 		
 			//console.log"updating PROJECT room");	 	
 			roomElement = $("#base_project");
 			roomElement.children("#name").html("<a href="+room.projectLink+">"+room.name+"</a>");
 			roomElement.children("#link").html("<a href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.OTHER:		
 			//console.log"updating OTHER room"); 	
 			roomElement = $("#base_other");
 			roomElement.children("#name").html(room.name);
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		case Room.TYPE.STAIRS: 		
 			//console.log"updating STAIRS room");	 	
 			roomElement = $("#base_stairs");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#exit_to").html(room.exitTo);
-			hudElement.innerHTML = roomElement.html();
-			hudElement.style.display = "inline";
+			hudElement.fadeOut(100, function()
+									{
+										hudElement.fadeIn(100);
+										hudElement.html(roomElement.html());
+									});
 			break;
 		default:
 			//console.log"UNABLE TO DETERMINE ROOM TYPE");

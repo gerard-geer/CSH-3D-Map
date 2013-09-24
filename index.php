@@ -370,13 +370,11 @@
 		<div id="map_container">
 			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		</div>
+		<div id="loading_canvas_container">
+			<canvas id="loading_canvas" width="400" height="100"></canvas>
+		</div>
 		<div id="hud_outline">
-			CSH 3D FLOOR MAP v0.1.8.0<br>
-			Click and drag to move!<br>
-			Hold shift, click, and drag to rotate!<br>
-			Click a room to see some info about it!<br>
-			Click a link in that info to be taken to that info!<br>
-			Now with updated and sort-of coded colors.
+			CSH 3D FLOOR MAP v0.1.8.2
 		</div>
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">
