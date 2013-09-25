@@ -27,7 +27,7 @@ function WGLFramebuffer(wglContext, w, h)
 	wglContext.bindTexture(wglContext.TEXTURE_2D, this.fbtex);
 	
 	// Set the magnification and minification filters for the texture. 
-	wglContext.texParameteri(wglContext.TEXTURE_2D, wglContext.TEXTURE_MAG_FILTER, wglContext.NEAREST);
+	wglContext.texParameteri(wglContext.TEXTURE_2D, wglContext.TEXTURE_MAG_FILTER, wglContext.LINEAR);
     wglContext.texParameteri(wglContext.TEXTURE_2D, wglContext.TEXTURE_MIN_FILTER, wglContext.LINEAR);
 	
 	wglContext.texParameteri(wglContext.TEXTURE_2D, wglContext.TEXTURE_WRAP_S, wglContext.MIRRORED_REPEAT);

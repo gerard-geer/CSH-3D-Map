@@ -67,7 +67,7 @@ a:active {text-decoration:underline;}
 	width: 25%;
 	
 	color: #10F060;
-	background-color: rgba(0, 0, 0, .66);
+	background-image: url(../img/bg.png);
 	
 	border-left-style: ridge;
 	border-right-style: ridge;
@@ -77,6 +77,22 @@ a:active {text-decoration:underline;}
 	-moz-border-radius:25px;
 	
 	display: none;
+}
+
+#webpage_popup
+{
+	position: absolute;
+	top: 10%;
+	right: 10%;
+	width: 80%;
+	height: 80%;
+	
+	border-left-style: ridge;
+	border-right-style: ridge;
+	border-left-color: #10F060;
+	border-right-color: #10F060;
+	
+	display:none;
 }
 
 #loading_canvas_container
@@ -97,7 +113,7 @@ a:active {text-decoration:underline;}
 	padding: 10px 10px 10px 10px;
 	
 	color: #10F060;
-	background-color: rgba(0, 0, 0, .66);
+	background-image: url(../img/bg.png);
 	
 	border-left-style: ridge;
 	border-right-style: ridge;

@@ -72,6 +72,8 @@ function mouseDownFunction(e)
 	idFramebuffer.use(glContext);
 	glContext.readPixels(fbMouseX, fbMouseY, 1, 1, glContext.RGBA, glContext.UNSIGNED_BYTE, sample);
 	
+	// Make the iframe go away if it's there.
+	$("#webpage_popup").fadeOut(200, function(){document.getElementById("webpage_popup").src = "";});
 	// Display the data.
 	var popup = $("#hud_info_popup");
 	
@@ -185,6 +187,14 @@ function keyPressedFunction()
 	//checkTrans(dragScale, dragScale);
 }
 
+// Called when links are clicked.
+function linkFunction(src)
+{
+	// Prevent redirects
+	if(src && src != document.URL && src != "")
+		$("#webpage_popup").fadeIn(200);
+}
+
 var scrollZoomScale = 10.0;
 
 function scrollZoom(delta)
@@ -245,8 +255,8 @@ function handleRoomCheck(id)
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#res_a").html(room.resA);
 			roomElement.children("#res_b").html(room.resB);
-			roomElement.children("#res_a_link").html("<a href="+room.resALink+">"+room.resALinkTitle+"</a>");
-			roomElement.children("#res_b_link").html("<a href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
+			roomElement.children("#res_a_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.resALink+">"+room.resALinkTitle+"</a>");
+			roomElement.children("#res_b_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
 			roomElement.children("#res_a_year").html(room.resAYear);
 			roomElement.children("#res_b_year").html(room.resAYear);
 			// Add in the special qualifications if there are any.
@@ -283,9 +293,9 @@ function handleRoomCheck(id)
 			//console.log"updating SPECIAL room");
 			roomElement = $("#base_spec_room");
 			roomElement.children("#name").html(room.name);
-			roomElement.children("#room_link").html("<a href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
+			roomElement.children("#room_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
 			roomElement.children("#eboard").html(room.eb);
-			roomElement.children("#eb_link").html("<a href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
+			roomElement.children("#eb_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -297,7 +307,7 @@ function handleRoomCheck(id)
 			roomElement = $("#base_restroom");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#coed").html(room.coed);
-			roomElement.children("#soap").html("<a href="+room.soapLink+">"+room.soapTitle+"</a>");
+			roomElement.children("#soap").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.soapLink+">"+room.soapTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -347,8 +357,8 @@ function handleRoomCheck(id)
 		case Room.TYPE.PROJECT: 		
 			//console.log"updating PROJECT room");	 	
 			roomElement = $("#base_project");
-			roomElement.children("#name").html("<a href="+room.projectLink+">"+room.name+"</a>");
-			roomElement.children("#link").html("<a href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
+			roomElement.children("#name").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.projectLink+">"+room.name+"</a>");
+			roomElement.children("#link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);

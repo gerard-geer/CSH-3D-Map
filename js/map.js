@@ -10,40 +10,6 @@ function initContext()
 	canvas.width = window.innerWidth*canvasScale;
 	canvas.height = window.innerHeight*canvasScale;
 	
-	// Register all our callbacks.
-	canvas.addEventListener('mousedown', mouseDownFunction, false);
-	canvas.addEventListener('mouseup', mouseUpFunction, false);
-	canvas.addEventListener('mousemove', mouseMoveFunction, false);
-	canvas.addEventListener("webglcontextlost", onContextLost, false);
-	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
-	window.addEventListener('keydown', keyDownFunction, false);
-	window.addEventListener('keyup', keyUpFunction, false);
-	window.addEventListener('mousewheel', scrollWheelFunction, false);
-	window.addEventListener('DOMMouseScroll', scrollWheelFunction, false);
-	window.onkeypress = keyPressedFunction;
-	document.addEventListener("canvasDoneLoading", function(event){drawLoadingBar(.2);}, false);
-	document.addEventListener("shadersDoneLoading", function(event){drawLoadingBar(.4);}, false);
-	document.addEventListener("buffersDoneLoading", function(event){drawLoadingBar(.6);}, false);
-	document.addEventListener("modelsDoneLoading", function(event){drawLoadingBar(.8);}, false);
-	document.addEventListener("roomsDoneLoading", function(event)
-															{
-																drawLoadingBar(1.0);
-																$("#loading_canvas_container").fadeOut();
-																$("#map_container").fadeIn();																
-																$("#hud_outline").fadeIn();
-																$("#text").fadeIn();
-															}, false);
-	
-	
-	
-	// Register a callback to handle window resizing.
-	// You know, so it stays big.
-	window.onresize = function(event)
-	{
-		canvas.width = window.innerWidth*canvasScale;
-		canvas.height = window.innerHeight*canvasScale;
-	}
-	
 	// Try to get a WebGL context from it. If we can't, well, poop.
 	try{
 		glContext = canvas.getContext("experimental-webgl");
@@ -72,6 +38,46 @@ function initContext()
 	
 	// Initialize the frame counter.
 	framecount = 0.0;
+}
+
+function initPageElements()
+{
+	// Register all our callbacks.
+	canvas.addEventListener('mousedown', mouseDownFunction, false);
+	canvas.addEventListener('mouseup', mouseUpFunction, false);
+	canvas.addEventListener('mousemove', mouseMoveFunction, false);
+	canvas.addEventListener("webglcontextlost", onContextLost, false);
+	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
+	window.addEventListener('keydown', keyDownFunction, false);
+	window.addEventListener('keyup', keyUpFunction, false);
+	window.addEventListener('mousewheel', scrollWheelFunction, false);
+	window.addEventListener('DOMMouseScroll', scrollWheelFunction, false);
+	window.onkeypress = keyPressedFunction;
+	document.addEventListener("canvasDoneLoading", function(event){drawLoadingBar(.2);}, false);
+	document.addEventListener("shadersDoneLoading", function(event){drawLoadingBar(.4);}, false);
+	document.addEventListener("buffersDoneLoading", function(event){drawLoadingBar(.6);}, false);
+	document.addEventListener("modelsDoneLoading", function(event){drawLoadingBar(.8);}, false);
+	document.addEventListener("roomsDoneLoading", function(event)
+															{
+																drawLoadingBar(1.0);
+																$("#loading_canvas_container").fadeOut();
+																$("#map_container").fadeIn();	
+																$("#text").fadeIn();
+															}, false);
+	
+	
+	
+	// Register a callback to handle window resizing.
+	// You know, so it stays big.
+	window.onresize = function(event)
+	{
+		canvas.width = window.innerWidth*canvasScale;
+		canvas.height = window.innerHeight*canvasScale;
+	}
+	
+	// Make the HUD info popup draggable using JQuery UI.
+	$("#hud_info_popup").draggable();
+	
 }
 
 function initShaders()
@@ -187,6 +193,7 @@ function initWebGLComponents()
 	
 	// Call the initialization functions of all the things, and dispatch events when each happens!
 	initContext();
+	initPageElements();
 	document.dispatchEvent(canvasLoadedEvent);
 	
 	initShaders();

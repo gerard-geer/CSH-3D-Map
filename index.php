@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>
 		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
 		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
 		<script type="text/javascript" src="js/WebGLShader.js"></script>
 		<script type="text/javascript" src="js/room.js"></script>
 		<script type="text/javascript" src="js/Model3D.js"></script>
@@ -378,6 +379,8 @@
 				Click and drag to move.
 			<br>Hold shift while dragging to rotate.
 			<br>Click a room for info about it.
+			<br>The info pop-up is now draggable,
+			<br>and links open within the map.
 			<br>
 			<br>
 		</div>
@@ -389,6 +392,7 @@
 			</script>
 		</div>
 		<div id="hud_info_popup"></div>
+		<iframe id="webpage_popup" src="" height=400 width=400 seamless></iframe>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>
 			<p class="datum_container">Resident: <p class="datum" id="res_a"></p></p>
