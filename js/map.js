@@ -48,6 +48,7 @@ function initPageElements()
 	canvas.addEventListener('mousemove', mouseMoveFunction, false);
 	canvas.addEventListener("webglcontextlost", onContextLost, false);
 	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
+	$("#map_container").on("contextmenu", function(e){e.preventDefault();}, false);
 	window.addEventListener('keydown', keyDownFunction, false);
 	window.addEventListener('keyup', keyUpFunction, false);
 	window.addEventListener('mousewheel', scrollWheelFunction, false);

@@ -87,6 +87,8 @@ a:active {text-decoration:underline;}
 	width: 80%;
 	height: 80%;
 	
+	background-image: url(../img/bgo.png);
+	
 	border-left-style: ridge;
 	border-right-style: ridge;
 	border-left-color: #10F060;
@@ -135,9 +137,10 @@ a:active {text-decoration:underline;}
 	color: #20402A;
 }
 
-#subtle_link
+a.subtle_link
 {
 	color: #20402A;
+	padding: 5px 5px 5px 5px;
 }
 	
 

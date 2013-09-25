@@ -50,7 +50,11 @@ var mouseIsDown = false;
 
 function mouseDownFunction(e)
 {
+	
 	mouseIsDown = true;
+	
+	// Return if you didn't click with the left button.
+	
 	// Get the bounding size and location of the canvas
 	// so that we can translate the window mouse coordinates
 	// to be relative to the canvas.
@@ -79,8 +83,11 @@ function mouseDownFunction(e)
 	
 	if(sample[0] == sample[2]) // Since the background is yellow if R and B match then we know the sampling is not the background.
 	{
-		curRoom = parseInt(sample[0]);
-		handleRoomCheck(curRoom);
+		if(e.which == 1)
+		{
+			curRoom = parseInt(sample[0]);
+			handleRoomCheck(curRoom);
+		}
 	}
 	else
 	{
@@ -102,35 +109,62 @@ function mouseMoveFunction(e)
 {
 	if(mouseIsDown)
 	{
-		// Get the current mouse position.
-		var mouseX = e.clientX;
-		var mouseY = e.clientY;
+		switch(event.which) {
 		
-		// If the current mouse position is available, we update what we have stored.
-		if(mouseX)curMouseX = mouseX;
-		if(mouseY)curMouseY = mouseY;
-		
-		// Get the difference between the current and previous mouse positions.
-		var diffX = curMouseX - preMouseX;
-		var diffY = curMouseY - preMouseY;
-		
-		// If the shift key is not pressed, we translate the model in the XZ plane.
-		if(!shiftPressed)
-		{
-			xTrans += (Math.cos(degToRad(degreesX))*diffX*dragScale)-(Math.sin(degToRad(degreesX))*diffY*dragScale);
-			zTrans += (Math.sin(degToRad(degreesX))*diffX*dragScale)+(Math.cos(degToRad(degreesX))*diffY*dragScale);
-		}
-		// Otherwise we rotate around the Y axis.
-		else
-			degreesX += diffX*rotateScale;	
-		
-		// Update the previous mouse location.
-		preMouseX = curMouseX;
-		preMouseY = curMouseY;
-		
-		// Make sure we haven't translated too far.
-		//checkTrans(diffX, diffY);
-		
+			case 1:
+				// Get the current mouse position.
+				var mouseX = e.clientX;
+				var mouseY = e.clientY;
+				
+				// If the current mouse position is available, we update what we have stored.
+				if(mouseX)curMouseX = mouseX;
+				if(mouseY)curMouseY = mouseY;
+				
+				// Get the difference between the current and previous mouse positions.
+				var diffX = curMouseX - preMouseX;
+				var diffY = curMouseY - preMouseY;
+				
+				// If the shift key is not pressed, we translate the model in the XZ plane.
+				if(!shiftPressed)
+				{
+					xTrans += (Math.cos(degToRad(degreesX))*diffX*dragScale)-(Math.sin(degToRad(degreesX))*diffY*dragScale);
+					zTrans += (Math.sin(degToRad(degreesX))*diffX*dragScale)+(Math.cos(degToRad(degreesX))*diffY*dragScale);
+				}
+				// Otherwise we rotate around the Y axis.
+				else
+					degreesX += diffX*rotateScale;	
+				
+				// Update the previous mouse location.
+				preMouseX = curMouseX;
+				preMouseY = curMouseY;
+				
+				// Make sure we haven't translated too far.
+				//checkTrans(diffX, diffY);
+				break;
+				
+			case 3:
+				// Prevent the default action, which is to raise the context menu from its slumber.
+				e.preventDefault();
+				// Get the current mouse position.
+				var mouseX = e.clientX;
+				var mouseY = e.clientY;
+				
+				// If the current mouse position is available, we update what we have stored.
+				if(mouseX)curMouseX = mouseX;
+				if(mouseY)curMouseY = mouseY;
+				
+				// Get the difference between the current and previous mouse positions.
+				var diffX = curMouseX - preMouseX;
+				var diffY = curMouseY - preMouseY;
+				
+				// Update rotation angle.
+				degreesX += diffX*rotateScale;				
+				
+				// Update the previous mouse location.
+				preMouseX = curMouseX;
+				preMouseY = curMouseY;
+				break;			
+		}		
 	}
 }
 
@@ -318,6 +352,7 @@ function handleRoomCheck(id)
 			//console.log"updating ELEVATOR room");
 			roomElement = $("#base_elevator");
 			roomElement.children("#name").html(room.name);
+			roomElement.children("#harold").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.haroldLink+">"+room.haroldTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);

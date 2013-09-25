@@ -180,6 +180,8 @@ function loadRooms(filename)
 	for(var i = 0; i < elevators.length; i++)
 	{
 		var newRoom = new Room(parseInt(elevators[i].getAttribute("rgb")), elevators[i].getAttribute("name"), Room.TYPE.ELEVATOR);
+		newRoom.haroldLink  = elevators[i].getAttribute("harold_link");
+		newRoom.haroldTitle = elevators[i].getAttribute("harold_title");
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);

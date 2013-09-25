@@ -376,8 +376,8 @@
 		</div>
 		<div id="text">
 			<h1>CSH 3D Floor Map</h1>
-				Click and drag to move.
-			<br>Hold shift while dragging to rotate.
+				Left-click and drag to move.
+			<br>Right-click and drag to rotate.
 			<br>Click a room for info about it.
 			<br>The info pop-up is now draggable,
 			<br>and links open within the map.
@@ -385,11 +385,12 @@
 			<br>
 		</div>
 		<div id="subtle_links">
-		<script>
+			<script>
 			if(!basicMode){
-				document.write("<a id=subtle_link href=\"?basicMode=yes\"> Framerate issues? </a>");
+				document.write("<a class=\"subtle_link\" href=\"?basicMode=yes\">Framerate issues?</a>");
 			}
 			</script>
+			<a class="subtle_link" href="https://github.com/Hamneggs/CSH-3D-Map">Github repo</a>
 		</div>
 		<div id="hud_info_popup"></div>
 		<iframe id="webpage_popup" src="" height=400 width=400 seamless></iframe>
@@ -430,6 +431,7 @@
 		</div>
 		<div class="base_info" id="base_elevator">
 			<p class="datum_container">Elevator: <p class="datum" id="name"></p></p>	
+			<p class="datum_container">Harold: <p class="datum" id="harold"></p></p>	
 		</div>
 		<div class="base_info" id="base_project">
 			<p class="datum_container">Project: <p class="datum" id="name"></p></p>

@@ -80,7 +80,7 @@ var canvasScale = .975;
 
 // The near and far clipping plane z-coordinates.
 var zNear = 725;
-var zFar = 2200;
+var zFar = 2500;
 
 // Loading events.
 var canvasLoadedEvent	= new CustomEvent("canvasDoneLoading");
