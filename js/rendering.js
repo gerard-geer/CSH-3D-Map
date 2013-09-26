@@ -66,22 +66,22 @@ function renderWireframePass()
 	
 	// Activate a texture unit to pass in the ID framebuffer texture.
 	glContext.activeTexture(glContext.TEXTURE0);
-	glContext.bindTexture(glContext.TEXTURE_2D, idFramebuffer.getTex());
+	glContext.bindTexture(glContext.TEXTURE_2D, framebufferIND.getTex(0));
 	glContext.uniform1i(wireframePassProgram.diffableSampler, 0);
 	
 	// Activate another texture unit to pass in the differentiated-normal framebuffer texture.
 	glContext.activeTexture(glContext.TEXTURE1);
-	glContext.bindTexture(glContext.TEXTURE_2D, normalFramebuffer.getTex());
+	glContext.bindTexture(glContext.TEXTURE_2D, framebufferIND.getTex(1));
 	glContext.uniform1i(wireframePassProgram.normalSampler, 1);
 	
 	// Activate a third texture unit to pass in the depth framebuffer texture.
 	glContext.activeTexture(glContext.TEXTURE2);
-	glContext.bindTexture(glContext.TEXTURE_2D, depthFramebuffer.getTex());
+	glContext.bindTexture(glContext.TEXTURE_2D, framebufferIND.getTex(2));
 	glContext.uniform1i(wireframePassProgram.depthSampler, 2);
 	
 	// Activate a fourth texture unit to pass in the colour framebuffer texture.
 	glContext.activeTexture(glContext.TEXTURE3);
-	glContext.bindTexture(glContext.TEXTURE_2D, colorFramebuffer.getTex());
+	glContext.bindTexture(glContext.TEXTURE_2D, diffuseFramebuffer.getTex());
 	glContext.uniform1i(wireframePassProgram.diffuseSampler, 3);
 	
 	// Give the shader the Id of the current room.
@@ -167,12 +167,12 @@ function renderCompositingPass()
 	
 	// Pass in the framebuffer texture of the differentiated-normal rendering pass.
 	glContext.activeTexture(glContext.TEXTURE1);
-	glContext.bindTexture(glContext.TEXTURE_2D, normalFramebuffer.getTex());
+	glContext.bindTexture(glContext.TEXTURE_2D, framebufferIND.getTex(1));
 	glContext.uniform1i(compositingPassProgram.normalSampler, 1);
 	
 	// Pass in the framebuffer texture of the depth-revealing rendering pass.
 	glContext.activeTexture(glContext.TEXTURE2);
-	glContext.bindTexture(glContext.TEXTURE_2D, depthFramebuffer.getTex());
+	glContext.bindTexture(glContext.TEXTURE_2D, framebufferIND.getTex(2));
 	glContext.uniform1i(compositingPassProgram.depthSampler, 2);
 	
 	// Pass in the framebuffer texture of the blurred wire-frame.
@@ -197,24 +197,14 @@ function renderFrame()
 	// Call the stupid key pressed function because of how slow keyboard callbacks are.
 	keyPressedFunction();
 	
-	//ID PASS///////////////////////////////////////////////////////////////////////////////
+	//ID, COLOURED, NORMALING, and DEPTH PASS///////////////////////////////////////////////
 	
-	renderModel(idModel, baseRenderProgram, idFramebuffer, 1.0, 1.0, 0.0);
+	renderModel(idModel, shaderProgramIND, framebufferIND, 0.0, 0.0, 1.0);
 	
 	//COLOURED PASS/////////////////////////////////////////////////////////////////////////
 	
-	renderModel(colorModel, baseRenderProgram, colorFramebuffer, 0.0, 0.0, 0.0);
+	renderModel(colorModel, diffusePassProgram, colorFramebuffer, 0.0, 0.0, 0.0);
 	
-	//NORMALING PASS////////////////////////////////////////////////////////////////////////
-	if(normalSupported && !basicMode)
-	{
-		renderModel(colorModel, normalPassProgram, normalFramebuffer, 1.0, 1.0, 1.0);
-	}
-	//DEPTH PASS////////////////////////////////////////////////////////////////////////////
-	if(!basicMode)
-	{
-		renderModel(colorModel, depthPassProgram, depthFramebuffer, 1.0, 1.0, 1.0);
-	}
 	//WIREFRAME PASS////////////////////////////////////////////////////////////////////////
 	
 	renderWireframePass();

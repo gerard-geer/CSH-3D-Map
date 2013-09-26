@@ -1,17 +1,11 @@
 // The current frame count.
 var framecount;
 
-// The framebuffer in which the ID pass is rendered.
-var idFramebuffer;
+// The framebuffer in which the diffuse pass is rendered.
+var diffuseFramebuffer;
 
-// The framebuffer in which the normal-differentiating pass is rendered.
-var normalFramebuffer;
-
-// The framebuffer in which the depth of each fragment is recorded.
-var depthFramebuffer;
-
-// The framebuffer in which the colour pass is rendered.
-var colorFramebuffer;
+// The Quad framebuffer in which the ID, normal, and depth passes are rendered.
+var framebufferIND;
 
 // The framebuffer in which the wire-frame pass is rendered.
 var wireframeFramebuffer;
@@ -25,18 +19,15 @@ var vertBlurFramebuffer;
 // The framebuffer quad onto which we draw what is stored in any given framebuffer.
 var fbQuad;
 
-// The shader program used to render the ID pass.
-var baseRenderProgram;
-
-// The shader program that is used to record the depth of the model.
-var depthPassProgram;
-
-// The normal-calculating shader program.
-var normalPassProgram;
-
 // Whether or not dFdx and dFdy are supported in the fragment shader on the current
 // hardware.
 var normalSupported = null;
+
+// The shader program used to render the ID, normal, and depth passes (by way of MRT).
+var shaderProgramIND;
+
+// The shader program used to render the colour pass.
+var diffusePassProgram;
 
 // The shader program that is used to render the wire-frame visual.
 var wireframePassProgram;

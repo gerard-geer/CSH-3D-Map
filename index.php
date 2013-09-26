@@ -17,9 +17,84 @@
 		<script type="text/javascript" src="js/shaders.js"></script>
 		<script type="text/javascript" src="js/rendering.js"></script>
 		<script type="text/javascript" src="js/callbacks.js"></script>
-		<script type="text/javascript" src="js/map.js"></script>		
-		<script id="idFrag" type="x-shader/x-fragment">
+		<script type="text/javascript" src="js/map.js"></script>
+		
+		<script id="IND_Frag" type="x-shader/x-fragment">
+			#extension GL_OES_standard_derivatives : require	// sht srs yo.
+			
+			precision mediump float; // We can actually use some precision here and there.
+			
+			varying vec4 vColor;	// The vertex colour received from the vertex shader, interpolated
+									// to the current fragment coordinate.
+
+			void main(void) {
+			
+				
+				// ID PASS============================================================================
+				
+				// Simply set the vertex colour to the one received. The ID pass is easy.
+				gl_FragData[0] = vColor;
+				
+				// NORMAL PASS========================================================================
+				
+				// THIS LINE IS JIZZ CAKE. SURFACE NORMALS IN 1 LINE.
+				vec3 n = normalize( vec3(dFdx(gl_FragCoord.z), dFdy(gl_FragCoord.z), 0) );
+				// Make sure that we don't have any negative colour channels.
+				n.xy = (n.xy/2.0)+.5;
+				gl_FragData[1] = vec4( n, 1.0);
+				
+				// DEPTH PASS=========================================================================
+				
+				// Output the fraction of the depth of the scene this fragment is set.
+				gl_FragData[2] = vec4( vec3(gl_FragCoord.z), 1 );
+			}
+		</script>
+		<script id="IND_Frag_Basic" type="x-shader/x-fragment">
 			precision lowp float; // No two pixels are less than (4, 4, 4) different from each other.
+
+			varying vec4 vColor;	// The vertex colour received from the vertex shader, interpolated
+									// to the current fragment coordinate.
+
+			void main(void) {
+			
+				
+				// ID PASS============================================================================
+				
+				// Simply set the vertex colour to the one received. The ID pass is easy.
+				gl_FragData[0] = vColor;
+				
+				// NORMAL PASS========================================================================
+				
+				// It's easy to see where the difference is.
+				gl_FragData[1] = vec4(0);
+				
+				// DEPTH PASS=========================================================================
+				
+				// Ain't it?
+				gl_FragData[2] = vec4(0);
+			}
+		</script>
+
+		<script id="IND_Vert" type="x-shader/x-vertex">
+			precision lowp float;		// Low precision for speed and because vertex positions don't really matter here.
+			attribute vec3 vertPos; 	// Incoming vertex position.
+			attribute vec4 vertColor;	// Incoming vertex colour.
+
+			uniform mat4 mvmat;		// Model view matrix, used to typify geometry transformations.
+			uniform mat4 pmat;		// The perspective matrix, used to quantify the view frustum.
+
+			varying vec4 vColor; 	// Outgoing vertex colour, sent to the fragment shader after interpolation.
+
+			void main(void) {
+				// Transform the incoming vertex position by the transformation matrices and report it.
+				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
+				// Copy the incoming vertex colour data to the outgoing vertex colour variable.
+				vColor = vertColor;
+			}
+		</script>
+		<script id="diffuseFrag" type="x-shader/x-fragment">
+			precision lowp float; 	// We're sending colors from the model directly to the user. If they
+									// can tell the difference this makes, put them on the interwebs.
 
 			varying vec4 vColor;	// The vertex colour received from the vertex shader, interpolated
 									// to the current fragment coordinate.
@@ -30,73 +105,21 @@
 			}
 		</script>
 
-		<script id="idVert" type="x-shader/x-vertex">
-			precision lowp float;	// Low precision for speed and because vertex positions don't really matter here.
-			attribute vec3 vertPos; // Incoming vertex position.
+		<script id="diffuseVert" type="x-shader/x-vertex">
+			precision lowp float;		// Low precision for speed and because vertex positions don't really matter here.
+			attribute vec3 vertPos; 	// Incoming vertex position.
 			attribute vec4 vertColor;	// Incoming vertex colour.
 
-			uniform mat4 mvmat;	// Model view matrix, used to typify geometry transformations.
-			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
+			uniform mat4 mvmat;		// Model view matrix, used to typify geometry transformations.
+			uniform mat4 pmat;		// The perspective matrix, used to quantify the view frustum.
 
-			varying vec4 vColor; // Outgoing vertex colour, sent to the fragment shader after interpolation.
+			varying vec4 vColor; 	// Outgoing vertex colour, sent to the fragment shader after interpolation.
 
 			void main(void) {
 				// Transform the incoming vertex position by the transformation matrices and report it.
 				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
 				// Copy the incoming vertex colour data to the outgoing vertex colour variable.
 				vColor = vertColor;
-			}
-		</script>
-		
-		<script id="normalFrag" type="x-shader/x-fragment">
-			#extension GL_OES_standard_derivatives : require	// sht srs yo.
-			
-			precision highp float; // High precision because we can.
-
-			void main(void) {
-				// THIS LINE IS JIZZ CAKE. SURFACE NORMALS IN 1 LINE.
-				vec3 n = normalize( vec3(dFdx(gl_FragCoord.z), dFdy(gl_FragCoord.z), 0) );
-				// Make sure that we don't have any negative colour channels.
-				n.xy = (n.xy/2.0)+.5;
-				gl_FragColor = vec4( n, 1.0);
-			}
-		</script>
-
-		<script id="normalVert" type="x-shader/x-vertex">
-			precision highp float;	// high precision since we are relying on minute differences between interpolations.
-			attribute vec3 vertPos; // Incoming vertex position.
-			attribute vec4 vertColor;	// Incoming vertex colour.
-
-			uniform mat4 mvmat;	// Model view matrix, used to typify geometry transformations.
-			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
-			
-			void main(void) {
-				// Transform the incoming vertex position by the transformation matrices and report it.
-				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
-			}
-		</script>
-		
-		<script id="depthFrag" type="x-shader/x-fragment">
-			precision highp float; // High precision because we can.
-			
-			void main(void) {
-				// Output the fraction of the depth of the scene this fragment is set.
-				// We the depth to a power to get more resolution close up.
-				gl_FragColor = vec4( vec3(pow(gl_FragCoord.z, .6666)), 1 );
-			}
-		</script>
-
-		<script id="depthVert" type="x-shader/x-vertex">
-			precision highp float;	// high precision since we are relying on minute differences between interpolations.
-			attribute vec3 vertPos; // Incoming vertex position.
-			attribute vec4 vertColor;	// Incoming vertex colour.
-
-			uniform mat4 mvmat;	// Model view matrix, used to typify geometry transformations.
-			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
-			
-			void main(void) {
-				// Transform the incoming vertex position by the transformation matrices and report it.
-				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
 			}
 		</script>
 		

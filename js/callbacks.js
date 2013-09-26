@@ -81,7 +81,7 @@ function mouseDownFunction(e)
 	// Display the data.
 	var popup = $("#hud_info_popup");
 	
-	if(sample[0] == sample[2]) // Since the background is yellow if R and B match then we know the sampling is not the background.
+	if(sample[0] == sample[2]) // Since the background is blue if R and B match then we know the sampling is not the background.
 	{
 		if(e.which == 1)
 		{

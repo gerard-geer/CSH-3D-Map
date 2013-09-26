@@ -1,4 +1,4 @@
-function QuadWGLFramebuffer(wglContext, w, h, a)
+function QuadWGLFramebuffer(wglContext, w, h)
 {
 	this.fb = wglContext.createFramebuffer();
 	wglContext.bindFramebuffer(wglContext.FRAMEBUFFER, this.fb);
@@ -6,7 +6,7 @@ function QuadWGLFramebuffer(wglContext, w, h, a)
 	this.fb.w = w;
 	this.fb.h = h;
 	
-	this.fbtex = new Array(4);
+	this.fbtex = new Array(3);
 	
 	for(var i = 0; i < fbtex.length; i++)
 	{
@@ -28,7 +28,6 @@ function QuadWGLFramebuffer(wglContext, w, h, a)
 			case 0: attachment = wglContext.COLOR_ATTACHMENT0; break;
 			case 1: attachment = wglContext.COLOR_ATTACHMENT1; break;
 			case 2: attachment = wglContext.COLOR_ATTACHMENT2; break;
-			case 3: attachment = wglContext.COLOR_ATTACHMENT3; break;
 		}
 		wglContext.framebufferTexture2D(wglContext.FRAMEBUFFER, attachment, wglContext.TEXTURE_2D, this.fbtex[i], 0);
 	}
@@ -53,11 +52,12 @@ function QuadWGLFramebuffer(wglContext, w, h, a)
 QuadWGLFramebuffer.prototype.use = function(wglContext)
 {
 	
-	wglContext.drawBuffers(4, this.fb);
+	wglContext.bindFramebuffer(wglContext.FRAMEBUFFER, this.fb);
 }
 
 QuadWGLFramebuffer.prototype.stopUse = function(wglContext)
 {
+	wglContext.bindFramebuffer(wglContext.FRAMEBUFFER, null);
 }
 
 QuadWGLFramebuffer.prototype.getTex = function(index)

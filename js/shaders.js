@@ -1,8 +1,8 @@
-function initBaseShader()
+function initDiffuseShader()
 {
 	// Create the shader that will be used to render the original pass onto the
 	// framebuffer.
-	baseRenderProgram = createShaderProgram(glContext, "idVert", "idFrag");
+	baseRenderProgram = createShaderProgram(glContext, "diffuseVert", "diffuseFrag");
 	
 	// Store the location within the shader of its vertex position entry point.
 	baseRenderProgram.vertPosAttribute = glContext.getAttribLocation(baseRenderProgram, "vertPos");	
@@ -19,48 +19,26 @@ function initBaseShader()
 	baseRenderProgram.mvmatUniform = glContext.getUniformLocation(baseRenderProgram, "mvmat");
 }
 
-function initNormalShader()
+function initShaderIND(basic)
 {
-	// Create the shader using the appropriate source.
-	normalPassProgram = createShaderProgram(glContext, "normalVert", "normalFrag");
-
-	// Store the attribute location to send vertex data to.
-	normalPassProgram.vertPosAttribute = glContext.getAttribLocation(normalPassProgram, "vertPos");	
-
-	// Enable that location for use.
-	glContext.enableVertexAttribArray(normalPassProgram.vertPosAttribute);
-
-	// Store the attribute location to send vertex color data to.
-	normalPassProgram.vertColorAttribute = glContext.getAttribLocation(normalPassProgram, "vertColor");
-
-	// Enable the use of this attribute location as well.
-	glContext.enableVertexAttribArray(normalPassProgram.vertColorAttribute);
-
-	// Store the location of the perspective and model-view matrix uniforms.
-	normalPassProgram.pmatUniform = glContext.getUniformLocation(normalPassProgram, "pmat");
-	normalPassProgram.mvmatUniform = glContext.getUniformLocation(normalPassProgram, "mvmat");
-}
-
-function initDepthShader()
-{
-	// Create the shader using the appropriate source.
-	depthPassProgram = createShaderProgram(glContext, "depthVert", "depthFrag");
-		
-	// Store the attribute location to send vertex data to.
-	depthPassProgram.vertPosAttribute = glContext.getAttribLocation(depthPassProgram, "vertPos");	
+	// Create the shader that will be used to render the original pass onto the
+	// framebuffer, based on whether or not we are using basic mode.
+	if(!basic) 	baseRenderProgram = createShaderProgram(glContext, "IND_Vert", "IND_Frag");
+	else 		baseRenderProgram = createShaderProgram(glContext, "IND_Vert", "IND_Frag_Basic");
 	
-	// Enable that location for use.
-	glContext.enableVertexAttribArray(depthPassProgram.vertPosAttribute);
-		
-	// Store the attribute location to send vertex color data to.
-	depthPassProgram.vertColorAttribute = glContext.getAttribLocation(depthPassProgram, "vertColor");
+	// Store the location within the shader of its vertex position entry point.
+	baseRenderProgram.vertPosAttribute = glContext.getAttribLocation(baseRenderProgram, "vertPos");	
+	// Enable the use of this entry point.
+	glContext.enableVertexAttribArray(baseRenderProgram.vertPosAttribute);
 	
-	// Enable this location as well.
-	glContext.enableVertexAttribArray(depthPassProgram.vertColorAttribute);
+	// We also store the location of the colour data entry point...
+	baseRenderProgram.vertColorAttribute = glContext.getAttribLocation(baseRenderProgram, "vertColor");
+	// ..and store it as well.
+	glContext.enableVertexAttribArray(baseRenderProgram.vertColorAttribute);
 	
-	// Store the location of the perspective and model-view matrix uniforms.
-	depthPassProgram.pmatUniform = glContext.getUniformLocation(depthPassProgram, "pmat");
-	depthPassProgram.mvmatUniform = glContext.getUniformLocation(depthPassProgram, "mvmat");
+	// Store the locations within the shader of the two transformation matrices.
+	baseRenderProgram.pmatUniform = glContext.getUniformLocation(baseRenderProgram, "pmat");
+	baseRenderProgram.mvmatUniform = glContext.getUniformLocation(baseRenderProgram, "mvmat");
 }
 
 function initWireframeShader()

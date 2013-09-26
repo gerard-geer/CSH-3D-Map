@@ -84,17 +84,9 @@ function initPageElements()
 function initShaders()
 {
 	// If the current hardware supports the derivatives extension, and the user wants it,
-	// we create the derivative shader.
-	if(normalSupported && !basicMode)
-	{
-		initNormalShader();
-	}
-	
-	// We will never render a depth pass if we are in basic mode. We leave its framebuffer empty, untouched, virgin.
-	if(!basicMode)
-	{
-		initDepthShader();
-	}
+	// we create the IND shader with depth and normal output.
+	if(!normalSupported || basicMode)	initShaderIND(true);
+	else								initShaderIND(false);
 	
 	// We will also not need the blur shader if we are in basic mode.
 	if(!basicMode)
@@ -102,8 +94,6 @@ function initShaders()
 		initBlurShaders();
 	}
 	
-	// Initialize the rest of the shaders.
-	initBaseShader();
 	initWireframeShader();
 	initCompositingShader();
 }
@@ -121,23 +111,13 @@ function initFBsAndQuads()
 	
 	// Create the various framebuffers used to render each frame, according
 	// to the mode used.
-	if(basicMode)
-	{
-		normalFramebuffer = new WGLFramebuffer(glContext, 4, 4);
-		horizBlurFramebuffer = new WGLFramebuffer(glContext, 4, 4);
-		vertBlurFramebuffer = new WGLFramebuffer(glContext, 4, 4);
-		depthFramebuffer = new WGLFramebuffer(glContext, 4, 4);
-	}
-	else
-	{
-		normalFramebuffer = new WGLFramebuffer(glContext, res, res);
-		horizBlurFramebuffer = new WGLFramebuffer(glContext, res, res);
-		vertBlurFramebuffer = new WGLFramebuffer(glContext, res, res);
-		depthFramebuffer = new WGLFramebuffer(glContext, res, res);
-	}
-	idFramebuffer = new WGLFramebuffer(glContext, res, res);
-	colorFramebuffer = new WGLFramebuffer(glContext, res, res);
+	framebufferIND = new TriWGLFramebuffer(glContext, res, res);	
+	
+	diffuseFramebuffer = new WGLFramebuffer(glContext, res, res);
 	wireframeFramebuffer = new WGLFramebuffer(glContext, wireframeRes, wireframeRes);
+	horizBlurFramebuffer = new WGLFramebuffer(glContext, res, res);
+	vertBlurFramebuffer = new WGLFramebuffer(glContext, res, res);
+	
 	fbQuad = new FBRenderQuad(glContext);
 }
 
