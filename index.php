@@ -101,7 +101,7 @@
 		</script>
 		
 		<script id="wireframeFrag" type="x-shader/x-fragment">
-			precision highp float; // High precision so that we can sample very small distances when differentiating.
+			precision lowp float; // High precision so that we can sample very small distances when differentiating.
 			
 			uniform sampler2D diffableSampler;	// The sampler that contains the ID pass.
 			uniform sampler2D normalSampler; 	// The sampler that contains the differentiated-normal pass.
@@ -117,7 +117,7 @@
 			
 			const float res = .0005;	// The normalized gap between texture2D calls in creating the wire-frame effect.
 			const float edgeThresh_normal = .008;// The threshold difference for what constitutes an edge in the normal sampler.
-			const float edgeThresh_depth = .0205;// The threshold difference for what constitutes an edge in the depth sampler.
+			const float edgeThresh_depth = .0105;// The threshold difference for what constitutes an edge in the depth sampler.
 			const float edgeThresh_id = .004;	 // The threshold difference for what constitutes an edge in the ID sampler.
 			
 			vec4 wireframeColor = vec4(.1, .9, .2, 1.0);// The colour of the wire-frame, stored as an RGBA vector.
@@ -196,10 +196,8 @@
 				vec3 vert = vec3(vertPos);
 				
 				// Stretch the quad to the size of the screen.
-				vert.x *= 2.0;
-				vert.x -= 1.0;
-				vert.y *= 2.0;
-				vert.y -= 1.0;
+				vert.xy *= 2.0;
+				vert.xy -= 1.0;
 				
 				// Pass along the UV coordinate, interpolating it by way of using varying variable.
 				texCoord = vertUV;
@@ -251,10 +249,8 @@
 				vec3 vert = vec3(vertPos);
 				
 				// Stretch the quad to the size of the screen.
-				vert.x *= 2.0;
-				vert.x -= 1.0;
-				vert.y *= 2.0;
-				vert.y -= 1.0;
+				vert.xy *= 2.0;
+				vert.xy -= 1.0;
 				
 				// Pass along the UV coordinate, interpolating it by way of using varying variable.
 				texCoord = vertUV;
@@ -299,16 +295,14 @@
 			attribute vec3 vertPos; // incoming vertex position.
 			attribute vec2 vertUV;	// incoming vertex texture coordinate.
 
-			varying vec2 texCoord;			// Texture coordinate variable sent to the fragment shader.
+			varying vec2 texCoord;	// Texture coordinate variable sent to the fragment shader.
 
 			void main(void) {
 				vec3 vert = vec3(vertPos);
 				
 				// Stretch the quad to the size of the screen.
-				vert.x *= 2.0;
-				vert.x -= 1.0;
-				vert.y *= 2.0;
-				vert.y -= 1.0;
+				vert.xy *= 2.0;
+				vert.xy -= 1.0;
 				
 				// Pass along the UV coordinate, interpolating it by way of using varying variable.
 				texCoord = vertUV;
@@ -353,10 +347,8 @@
 				vec3 vert = vec3(vertPos);
 				
 				// Stretch the quad to the size of the screen.
-				vert.x *= 2.0;
-				vert.x -= 1.0;
-				vert.y *= 2.0;
-				vert.y -= 1.0;
+				vert.xy *= 2.0;
+				vert.xy -= 1.0;
 				
 				// Flip the texture because fuck.
 				texCoord = vec2(vertUV.x, 1.0-vertUV.y);
@@ -410,6 +402,7 @@
 			<p class="datum_container">Info: <p class="datum" id="room_link"></p></p>
 			<p class="datum_container">Relevant E-Board: <p class="datum" id="eboard"></p></p>
 			<p class="datum_container">EBoard info: <p class="datum" id="eb_link"></p></p>
+			<p class="datum_container">Lock: <p class="datum" id="doorlock"></p></p>
 		</div>
 		<div class="base_info" id="base_restroom">
 			<p class="datum_container">Restroom: <p class="datum" id="name"></p></p>

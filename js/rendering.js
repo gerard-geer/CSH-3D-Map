@@ -41,8 +41,9 @@ function renderModel(model, program, buffer, clearR, clearG, clearB)
 	
 	// Pass in values for the shader-program's matrix uniforms.
 	setMatrixUniforms(program);
-	for(var i = 0; i < model.getPosBuffer().items; i+=3)
-		glContext.drawArrays(glContext.TRIANGLES, i, 3);
+	
+	// Draw the data in the vbos.
+	glContext.drawArrays(glContext.TRIANGLES, 0, model.getPosBuffer().items);
 	
 	// Cease using the framebuffer.
 	if(buffer) buffer.stopUse(glContext);

@@ -330,6 +330,7 @@ function handleRoomCheck(id)
 			roomElement.children("#room_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
 			roomElement.children("#eboard").html(room.eb);
 			roomElement.children("#eb_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
+			roomElement.children("#doorlock").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);

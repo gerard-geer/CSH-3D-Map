@@ -137,6 +137,8 @@ function loadRooms(filename)
 		newRoom.ebLinkTitle   = specialRooms[i].getAttribute("eb_link_title");
 		newRoom.roomLink      = specialRooms[i].getAttribute("room_link");
 		newRoom.roomLinkTitle = specialRooms[i].getAttribute("room_link_title");
+		newRoom.doorlockLink  = specialRooms[i].getAttribute("doorlock_link");
+		newRoom.doorlockTitle = specialRooms[i].getAttribute("doorlock_title");
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);
