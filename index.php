@@ -383,7 +383,7 @@
 			<a class="subtle_link" href="https://github.com/Hamneggs/CSH-3D-Map">Github repo</a>
 		</div>
 		<div id="hud_info_popup"></div>
-		<iframe id="webpage_popup" name="webpage_popup" sandbox="allow_pointer_lock allow_same_origin allow_forms allow_scripts allow_top_navigation" src="" height=400 width=400 seamless></iframe>
+		<iframe id="webpage_popup" name="webpage_popup" sandbox="allow-pointer-lock allow-same-origin allow-forms allow-scripts allow-top-navigation" src="" height=400 width=400 seamless></iframe>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>
 			<p class="datum_container">Resident: <p class="datum" id="res_a"></p></p>
