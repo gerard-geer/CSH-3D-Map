@@ -81,7 +81,7 @@
 			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
 			
 			void main(void) {
-				vec4 color = vertColor;
+				vec4 color = vertColor;	// Play with the colour attribute so the compiler doesn't discard it.
 				// Transform the incoming vertex position by the transformation matrices and report it.
 				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
 			}
@@ -106,7 +106,7 @@
 			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
 			
 			void main(void) {
-				vec4 color = vertColor;
+				vec4 color = vertColor;	// Play with the colour attribute so the compiler doesn't discard it.
 				// Transform the incoming vertex position by the transformation matrices and report it.
 				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
 			}
