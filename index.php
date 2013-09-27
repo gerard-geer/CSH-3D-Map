@@ -5,6 +5,16 @@
 		<title>CSH Floor Map</title>
 		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>
 		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
+		<script type="text/javascript">
+			/*
+				A cross-platform way to print out error messages.
+			*/
+			function log(msg) {
+				setTimeout(function() {
+					throw new Error(msg);
+				}, 0);
+			}
+		</script>
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
 		<script type="text/javascript" src="js/WebGLShader.js"></script>
@@ -71,6 +81,7 @@
 			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
 			
 			void main(void) {
+				vec4 color = vertColor;	// Play with the colour attribute so the compiler doesn't discard it.
 				// Transform the incoming vertex position by the transformation matrices and report it.
 				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
 			}
@@ -95,6 +106,7 @@
 			uniform mat4 pmat;	// The perspective matrix, used to quantify the view frustum.
 			
 			void main(void) {
+				vec4 color = vertColor;	// Play with the colour attribute so the compiler doesn't discard it.
 				// Transform the incoming vertex position by the transformation matrices and report it.
 				gl_Position = pmat * mvmat * vec4(vertPos, 1.0);
 			}
@@ -129,12 +141,9 @@
 			// d	(float)		: The distance with which to sample points in the texture.
 			vec4 getSobel(sampler2D tex, vec2 l, float d)
 			{
-				// Sample from above, below, and adjacent to the current location...
-				vec4 vert 	= abs( texture2D(tex, vec2(l.x, l.y-d)) - texture2D(tex, vec2(l.x, l.y+d)) );
-				vec4 horiz 	= abs( texture2D(tex, vec2(l.x-d, l.y)) - texture2D(tex, vec2(l.x+d, l.y)) );
-				
-				// ...And return the absolute difference of it all.
-				return vert+horiz;
+				// Sample from above, below, and adjacent to the current location and return the absolute difference.
+				return 	abs( texture2D(tex, vec2(l.x, l.y-d)) - texture2D(tex, vec2(l.x, l.y+d)) ) +	// Vertical sampling
+						abs( texture2D(tex, vec2(l.x-d, l.y)) - texture2D(tex, vec2(l.x+d, l.y)) );		// Horizontal sampling
 			}
 			
 			void main(void) {
@@ -171,7 +180,7 @@
 										step(edgeThresh_normal, normalSobel.g)+ // and add the results. We then send this to
 										step(edgeThresh_depth, depthSobel.r));  // the outer step function, which checks to
 																				// see if we have an edge. We multiply this
-				outputColor = 			hasWireframe*wireframeColor;			// result by the edge colour to get a wire in the frame.	
+				outputColor = 			wireframeColor*hasWireframe;			// result by the edge colour to get a wire in the frame.	
 					
 				// To test equality without comparison, we multiply by the inverse of the absolute value of the sign of
 				// the ID fragment minus the value of the current ID.
@@ -313,9 +322,10 @@
 		</script>
 		
 		<script id="compositingFrag" type="x-shader/x-fragment">
-			precision highp float; // High precision because we can.
+			precision lowp float;	// We aren't actually doing any testing here, 
+									// so we don't need the extra precision.
 			
-			varying vec2 texCoord;
+			varying vec2 texCoord;	// The interpolated texture coordinate.
 
 			uniform sampler2D normalSampler;	// The sampler that contains the differentiated-normal pass.
 			uniform sampler2D depthSampler;		// The sampler that contains the depth data about the model.
@@ -385,7 +395,7 @@
 			<a class="subtle_link" href="https://github.com/Hamneggs/CSH-3D-Map">Github repo</a>
 		</div>
 		<div id="hud_info_popup"></div>
-		<iframe id="webpage_popup" src="" height=400 width=400 seamless></iframe>
+		<iframe id="webpage_popup" name="webpage_popup" sandbox="allow-pointer-lock allow-same-origin allow-forms allow-scripts allow-top-navigation allow-popups" src="" height=400 width=400 seamless></iframe>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>
 			<p class="datum_container">Resident: <p class="datum" id="res_a"></p></p>

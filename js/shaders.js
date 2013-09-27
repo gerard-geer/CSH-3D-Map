@@ -23,14 +23,14 @@ function initNormalShader()
 {
 	// Create the shader using the appropriate source.
 	normalPassProgram = createShaderProgram(glContext, "normalVert", "normalFrag");
-
+	glContext.useProgram(normalPassProgram);
 	// Store the attribute location to send vertex data to.
 	normalPassProgram.vertPosAttribute = glContext.getAttribLocation(normalPassProgram, "vertPos");	
 
 	// Enable that location for use.
 	glContext.enableVertexAttribArray(normalPassProgram.vertPosAttribute);
 
-	// Store the attribute location to send vertex color data to.
+	// Store the attribute location to send vertex colour data to.
 	normalPassProgram.vertColorAttribute = glContext.getAttribLocation(normalPassProgram, "vertColor");
 
 	// Enable the use of this attribute location as well.
@@ -39,6 +39,7 @@ function initNormalShader()
 	// Store the location of the perspective and model-view matrix uniforms.
 	normalPassProgram.pmatUniform = glContext.getUniformLocation(normalPassProgram, "pmat");
 	normalPassProgram.mvmatUniform = glContext.getUniformLocation(normalPassProgram, "mvmat");
+	glContext.useProgram(null);
 }
 
 function initDepthShader()
@@ -52,7 +53,7 @@ function initDepthShader()
 	// Enable that location for use.
 	glContext.enableVertexAttribArray(depthPassProgram.vertPosAttribute);
 		
-	// Store the attribute location to send vertex color data to.
+	// Store the attribute location to send vertex colour data to.
 	depthPassProgram.vertColorAttribute = glContext.getAttribLocation(depthPassProgram, "vertColor");
 	
 	// Enable this location as well.
