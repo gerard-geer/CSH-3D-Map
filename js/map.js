@@ -51,8 +51,6 @@ function initPageElements()
 	$("#map_container").on("contextmenu", function(e){e.preventDefault();}, false);
 	window.addEventListener('keydown', keyDownFunction, false);
 	window.addEventListener('keyup', keyUpFunction, false);
-	window.addEventListener('mousewheel', scrollWheelFunction, false);
-	window.addEventListener('DOMMouseScroll', scrollWheelFunction, false);
 	window.onkeypress = keyPressedFunction;
 	document.addEventListener("canvasDoneLoading", function(event){drawLoadingBar(.2);}, false);
 	document.addEventListener("shadersDoneLoading", function(event){drawLoadingBar(.4);}, false);

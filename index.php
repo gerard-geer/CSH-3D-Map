@@ -340,7 +340,7 @@
 			}
 			
 			void main(void) {
-				gl_FragColor = 	texture2D(wireframeSampler, texCoord) + 
+				gl_FragColor = 	texture2D(wireframeSampler, texCoord)+ 
 								texture2D(gaussianSampler, texCoord) + 
 								texture2D(diffuseSampler, texCoord);
 			}
@@ -392,10 +392,11 @@
 				document.write("<a class=\"subtle_link\" href=\"?basicMode=yes\">Framerate issues?</a>");
 			}
 			</script>
-			<a class="subtle_link" href="https://github.com/Hamneggs/CSH-3D-Map">Github repo</a>
+			<a class="subtle_link" target="_blank" href="https://github.com/Hamneggs/CSH-3D-Map">Github repo</a>
+			<a class="subtle_link" target="_blank" href="https://wiki.csh.rit.edu/wiki/3D_Map">About</a>
 		</div>
 		<div id="hud_info_popup"></div>
-		<iframe id="webpage_popup" name="webpage_popup" sandbox="allow-pointer-lock allow-same-origin allow-forms allow-scripts allow-top-navigation allow-popups" src="" height=400 width=400 seamless></iframe>
+		<iframe id="webpage_popup" name="webpage_popup" sandbox="allow-same-origin allow-pointer-lock allow-forms allow-scripts allow-top-navigation allow-popups" src="" height=400 width=400 seamless></iframe>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>
 			<p class="datum_container">Resident: <p class="datum" id="res_a"></p></p>

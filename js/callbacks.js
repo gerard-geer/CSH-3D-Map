@@ -257,43 +257,6 @@ function linkFunction(src)
 		$("#webpage_popup").fadeIn(200);
 }
 
-var scrollZoomScale = 10.0;
-
-function scrollZoom(delta)
-{
-	camY -= Math.cos(degreesY)*scrollZoomScale*delta;
-	camZ += Math.sin(degreesY)*scrollZoomScale*delta;
-}
-
-function scrollWheelFunction(event)
-{
-	//log("OH SHIT");
-	var delta = 0;
-	if (!event) /* For IE. */
-	{
-		event = window.event;
-	}
-	if (event.wheelDelta) /* IE/Opera. */
-	{ 
-		delta = event.wheelDelta/120;
-	} 
-	else if (event.detail) /* Mozilla case. */
-	{ 
-			 // In Mozilla, sign of delta is different than in IE.
-			 // Also, delta is multiple of 3.
-			delta = -event.detail/3;
-	}
-	if (delta)
-	{
-			scrollZoom(delta);
-	}
-	if (event.preventDefault)
-	{
-			event.preventDefault();
-	}
-	//log("DELTA: "+delta);
-}
-
 function handleRoomCheck(id)
 {
 	var room;
