@@ -175,8 +175,6 @@ function mouseMoveFunction(e)
 	}
 	else if(rightIsDown)
 	{
-		// Prevent the default action, which is to raise the context menu from its slumber.
-		e.preventDefault();
 		// Get the current mouse position.
 		var mouseX = e.clientX;
 		var mouseY = e.clientY;
@@ -269,7 +267,7 @@ function scrollZoom(delta)
 
 function scrollWheelFunction(event)
 {
-	//console.log("OH SHIT");
+	//log("OH SHIT");
 	var delta = 0;
 	if (!event) /* For IE. */
 	{
@@ -293,7 +291,7 @@ function scrollWheelFunction(event)
 	{
 			event.preventDefault();
 	}
-	//console.log("DELTA: "+delta);
+	//log("DELTA: "+delta);
 }
 
 function handleRoomCheck(id)
@@ -324,7 +322,7 @@ function handleRoomCheck(id)
 			roomElement.children("#res_a_year").html(room.resAYear);
 			roomElement.children("#res_b_year").html(room.resAYear);
 			// Add in the special qualifications if there are any.
-			//console.log("Qualifications length: \nRes A: "+room.resAQualifications.length+"\nRes B: "+room.resBQualifications.length);
+			//log("Qualifications length: \nRes A: "+room.resAQualifications.length+"\nRes B: "+room.resBQualifications.length);
 			if(room.resAQualifications.length > 0)
 			{
 				roomElement.children("#qualificationsA").css("display", "inline");

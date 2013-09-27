@@ -214,12 +214,4 @@ function initWebGLComponents()
 	window.setInterval(renderFrame, 1000/60);	
 }
 
-/*
-	A cross-platform way to print out error messages.
-*/
-function log(msg) {
-    setTimeout(function() {
-        throw new Error(msg);
-    }, 0);
-}
 	
