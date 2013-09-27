@@ -213,4 +213,5 @@ function initWebGLComponents()
 	// Janky, but it works.
 	window.setInterval(renderFrame, 1000/60);	
 }
+
 	
