@@ -254,7 +254,7 @@ function linkFunction(src)
 {
 	// Prevent redirects
 	if(src && src != document.URL && src != "")
-		$("#webpage_popup").fadeIn(200);
+		$("#webpage_popup").fadeIn(400);
 }
 
 function handleRoomCheck(id)
