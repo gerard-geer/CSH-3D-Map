@@ -9,8 +9,8 @@ var yTrans = 800.0;
 var zTrans = -950;
 
 // Maximum translations bumper values.
-var xMin = -1000, xMax = 1000;
-var zMin = -1200, zMax = 1200;
+var xMin = -3400, xMax = 1500;
+var zMin = -2650, zMax = 1350;
 
 // Camera variables.
 var camX = 0;
@@ -121,6 +121,7 @@ function mouseDownFunction(e)
 
 function mouseUpFunction(e)
 {
+	log("X: "+xTrans+"\nZ: "+zTrans);
 	if(e.which)
 	{
 		switch(e.which)
@@ -140,59 +141,81 @@ function mouseUpFunction(e)
 	else leftIsDown = false;
 }
 
+function updateMouse(e)
+{
+	// Get the current mouse position.
+	var mouseX = e.clientX;
+	var mouseY = e.clientY;
+	
+	// If the current mouse position is available, we update what we have stored.
+	if(mouseX)
+	{
+		if(curMouseX)preMouseX = curMouseX;	// Update previous mouse position.
+		curMouseX = mouseX;
+	}
+	if(mouseY)
+	{
+		if(curMouseY)preMouseY = curMouseY;	// Update previous mouse position.
+		curMouseY = mouseY;
+	}
+}
+
+function translateModel(xDist, yDist)
+{
+	// Get the difference in translation the mouse movement creates.
+	var diffX = (Math.cos(degToRad(degreesX))*xDist*dragScale)-(Math.sin(degToRad(degreesX))*yDist*dragScale);
+	var diffZ = (Math.sin(degToRad(degreesX))*xDist*dragScale)+(Math.cos(degToRad(degreesX))*yDist*dragScale);
+	
+	if(xTrans + diffX < xMax && xTrans + diffX > xMin)
+		xTrans += diffX;
+	if(zTrans + diffZ < zMax && zTrans + diffZ > zMin)	
+		zTrans += diffZ;
+}
+
+
+function translateModelByMouse(e)
+{
+	// Update the current and previous mouse positions.
+	updateMouse(e);
+	
+	// Get the difference between the current and previous mouse positions.
+	var mouseDiffX = curMouseX - preMouseX;
+	var mouseDiffY = curMouseY - preMouseY;
+	
+	// Translate the model.
+	translateModel(mouseDiffX, mouseDiffY);
+}
+
+function rotateModel(xDist, yDist)
+{
+	// Update rotation angle.
+	degreesX += xDist*rotateScale;	
+}
+
+function rotateModelByMouse(e)
+{
+	// Update the current and previous mouse positions.
+	updateMouse(e);
+	
+	// Get the difference between the current and previous mouse positions.
+	var diffX = curMouseX - preMouseX;
+	var diffY = curMouseY - preMouseY;
+	
+	// Rotate the model.
+	rotateModel(diffX, diffY);
+}
+
 function mouseMoveFunction(e)
 {
 	if(leftIsDown)
 	{
-		// Get the current mouse position.
-		var mouseX = e.clientX;
-		var mouseY = e.clientY;
-		
-		// If the current mouse position is available, we update what we have stored.
-		if(mouseX)curMouseX = mouseX;
-		if(mouseY)curMouseY = mouseY;
-		
-		// Get the difference between the current and previous mouse positions.
-		var diffX = curMouseX - preMouseX;
-		var diffY = curMouseY - preMouseY;
-		
-		// If the shift key is not pressed, we translate the model in the XZ plane.
-		if(!shiftPressed)
-		{
-			xTrans += (Math.cos(degToRad(degreesX))*diffX*dragScale)-(Math.sin(degToRad(degreesX))*diffY*dragScale);
-			zTrans += (Math.sin(degToRad(degreesX))*diffX*dragScale)+(Math.cos(degToRad(degreesX))*diffY*dragScale);
-		}
-		// Otherwise we rotate around the Y axis.
-		else
-			degreesX += diffX*rotateScale;	
-		
-		// Update the previous mouse location.
-		preMouseX = curMouseX;
-		preMouseY = curMouseY;
-		
-		// Make sure we haven't translated too far.
-		//checkTrans(diffX, diffY);
+		if(shiftPressed)	rotateModelByMouse(e);
+		else				translateModelByMouse(e);
 	}
 	else if(rightIsDown)
 	{
-		// Get the current mouse position.
-		var mouseX = e.clientX;
-		var mouseY = e.clientY;
-		
-		// If the current mouse position is available, we update what we have stored.
-		if(mouseX)curMouseX = mouseX;
-		if(mouseY)curMouseY = mouseY;
-		
-		// Get the difference between the current and previous mouse positions.
-		var diffX = curMouseX - preMouseX;
-		var diffY = curMouseY - preMouseY;
-		
-		// Update rotation angle.
-		degreesX += diffX*rotateScale;				
-		
-		// Update the previous mouse location.
-		preMouseX = curMouseX;
-		preMouseY = curMouseY;	
+		if(shiftPressed)	translateModelByMouse(e);
+		else				rotateModelByMouse(e);
 	}		
 }
 
@@ -211,7 +234,6 @@ function keyDownFunction(e)
 		rPressed = true;
 	if (e.keyCode == 40) // Down
 		dPressed = true;
-	//checkTrans();
 	
 }
 function keyUpFunction(e)
@@ -226,27 +248,10 @@ function keyUpFunction(e)
 
 function keyPressedFunction()
 {
-	if(lPressed)
-	{
-		xTrans += (Math.cos(degToRad(degreesX))*arrowDist*dragScale)-(Math.sin(degToRad(degreesX))*0*dragScale);
-		zTrans += (Math.sin(degToRad(degreesX))*arrowDist*dragScale)+(Math.cos(degToRad(degreesX))*0*dragScale);
-	}
-	if(uPressed)
-	{
-		xTrans += (Math.cos(degToRad(degreesX))*0*dragScale)-(Math.sin(degToRad(degreesX))*arrowDist*dragScale);
-		zTrans += (Math.sin(degToRad(degreesX))*0*dragScale)+(Math.cos(degToRad(degreesX))*arrowDist*dragScale);
-	}
-	if(rPressed)
-	{
-		xTrans -= (Math.cos(degToRad(degreesX))*arrowDist*dragScale)-(Math.sin(degToRad(degreesX))*0*dragScale);
-		zTrans -= (Math.sin(degToRad(degreesX))*arrowDist*dragScale)+(Math.cos(degToRad(degreesX))*0*dragScale);
-	}
-	if(dPressed)
-	{
-		xTrans -= (Math.cos(degToRad(degreesX))*0*dragScale)-(Math.sin(degToRad(degreesX))*arrowDist*dragScale);
-		zTrans -= (Math.sin(degToRad(degreesX))*0*dragScale)+(Math.cos(degToRad(degreesX))*arrowDist*dragScale);
-	}
-	//checkTrans(dragScale, dragScale);
+	if(lPressed) if(shiftPressed) rotateModel(arrowDist); else translateModel(arrowDist, 0);
+	if(uPressed) translateModel(0, arrowDist);
+	if(rPressed) if(shiftPressed) rotateModel(-arrowDist); else translateModel(-arrowDist, 0);
+	if(dPressed) translateModel(0, -arrowDist);
 }
 
 // Called when links are clicked.
