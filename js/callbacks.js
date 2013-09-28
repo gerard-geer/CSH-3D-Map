@@ -121,7 +121,6 @@ function mouseDownFunction(e)
 
 function mouseUpFunction(e)
 {
-	log("X: "+xTrans+"\nZ: "+zTrans);
 	if(e.which)
 	{
 		switch(e.which)
