@@ -333,14 +333,19 @@
 			uniform sampler2D gaussianSampler;	// The sampler that contains the blurred wire-frame and highlight pass.
 			uniform sampler2D wireframeSampler; // The sampler that contains the wire-frame rendering.
 			
-			
-			vec4 setScanline(vec2 coord, vec4 existingFrag, float strength)
+			vec4 setVignette(vec2 location, vec4 existingFrag, float strength, float falloff)
 			{
-				return existingFrag * clamp(pow(sin(coord.y*1024.0), 2.0)+(1.0-strength), 0.0, 1.0);
+				vec2 trans = (2.*strength)*(location-.5);
+				return existingFrag*(1.-pow(trans.x, falloff)*pow(trans.y, falloff));
+			}
+
+			vec4 setScanline(vec2 location, vec4 existingFrag, float strength)
+			{
+				return existingFrag-(pow(sin(gl_FragCoord.y*3.14), 2.0)*strength);
 			}
 			
 			void main(void) {
-				gl_FragColor = 	texture2D(wireframeSampler, texCoord)+ 
+				gl_FragColor = texture2D(wireframeSampler, texCoord)+ 
 								texture2D(gaussianSampler, texCoord) + 
 								texture2D(diffuseSampler, texCoord);
 			}

@@ -95,7 +95,7 @@ function mouseDownFunction(e)
 	idFramebuffer.use(glContext);
 	glContext.readPixels(fbMouseX, fbMouseY, 1, 1, glContext.RGBA, glContext.UNSIGNED_BYTE, sample);
 	
-	// Make the iframe go away if it's there.
+	// Make the iframe go away if it's there, and clear its source when it disappears.
 	$("#webpage_popup").fadeOut(200, function(){document.getElementById("webpage_popup").src = "";});
 	// Display the data.
 	var popup = $("#hud_info_popup");
@@ -114,13 +114,14 @@ function mouseDownFunction(e)
 		curRoom = 512;
 	}
 	
-	// Make sure that the text pop-up is gone.
+	// Make sure that the intro pop-up is gone.
 	$("#text").fadeOut(400);
 	
 }
 
 function mouseUpFunction(e)
 {
+	// Chrome
 	if(e.which)
 	{
 		switch(e.which)
@@ -129,6 +130,7 @@ function mouseUpFunction(e)
 			case 3: rightIsDown = false; break;
 		}
 	}
+	// Firefox
 	else if(e.button)
 	{
 		switch(e.button)
@@ -256,30 +258,31 @@ function keyPressedFunction()
 // Called when links are clicked.
 function linkFunction(src)
 {
-	// Prevent redirects
+	// Prevent the map itself from opening in the iframe.
 	if(src && src != document.URL && src != "")
 		$("#webpage_popup").fadeIn(700);
 }
 
 function handleRoomCheck(id)
 {
+	// Search for the room.
 	var room;
-	//console.log"SEARCHING FOR ROOM ID: "+id);
 	for(var i = 0; i < rooms.length; i++)
 	{
 		if(rooms[i].id == id) room = rooms[i];
 	}
-	
-	if(!room) return;
-	
-	//console.log"FOUND ROOM");
+	// If we didn't find a room, we report an error and return immediately.
+	if(!room)
+	{
+		log("Unable to determine room type.");
+		return;
+	}
 	
 	var roomElement;
 	var hudElement = $("#hud_info_popup");
 	switch(room.type)
 	{
 		case Room.TYPE.RESIDENTIAL:
-			//console.log"updating RESIDENTIAL room");
 			roomElement = $("#base_res_room");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#res_a").html(room.resA);
@@ -289,11 +292,9 @@ function handleRoomCheck(id)
 			roomElement.children("#res_a_year").html(room.resAYear);
 			roomElement.children("#res_b_year").html(room.resAYear);
 			// Add in the special qualifications if there are any.
-			//log("Qualifications length: \nRes A: "+room.resAQualifications.length+"\nRes B: "+room.resBQualifications.length);
 			if(room.resAQualifications.length > 0)
 			{
 				roomElement.children("#qualificationsA").css("display", "inline");
-				//document.getElementById("res_a_qualifications").style.display = "inline";
 				roomElement.children("#res_a_qualifications").html(room.resAQualifications);
 			}
 			else
@@ -304,7 +305,6 @@ function handleRoomCheck(id)
 			if(room.resBQualifications.length > 0)
 			{
 				roomElement.children("#qualificationsB").css("display", "inline");
-				//document.getElementById("res_b_qualifications").style.display = "inline";
 				roomElement.children("#res_b_qualifications").html(room.resBQualifications);
 			}
 			else 
@@ -319,7 +319,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.SPECIAL:
-			//console.log"updating SPECIAL room");
 			roomElement = $("#base_spec_room");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#room_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
@@ -333,7 +332,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.RESTROOM:
-			//console.log"updating RESTROOM room");
 			roomElement = $("#base_restroom");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#coed").html(room.coed);
@@ -345,7 +343,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.ELEVATOR:
-			//console.log"updating ELEVATOR room");
 			roomElement = $("#base_elevator");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#harold").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.haroldLink+">"+room.haroldTitle+"</a>");
@@ -356,7 +353,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.FACILITIES: 
-			//console.log"updating FACILITY room");
 			roomElement = $("#base_facilities");
 			roomElement.children("#name").html(room.name);
 			hudElement.fadeOut(100, function()
@@ -366,7 +362,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.UTILITIES: 	
-			//console.log"updating UTILITIES room");
 			roomElement = $("#base_utilities");
 			roomElement.children("#name").html(room.name);
 			hudElement.fadeOut(100, function()
@@ -376,7 +371,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.NETWORKING:  	
-			//console.log"updating NET room");
 			roomElement = $("#base_net_room");
 			roomElement.children("#name").html(room.name);	
 			hudElement.fadeOut(100, function()
@@ -386,7 +380,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.PROJECT: 		
-			//console.log"updating PROJECT room");	 	
 			roomElement = $("#base_project");
 			roomElement.children("#name").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.projectLink+">"+room.name+"</a>");
 			roomElement.children("#link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
@@ -397,7 +390,6 @@ function handleRoomCheck(id)
 									});
 			break;
 		case Room.TYPE.OTHER:		
-			//console.log"updating OTHER room"); 	
 			roomElement = $("#base_other");
 			roomElement.children("#name").html(room.name);
 			hudElement.fadeOut(100, function()
@@ -406,8 +398,7 @@ function handleRoomCheck(id)
 										hudElement.html(roomElement.html());
 									});
 			break;
-		case Room.TYPE.STAIRS: 		
-			//console.log"updating STAIRS room");	 	
+		case Room.TYPE.STAIRS: 			
 			roomElement = $("#base_stairs");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#exit_to").html(room.exitTo);
@@ -418,24 +409,8 @@ function handleRoomCheck(id)
 									});
 			break;
 		default:
-			//console.log"UNABLE TO DETERMINE ROOM TYPE");
 			break;
 	}
-}
-
-function checkTrans(diffX, diffZ)
-{
-	// Rotate the translated values for accurate bounding.
-	var transXTrans = (Math.cos(degToRad(degreesX))*xTrans*dragScale)-(Math.sin(degToRad(degreesX))*zTrans*dragScale);
-	var transZTrans = (Math.sin(degToRad(degreesX))*xTrans*dragScale)+(Math.cos(degToRad(degreesX))*zTrans*dragScale);
-	
-	// Check and reset x translation.
-	if(transXTrans < xMin) xTrans = xMin+(2*diffX);
-	else if(transXTrans > xMax) xTrans = xMax-(2*diffX);
-	
-	// Check and reset Z translation.
-	if(transZTrans < zMin) zTrans = zMin+(2*diffZ);
-	else if(transZTrans > zMax) zTrans = zMax-(2*diffZ);
 }
 
 function onContextLost(event)
