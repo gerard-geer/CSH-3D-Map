@@ -12,6 +12,7 @@ function startRendering()
 function stopRendering()
 {
 	refreshInterval = window.clearInterval(refreshInterval);
+	// FF removes inactive GL canvases because it's an ass.
 	if(window.mozInnerScreenX)
 	{
 		refreshInterval = window.setInterval(renderFrame, 1000.0);
