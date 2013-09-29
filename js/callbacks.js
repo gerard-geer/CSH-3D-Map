@@ -51,6 +51,71 @@ var leftIsDown = false;
 // Whether or not the right mouse button is pressed.
 var rightIsDown = false;
 
+
+function translateModel(xDist, yDist)
+{
+	// Get the difference in translation the mouse movement creates.
+	var diffX = (Math.cos(degToRad(degreesX))*xDist*dragScale)-(Math.sin(degToRad(degreesX))*yDist*dragScale);
+	var diffZ = (Math.sin(degToRad(degreesX))*xDist*dragScale)+(Math.cos(degToRad(degreesX))*yDist*dragScale);
+	
+	if(xTrans + diffX < xMax && xTrans + diffX > xMin)
+		xTrans += diffX;
+	if(zTrans + diffZ < zMax && zTrans + diffZ > zMin)	
+		zTrans += diffZ;
+}
+
+
+function translateModelByMouse(e)
+{
+	// Update the current and previous mouse positions.
+	updateMouse(e);
+	
+	// Get the difference between the current and previous mouse positions.
+	var mouseDiffX = curMouseX - preMouseX;
+	var mouseDiffY = curMouseY - preMouseY;
+	
+	// Translate the model.
+	translateModel(mouseDiffX, mouseDiffY);
+}
+
+function rotateModel(xDist, yDist)
+{
+	// Update rotation angle.
+	degreesX += xDist*rotateScale;	
+}
+
+function rotateModelByMouse(e)
+{
+	// Update the current and previous mouse positions.
+	updateMouse(e);
+	
+	// Get the difference between the current and previous mouse positions.
+	var diffX = curMouseX - preMouseX;
+	var diffY = curMouseY - preMouseY;
+	
+	// Rotate the model.
+	rotateModel(diffX, diffY);
+}
+
+function updateMouse(e)
+{
+	// Get the current mouse position.
+	var mouseX = e.clientX;
+	var mouseY = e.clientY;
+	
+	// If the current mouse position is available, we update what we have stored.
+	if(mouseX)
+	{
+		if(curMouseX)preMouseX = curMouseX;	// Update previous mouse position.
+		curMouseX = mouseX;
+	}
+	if(mouseY)
+	{
+		if(curMouseY)preMouseY = curMouseY;	// Update previous mouse position.
+		curMouseY = mouseY;
+	}
+}
+
 function mouseDownFunction(e)
 {
 	startRendering();
@@ -143,69 +208,6 @@ function mouseUpFunction(e)
 	stopRendering();
 }
 
-function updateMouse(e)
-{
-	// Get the current mouse position.
-	var mouseX = e.clientX;
-	var mouseY = e.clientY;
-	
-	// If the current mouse position is available, we update what we have stored.
-	if(mouseX)
-	{
-		if(curMouseX)preMouseX = curMouseX;	// Update previous mouse position.
-		curMouseX = mouseX;
-	}
-	if(mouseY)
-	{
-		if(curMouseY)preMouseY = curMouseY;	// Update previous mouse position.
-		curMouseY = mouseY;
-	}
-}
-
-function translateModel(xDist, yDist)
-{
-	// Get the difference in translation the mouse movement creates.
-	var diffX = (Math.cos(degToRad(degreesX))*xDist*dragScale)-(Math.sin(degToRad(degreesX))*yDist*dragScale);
-	var diffZ = (Math.sin(degToRad(degreesX))*xDist*dragScale)+(Math.cos(degToRad(degreesX))*yDist*dragScale);
-	
-	if(xTrans + diffX < xMax && xTrans + diffX > xMin)
-		xTrans += diffX;
-	if(zTrans + diffZ < zMax && zTrans + diffZ > zMin)	
-		zTrans += diffZ;
-}
-
-
-function translateModelByMouse(e)
-{
-	// Update the current and previous mouse positions.
-	updateMouse(e);
-	
-	// Get the difference between the current and previous mouse positions.
-	var mouseDiffX = curMouseX - preMouseX;
-	var mouseDiffY = curMouseY - preMouseY;
-	
-	// Translate the model.
-	translateModel(mouseDiffX, mouseDiffY);
-}
-
-function rotateModel(xDist, yDist)
-{
-	// Update rotation angle.
-	degreesX += xDist*rotateScale;	
-}
-
-function rotateModelByMouse(e)
-{
-	// Update the current and previous mouse positions.
-	updateMouse(e);
-	
-	// Get the difference between the current and previous mouse positions.
-	var diffX = curMouseX - preMouseX;
-	var diffY = curMouseY - preMouseY;
-	
-	// Rotate the model.
-	rotateModel(diffX, diffY);
-}
 
 function mouseMoveFunction(e)
 {
