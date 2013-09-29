@@ -207,9 +207,9 @@ function initWebGLComponents()
 	rooms = loadRooms("rooms.xml");
 	document.dispatchEvent(roomsLoadedEvent);
 	
-	// Register a timed interval to draw a new frame every 1/60th of a second.
-	// Janky, but it works.
-	window.setInterval(renderFrame, 1000/60);	
+	// We render the first frame, but we don't register the refresh interval until we actually
+	// need to actively render.
+	renderFrame();
 }
 
 	

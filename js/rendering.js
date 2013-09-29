@@ -2,6 +2,18 @@
  THIS FILE CONTAINS ALL THE FUNCTIONS THAT CARRY OUT PER-FRAME RENDERING DUTIES.
 */
 
+function startRendering()
+{
+	refreshInterval = window.setInterval(renderFrame, 1000.0/60.0);
+	isRefresh = true;
+}
+
+function stopRendering()
+{
+	refreshInterval = window.clearInterval(refreshInterval);
+	isRefresh = false;
+}
+
 function setMatrixUniforms(program) 
 {
 	// Pass the values of the two transformation matrices to the ID Pass shader, so
