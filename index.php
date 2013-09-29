@@ -4,7 +4,6 @@
 	<head>
 		<title>CSH Floor Map</title>
 		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>
-		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
 		<script type="text/javascript">
 			/*
 				A cross-platform way to print out error messages.
@@ -15,6 +14,7 @@
 				}, 0);
 			}
 		</script>
+		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
 		<script type="text/javascript" src="js/WebGLShader.js"></script>
