@@ -53,7 +53,7 @@ var rightIsDown = false;
 
 function mouseDownFunction(e)
 {
-	
+	startRendering();
 	if(e.which)
 	{
 		switch(e.which)
@@ -140,6 +140,7 @@ function mouseUpFunction(e)
 		}
 	}
 	else leftIsDown = false;
+	stopRendering();
 }
 
 function updateMouse(e)
@@ -223,10 +224,7 @@ function mouseMoveFunction(e)
 function keyDownFunction(e)
 {
 	if(e.shiftKey)
-	{
-		shiftPressed = true;
-	}
-	
+		shiftPressed = true;	
 	if (e.keyCode == 37) // Left
 		lPressed = true;
 	if (e.keyCode == 38) // Up
@@ -235,10 +233,15 @@ function keyDownFunction(e)
 		rPressed = true;
 	if (e.keyCode == 40) // Down
 		dPressed = true;
+	if(shiftPressed || lPressed || uPressed || rPressed || dPressed)
+	{
+		startRendering();
+	}
 	
 }
 function keyUpFunction(e)
 {
+	stopRendering();
 	shiftPressed = false;
 	if (e.keyCode == 37) lPressed = false;
 	if (e.keyCode == 38) uPressed = false;

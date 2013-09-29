@@ -88,3 +88,9 @@ var shadersLoadedEvent	= new CustomEvent("shadersDoneLoading");
 var buffersCreatedEvent	= new CustomEvent("buffersDoneLoading");
 var modelsLoadedEvent	= new CustomEvent("modelsDoneLoading");
 var roomsLoadedEvent	= new CustomEvent("roomsDoneLoading");
+
+// The handle of the frame refreshing interval.
+var refreshInterval;
+
+// Whether or not the canvas is being refreshed.
+var isRefresh = false;
