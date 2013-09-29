@@ -341,7 +341,7 @@
 
 			vec4 setScanline(vec2 location, vec4 existingFrag, float strength)
 			{
-				return existingFrag-(pow(sin(gl_FragCoord.y*3.14), 2.0)*strength);
+				return existingFrag-(pow(cos(gl_FragCoord.y*2.0), 2.0)*strength);
 			}
 			
 			void main(void) {

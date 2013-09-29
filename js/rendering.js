@@ -27,6 +27,28 @@ function setMatrixUniforms(program)
 	glContext.uniformMatrix4fv(program.mvmatUniform, false, mvmat);
 }
 
+function degToRad(degreesX) {
+    return degreesX * Math.PI / 180;
+}
+
+function performModelTransformations()
+{
+	// Reset the model view matrix so that we don't stack changes repeatedly.
+	mat4.identity(mvmat);	
+	
+	mat4.rotate(pmat, degToRad(degreesY), [1, 0, 0]);
+	mat4.translate(mvmat, [0, 0, camZ]);
+	mat4.rotate(mvmat, degToRad(degreesX), [0, 1, 0]);
+	mat4.translate(mvmat, [0, 0, -camZ]);
+	mat4.translate(mvmat, [xTrans, yTrans, zTrans]);
+}
+
+function performCameraTransformations()
+{
+	mat4.rotate(mvmat, degToRad(30), [1, 0, 0]);
+	mat4.rotate(mvmat, degToRad(degreesX), [0, 1, 0]);
+}
+
 function renderModel(model, program, buffer, clearR, clearG, clearB)
 {
 	// Start using the specified program.

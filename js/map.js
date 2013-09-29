@@ -61,7 +61,7 @@ function initPageElements()
 																drawLoadingBar(1.0);
 																$("#loading_canvas_container").fadeOut();
 																$("#map_container").fadeIn();	
-																$("#text").fadeIn();
+																$("#text").fadeIn().draggable();
 															}, false);
 	
 	
@@ -144,28 +144,6 @@ function initModel()
 	// Create the 3D model of the floor.
 	idModel = new Model3D(glContext, idModelPosData, idModelColorData);
 	colorModel = new Model3D(glContext, colorModelPosData, colorModelColorData);
-}
-
-function degToRad(degreesX) {
-    return degreesX * Math.PI / 180;
-}
-
-function performModelTransformations()
-{
-	// Reset the model view matrix so that we don't stack changes repeatedly.
-	mat4.identity(mvmat);	
-	
-	mat4.rotate(pmat, degToRad(degreesY), [1, 0, 0]);
-	mat4.translate(mvmat, [0, 0, camZ]);
-	mat4.rotate(mvmat, degToRad(degreesX), [0, 1, 0]);
-	mat4.translate(mvmat, [0, 0, -camZ]);
-	mat4.translate(mvmat, [xTrans, yTrans, zTrans]);
-}
-
-function performCameraTransformations()
-{
-	mat4.rotate(mvmat, degToRad(30), [1, 0, 0]);
-	mat4.rotate(mvmat, degToRad(degreesX), [0, 1, 0]);
 }
 
 function initLoadingCanvas()
