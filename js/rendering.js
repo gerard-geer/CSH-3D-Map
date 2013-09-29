@@ -4,6 +4,7 @@
 
 function startRendering()
 {
+	refreshInterval = window.clearInterval(refreshInterval);
 	refreshInterval = window.setInterval(renderFrame, 1000.0/60.0);
 	isRefresh = true;
 }
@@ -11,6 +12,11 @@ function startRendering()
 function stopRendering()
 {
 	refreshInterval = window.clearInterval(refreshInterval);
+	if(window.mozInnerScreenX)
+	{
+		log("USING FIREFOX");
+		refreshInterval = window.setInterval(renderFrame, 1000.0);
+	}
 	isRefresh = false;
 }
 
