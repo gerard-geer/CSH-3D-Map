@@ -366,7 +366,8 @@
 			void main(void) {
 				gl_FragColor = texture2D(wireframeSampler, texCoord)+ 
 								texture2D(gaussianSampler, texCoord) + 
-								texture2D(diffuseSampler, texCoord);
+								texture2D(diffuseSampler, texCoord) +
+								getEnvironMapTexel(texCoord);
 			}
 		</script>
 
