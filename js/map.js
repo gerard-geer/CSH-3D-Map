@@ -184,6 +184,8 @@ function initWebGLComponents()
 	initFBsAndQuads();
 	document.dispatchEvent(buffersCreatedEvent);
 	
+	initCubemap();
+	
 	initModel();
 	document.dispatchEvent(modelsLoadedEvent);
 	
