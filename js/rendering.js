@@ -227,7 +227,7 @@ function renderCompositingPass()
 	
 	// Pass in the cubemap.
 	glContext.activeTexture(glContext.TEXTURE5);
-	glContext.bindTexture(glContext.TEXTURE_CUBEMAP, cubemap.getTex());
+	glContext.bindTexture(glContext.TEXTURE_CUBE_MAP, cubemap.getTex());
 	glContext.uniform1i(compositingPassProgram.cubeSampler, 5);
 	
 	// Render the quad using the appropriate program.
