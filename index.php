@@ -326,12 +326,30 @@
 									// so we don't need the extra precision.
 			
 			varying vec2 texCoord;	// The interpolated texture coordinate.
+			
+			const vec3 light_pos = vec3(800.0, 300.0, 400.0); 	// The position of the light.
 
 			uniform sampler2D normalSampler;	// The sampler that contains the differentiated-normal pass.
 			uniform sampler2D depthSampler;		// The sampler that contains the depth data about the model.
 			uniform sampler2D diffuseSampler;	// The sampler that contains the user-visible pass.
 			uniform sampler2D gaussianSampler;	// The sampler that contains the blurred wire-frame and highlight pass.
 			uniform sampler2D wireframeSampler; // The sampler that contains the wire-frame rendering.
+			
+			uniform samplerCube cubeMap;
+			
+			vec3 getNormal(vec2 pos)
+			{
+				vec3 returnMe = texture2D(normalSampler, pos).rgb;
+				returnMe.rg -=.5;
+				return normalize(returnMe);
+			}
+			
+			vec4 getEnvironMapTexel(vec2 pos)
+			{
+				vec3 normal = getNormal(pos);
+				vec3 incid	= vec3(0.0, 0.0, 1.0);
+				return textureCube(cubeMap, reflect(incid, normal);
+			}
 			
 			vec4 setVignette(vec2 location, vec4 existingFrag, float strength, float falloff)
 			{
@@ -357,7 +375,6 @@
 			attribute vec2 vertUV;	// incoming vertex texture coordinate.
 
 			varying vec2 texCoord;	// Texture coordinate variable sent to the fragment shader.
-
 			void main(void) {
 				vec3 vert = vec3(vertPos);
 				
