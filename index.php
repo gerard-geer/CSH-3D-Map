@@ -349,7 +349,7 @@
 			{
 				vec3 normal = getNormal(pos);
 				vec3 incid	= vec3(0.0, 0.0, 1.0);
-				return textureCube(cubeMap, reflect(incid, normal);
+				return textureCube(cubeSampler, reflect(incid, normal);
 			}
 			
 			vec4 setVignette(vec2 location, vec4 existingFrag, float strength, float falloff)
