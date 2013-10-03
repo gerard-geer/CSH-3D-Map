@@ -21,6 +21,7 @@
 		<script type="text/javascript" src="js/room.js"></script>
 		<script type="text/javascript" src="js/Model3D.js"></script>
 		<script type="text/javascript" src="js/WebGLFramebuffer.js"></script>
+		<script type="text/javascript" src="js/WebGLCubemap.js"></script>
 		<script type="text/javascript" src="js/WebGLFBRenderQuad.js"></script>
 		<script type="text/javascript" src="js/floorMapModelDataAsJavascript.js"></script>
 		<script type="text/javascript" src="js/vars.js"></script>
@@ -335,7 +336,7 @@
 			uniform sampler2D gaussianSampler;	// The sampler that contains the blurred wire-frame and highlight pass.
 			uniform sampler2D wireframeSampler; // The sampler that contains the wire-frame rendering.
 			
-			uniform samplerCube cubeMap;
+			uniform samplerCube cubeSampler;	// The environmental cubemap.
 			
 			vec3 getNormal(vec2 pos)
 			{

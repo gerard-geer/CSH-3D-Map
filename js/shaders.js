@@ -161,4 +161,5 @@ function initCompositingShader()
 	compositingPassProgram.diffuseSampler = glContext.getUniformLocation(compositingPassProgram, "diffuseSampler");
 	compositingPassProgram.gaussianSampler = glContext.getUniformLocation(compositingPassProgram, "gaussianSampler");
 	compositingPassProgram.wireframeSampler = glContext.getUniformLocation(compositingPassProgram, "wireframeSampler");
+	compositingPassProgram.cubeSampler = glContext.getUniformLocation(compositingPassProgram, "cubeSampler");
 }
