@@ -141,7 +141,7 @@ function initFBsAndQuads()
 
 function initCubemap()
 {
-	cubeMap = new WGLCubemap(glContext, "img/top.png", "img/bottom.png", "img/left.png", "img/right.png", "img/front.png", "img/right.png");
+	cubemap = new WGLCubemap(glContext, "img/top.png", "img/bottom.png", "img/left.png", "img/right.png", "img/front.png", "img/right.png");
 }
 
 function initModel()

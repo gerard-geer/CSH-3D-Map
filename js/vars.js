@@ -55,7 +55,7 @@ var idModel;
 var colorModel;
 
 // The cubemap texture used for environment mapping.
-var cubeMap;
+var cubemap;
 
 // The canvas element that we are going to be rendering to.
 var canvas;
