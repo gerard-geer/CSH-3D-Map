@@ -30,7 +30,7 @@ function WGLCubemap(wglContext, imgTop, imgBottom, imgLeft, imgRight, imgBack, i
             return function() {
                 wglContext.bindTexture(wglContext.TEXTURE_CUBE_MAP, texture);
                 wglContext.pixelStorei(wglContext.UNPACK_FLIP_Y_WEBGL, false);
-                wglContext.texImage2D(face, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+                wglContext.texImage2D(face, 0, wglContext.RGBA, wglContext.RGBA, wglContext.UNSIGNED_BYTE, image);
             }
         } (this.tex, face, image);
 		// Set the source of the image, causing it to be loaded, and the onload callback to be triggered.
