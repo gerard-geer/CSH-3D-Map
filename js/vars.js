@@ -54,6 +54,9 @@ var idModel;
 // The 3D model that is colour coded to be seen by the user.
 var colorModel;
 
+// The cubemap texture used for environment mapping.
+var cubemap;
+
 // The canvas element that we are going to be rendering to.
 var canvas;
 

@@ -21,6 +21,7 @@
 		<script type="text/javascript" src="js/room.js"></script>
 		<script type="text/javascript" src="js/Model3D.js"></script>
 		<script type="text/javascript" src="js/WebGLFramebuffer.js"></script>
+		<script type="text/javascript" src="js/WebGLCubemap.js"></script>
 		<script type="text/javascript" src="js/WebGLFBRenderQuad.js"></script>
 		<script type="text/javascript" src="js/floorMapModelDataAsJavascript.js"></script>
 		<script type="text/javascript" src="js/vars.js"></script>
@@ -335,7 +336,7 @@
 			uniform sampler2D gaussianSampler;	// The sampler that contains the blurred wire-frame and highlight pass.
 			uniform sampler2D wireframeSampler; // The sampler that contains the wire-frame rendering.
 			
-			uniform samplerCube cubeMap;
+			uniform samplerCube cubeSampler;	// The environmental cubemap.
 			
 			vec3 getNormal(vec2 pos)
 			{
@@ -348,7 +349,7 @@
 			{
 				vec3 normal = getNormal(pos);
 				vec3 incid	= vec3(0.0, 0.0, 1.0);
-				return textureCube(cubeMap, reflect(incid, normal);
+				return textureCube(cubeSampler, reflect(incid, normal));
 			}
 			
 			vec4 setVignette(vec2 location, vec4 existingFrag, float strength, float falloff)
@@ -365,7 +366,8 @@
 			void main(void) {
 				gl_FragColor = texture2D(wireframeSampler, texCoord)+ 
 								texture2D(gaussianSampler, texCoord) + 
-								texture2D(diffuseSampler, texCoord);
+								texture2D(diffuseSampler, texCoord) +
+								getEnvironMapTexel(texCoord);
 			}
 		</script>
 

@@ -139,6 +139,11 @@ function initFBsAndQuads()
 	fbQuad = new FBRenderQuad(glContext);
 }
 
+function initCubemap()
+{
+	cubemap = new WGLCubemap(glContext, "img/top.png", "img/bottom.png", "img/left.png", "img/right.png", "img/front.png", "img/right.png");
+}
+
 function initModel()
 {
 	// Create the 3D model of the floor.
@@ -178,6 +183,8 @@ function initWebGLComponents()
 	
 	initFBsAndQuads();
 	document.dispatchEvent(buffersCreatedEvent);
+	
+	initCubemap();
 	
 	initModel();
 	document.dispatchEvent(modelsLoadedEvent);

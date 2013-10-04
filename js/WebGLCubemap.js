@@ -28,9 +28,9 @@ function WGLCubemap(wglContext, imgTop, imgBottom, imgLeft, imgRight, imgBack, i
 		// Set the onload function, and give it default parameters.
         image.onload = function(texture, face, image) {
             return function() {
-                gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
-                gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-                gl.texImage2D(face, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+                wglContext.bindTexture(wglContext.TEXTURE_CUBE_MAP, texture);
+                wglContext.pixelStorei(wglContext.UNPACK_FLIP_Y_WEBGL, false);
+                wglContext.texImage2D(face, 0, wglContext.RGBA, wglContext.RGBA, wglContext.UNSIGNED_BYTE, image);
             }
         } (this.tex, face, image);
 		// Set the source of the image, causing it to be loaded, and the onload callback to be triggered.
@@ -38,7 +38,7 @@ function WGLCubemap(wglContext, imgTop, imgBottom, imgLeft, imgRight, imgBack, i
     }
 }
 
-WGLCubmap.prototype.getTex = function()
+WGLCubemap.prototype.getTex = function()
 {
 	return this.tex;
 }
