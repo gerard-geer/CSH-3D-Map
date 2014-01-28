@@ -8,103 +8,16 @@
 	require_once('php/extras.php');			// Fun stuff extras.
 	
 	// Store "Basic Mode" status.
-	$isBasic = false;
-	if(isset($_GET["basicMode"]))
-	{
-		echo $_GET["basicMode"];
-		if($_GET["basicMode"]) 
-		{
-			$isBasic = true;
-		}
-		else 
-		{
-			$isBasic = false;
-		}
-	}
-	else {$isBasic = false;}
-	
-	if($isBasic)
-	{
-		echo <<< JS
-<script type="text/javascript">
-  var basicMode = true;
-</script>
-JS;
-	}
-	else
-	{
-		echo <<< JS
-<script type="text/javascript">
-  var basicMode = false;
-</script>
-JS;
-	}
+	$isBasic = isset($_GET["basicMode"]);
+	echo "<script> var basicMode = ".$isBasic."</script>";
 	
 	// Store "Low Resolution" status.
-	$lowRes = false;
-	if(isset($_GET["lowRes"]))
-	{
-		echo $_GET["lowRes"];
-		if($_GET["lowRes"]) 
-		{
-			$lowRes = true;
-		}
-		else 
-		{
-			$lowRes = false;
-		}
-	}
-	else {$lowRes = false;}
-	
-	if($lowRes)
-	{
-		echo <<< JS
-<script type="text/javascript">
-  var lowRes = true;
-</script>
-JS;
-	}
-	else
-	{
-		echo <<< JS
-<script type="text/javascript">
-  var lowRes = false;
-</script>
-JS;
-	}
+	$lowRes = isset($_GET["lowRes"]);
+	echo "<script> var lowRes = ".$lowRes."</script>";
 	
 	// Store "taste the rainbow" status.
-	$rainbow = false;
-	if(isset($_GET["tasteTheRainbow"]))
-	{
-		echo $_GET["tasteTheRainbow"];
-		if($_GET["tasteTheRainbow"]) 
-		{
-			$rainbow = true;
-		}
-		else 
-		{
-			$rainbow = false;
-		}
-	}
-	else {$rainbow = false;}
-	
-	if($rainbow)
-	{
-		echo <<< JS
-<script type="text/javascript">
-  var isRainbow = true;
-</script>
-JS;
-	}
-	else
-	{
-		echo <<< JS
-<script type="text/javascript">
-  var isRainbow = false;
-</script>
-JS;
-	}
+	$rainbow = isset($_GET["tasteTheRainbow"]);
+	echo "<script> var isRainbow = ".$rainbow."<script>"
 	
 		
 	
@@ -151,9 +64,7 @@ JS;
 		if($member['rtp']) $curResident->setRTP(true);
 		if($resDrinkAdmin) $curResident->setDrinkAdmin(true);
 		
-		//echo '<br>Before: '.$curResident->getRoomNumber();
 		$curResident->setRoomNumber($ROOM_NUMBER_TO_COLOR[$curResident->getRoomNumber()]);
-		//echo '<br>After: '.$curResident->getRoomNumber();
 		// Push onto the array the current Resident.
 		array_push($residents, $curResident);
 	}
