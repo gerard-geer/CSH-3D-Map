@@ -16,15 +16,11 @@ function initContext()
 	}
 	catch(e)
 	{
-		try{
-		}
-		catch(e){}
+		window.location.href = "oldmap.csh.rit.edu";
 	}
 	if(!glContext)
 	{
-		try{
-		}
-		catch(e){}
+		window.location.href = "oldmap.csh.rit.edu";
 	}
 	
 	// Set the screen-blanking colour to black.

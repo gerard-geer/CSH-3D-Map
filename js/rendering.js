@@ -232,8 +232,10 @@ function renderCompositingPass()
 	glContext.useProgram(null);
 }
 
+var d = new Date();
 function renderFrame()
 {
+	console.log(d);
 	// Call the stupid key pressed function because of how slow keyboard callbacks are.
 	keyPressedFunction();
 	

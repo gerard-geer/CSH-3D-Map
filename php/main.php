@@ -8,18 +8,16 @@
 	require_once('php/extras.php');			// Fun stuff extras.
 	
 	// Store "Basic Mode" status.
-	$isBasic = isset($_GET["basicMode"]);
-	echo "<script> var basicMode = ".$isBasic."</script>";
+	$isBasic = ( isset($_GET["basicMode"]) ? "true": "false" );
+	echo "<script> var basicMode = ".$isBasic.";</script>";
 	
 	// Store "Low Resolution" status.
-	$lowRes = isset($_GET["lowRes"]);
-	echo "<script> var lowRes = ".$lowRes."</script>";
+	$lowRes = ( isset($_GET["lowRes"]) ? "true": "false" );
+	echo "<script>"." var lowRes = ".$lowRes.";</script>";
 	
 	// Store "taste the rainbow" status.
-	$rainbow = isset($_GET["tasteTheRainbow"]);
-	echo "<script> var isRainbow = ".$rainbow."<script>"
-	
-		
+	$rainbow = ( isset($_GET["tasteTheRainbow"]) ? "true": "false" );
+	echo "<script> var isRainbow = ".$rainbow.";</script>";		
 	
 	// Create an empty array to store the member entries.
 	$memberEntries = array();
@@ -84,15 +82,6 @@
 	// Get the current temperature.
 	$temp = 0;//getTemperature(76118);
 	
-	// Use PHP's naughty "heredoc" syntax to poop out our data to JavaScript. Look
-	// at how our PHP variables are interpolated! Sexy...
-	$str = <<< JS
-<script type="text/javascript">
-  var jsonResidents = $encodedResidents;
-</script>
-JS;
-			// Echo out that String so it gets included in the HTML.
-			echo $str;
-			#echo $encodedResidents;
-	
+	// Spit out a JSON object that holds all the rooms and their residents.
+	echo "<script> var jsonResidents = ".$encodedResidents.";</script>";	
 ?>
