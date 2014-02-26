@@ -292,8 +292,8 @@ function handleRoomCheck(id)
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#res_a").html(room.resA);
 			roomElement.children("#res_b").html(room.resB);
-			roomElement.children("#res_a_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.resALink+">"+room.resALinkTitle+"</a>");
-			roomElement.children("#res_b_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
+			roomElement.children("#res_a_link").html("<a target=\"_blank\" href="+room.resALink+">"+room.resALinkTitle+"</a>");
+			roomElement.children("#res_b_link").html("<a target=\"_blank\" href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
 			roomElement.children("#res_a_year").html(room.resAYear);
 			roomElement.children("#res_b_year").html(room.resAYear);
 			// Add in the special qualifications if there are any.
@@ -326,10 +326,10 @@ function handleRoomCheck(id)
 		case Room.TYPE.SPECIAL:
 			roomElement = $("#base_spec_room");
 			roomElement.children("#name").html(room.name);
-			roomElement.children("#room_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
+			roomElement.children("#room_link").html("<a target=\"_blank\" href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
 			roomElement.children("#eboard").html(room.eb);
-			roomElement.children("#eb_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
-			roomElement.children("#doorlock").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
+			roomElement.children("#eb_link").html("<a target=\"_blank\" href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
+			roomElement.children("#doorlock").html("<a target=\"_blank\" href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -340,7 +340,7 @@ function handleRoomCheck(id)
 			roomElement = $("#base_restroom");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#coed").html(room.coed);
-			roomElement.children("#soap").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.soapLink+">"+room.soapTitle+"</a>");
+			roomElement.children("#soap").html("<a target=\"_blank\" href="+room.soapLink+">"+room.soapTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -350,7 +350,7 @@ function handleRoomCheck(id)
 		case Room.TYPE.ELEVATOR:
 			roomElement = $("#base_elevator");
 			roomElement.children("#name").html(room.name);
-			roomElement.children("#harold").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.haroldLink+">"+room.haroldTitle+"</a>");
+			roomElement.children("#harold").html("<a target=\"_blank\" href="+room.haroldLink+">"+room.haroldTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -386,8 +386,8 @@ function handleRoomCheck(id)
 			break;
 		case Room.TYPE.PROJECT: 		
 			roomElement = $("#base_project");
-			roomElement.children("#name").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.projectLink+">"+room.name+"</a>");
-			roomElement.children("#link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
+			roomElement.children("#name").html("<a target=\"_blank\" href="+room.projectLink+">"+room.name+"</a>");
+			roomElement.children("#link").html("<a target=\"_blank\" href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
