@@ -17,16 +17,16 @@
 		<room name="Southside Stairs"			exit_to="C-Lot"		rgb="92"></room>
 	</stairs>
 	<restrooms>
-		<room name="Handicrapper"		coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="40"></room>
-		<room name="L Mens'"			coed="Yes (If you are brave)"	soap_link="" soap_title="No SOAP in this shower" rgb="60"></room>
-		<room name="Northside Mens'"	coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="56"></room>
-		<room name="Northside Womens'"	coed="No"						soap_link="" soap_title="Come back when SOAP is up" rgb="52"></room>
-		<room name="Southside Mens'"	coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="48"></room>
-		<room name="Southside Womens'"	coed="Yes"						soap_link="" soap_title="Come back when SOAP is up" rgb="44"></room>
+		<room name="Handicrapper"		coed="Yes"						soap_link="soap.csh.rit.edu" soap_title="Come back when SOAP is up" rgb="40"></room>
+		<room name="L Mens'"			coed="Yes (If you are brave)"	soap_link="soap.csh.rit.edu" soap_title="No SOAP in this shower" rgb="60"></room>
+		<room name="Northside Mens'"	coed="Yes"						soap_link="soap.csh.rit.edu" soap_title="Come back when SOAP is up" rgb="56"></room>
+		<room name="Northside Womens'"	coed="No"						soap_link="soap.csh.rit.edu" soap_title="Come back when SOAP is up" rgb="52"></room>
+		<room name="Southside Mens'"	coed="Yes"						soap_link="soap.csh.rit.edu" soap_title="Come back when SOAP is up" rgb="48"></room>
+		<room name="Southside Womens'"	coed="Yes"						soap_link="soap.csh.rit.edu" soap_title="Come back when SOAP is up" rgb="44"></room>
 	</restrooms>
 	<elevators>
-		<room name="Northside Elevator"	harold_title="(Not singing yet)" harold_link="" rgb="108"></room>
-		<room name="Southside Elevator"	harold_title="(Not singing yet)" harold_link="" rgb="104"></room>
+		<room name="Northside Elevator"	harold_title="Directions..." harold_link="harold.csh.rit.edu" rgb="108"></room>
+		<room name="Southside Elevator"	harold_title="Directions..." harold_link="harold.csh.rit.edu" rgb="104"></room>
 	</elevators>
 	<facilities>
 		<room name="Garbage Room" 				rgb="28"></room>
