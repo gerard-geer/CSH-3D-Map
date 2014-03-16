@@ -16,18 +16,15 @@ function initContext()
 	}
 	catch(e)
 	{
-		window.location.href = "https://map-old.csh.rit.edu";
+		try{
+		}
+		catch(e){}
 	}
 	if(!glContext)
 	{
-		window.location.href = "https://map-old.csh.rit.edu";
-	}
-	
-	// Store whether or not we have derivation capabilities on the GPU.
-	normalSupported = glContext.getExtension("OES_standard_derivatives");
-	if(!normalSupported)
-	{
-		window.location.href = "map.csh.rit.edu/?basicMode=indeed";
+		try{
+		}
+		catch(e){}
 	}
 	
 	// Set the screen-blanking colour to black.
@@ -35,6 +32,9 @@ function initContext()
 	
 	// Enable depth testing.
 	glContext.enable(glContext.DEPTH_TEST);
+	
+	// Store whether or not we have derivation capabilities on the GPU.
+	normalSupported = glContext.getExtension("OES_standard_derivatives");
 	
 	// Initialize the frame counter.
 	framecount = 0.0;
@@ -46,15 +46,23 @@ function initPageElements()
 	canvas.addEventListener('mousedown', mouseDownFunction, false);
 	canvas.addEventListener('mouseup', mouseUpFunction, false);
 	canvas.addEventListener('mousemove', mouseMoveFunction, false);
-	canvas.addEventListener('touchstart', touchStartFunction, false);
-	canvas.addEventListener('touchmove', touchMoveFunction, false);
 	canvas.addEventListener("webglcontextlost", onContextLost, false);
 	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
 	$("#map_container").on("contextmenu", function(e){e.preventDefault();}, false);
 	window.addEventListener('keydown', keyDownFunction, false);
 	window.addEventListener('keyup', keyUpFunction, false);
-	window.addEventListener('resize', windowResizeFunction, false);
-	$("#text").fadeIn().draggable();
+	window.onkeypress = keyPressedFunction;
+	document.addEventListener("canvasDoneLoading", function(event){drawLoadingBar(.2);}, false);
+	document.addEventListener("shadersDoneLoading", function(event){drawLoadingBar(.4);}, false);
+	document.addEventListener("buffersDoneLoading", function(event){drawLoadingBar(.6);}, false);
+	document.addEventListener("modelsDoneLoading", function(event){drawLoadingBar(.8);}, false);
+	document.addEventListener("roomsDoneLoading", function(event)
+															{
+																drawLoadingBar(1.0);
+																$("#loading_canvas_container").fadeOut();
+																$("#map_container").fadeIn();	
+																$("#text").fadeIn().draggable();
+															}, false);
 	
 	
 	
@@ -138,24 +146,48 @@ function initModel()
 	colorModel = new Model3D(glContext, colorModelPosData, colorModelColorData);
 }
 
+function initLoadingCanvas()
+{
+	loadingCanvas  = document.getElementById("loading_canvas");
+	loadingContext = loadingCanvas.getContext("2d");
+	loadingContext.fillStyle = "black";
+	loadingContext.fillRect(0, 0, loadingCanvas.width, loadingCanvas.height);
+}
+
+function drawLoadingBar(percentageComplete)
+{
+	loadingContext.fillStyle = "black";
+	loadingContext.fillRect(0, 0, loadingCanvas.width, loadingCanvas.height);
+	loadingContext.fillStyle = "green";
+	loadingContext.fillRect(0, 0, loadingCanvas.width*percentageComplete, loadingCanvas.height);
+}
+	
+
+
 function initWebGLComponents()
 {
+	initLoadingCanvas();
+	
 	// Call the initialization functions of all the things, and dispatch events when each happens!
 	initContext();
 	initPageElements();
+	document.dispatchEvent(canvasLoadedEvent);
 	
 	initShaders();
+	document.dispatchEvent(shadersLoadedEvent);
 	
 	initFBsAndQuads();
+	document.dispatchEvent(buffersCreatedEvent);
 	
 	initModel();
+	document.dispatchEvent(modelsLoadedEvent);
 	
 	rooms = loadRooms("rooms.xml");
+	document.dispatchEvent(roomsLoadedEvent);
 	
 	// We render the first frame, but we don't register the refresh interval until we actually
 	// need to actively render.
 	renderFrame();
-	$("#map_container").fadeIn();
 }
 
 	

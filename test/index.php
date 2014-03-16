@@ -4,7 +4,6 @@
 	<head>
 		<title>CSH Floor Map</title>
 		<link rel="stylesheet" type="text/css" href="css/map.css"/></link>
-		<meta name="viewport" content="width=450">
 		<script type="text/javascript">
 			/*
 				A cross-platform way to print out error messages.
@@ -168,27 +167,27 @@
 				vec4 normalSobel = getSobel(normalSampler, texCoord, res);
 				
 				// Handle the rainbow. Taste the rainbow.
-				/*wireframeColor = ( ( 1.0-step(0.999, isRainbow) )*wireframeColor ) + step(.999, isRainbow)*vec4( 
+				wireframeColor = ( ( 1.0-step(0.999, isRainbow) )*wireframeColor ) + step(.999, isRainbow)*vec4( 
 					pow( sin((framecount/600.0)+texCoord.x), 2.0 ), 
 					pow( sin((framecount/600.0)+.785+texCoord.y), 2.0 ), 
 					pow( cos((framecount/600.0)+ texCoord.x*texCoord.y), 2.0 ),  
-					1.0);*/
+					1.0);
 				
 				// To make if-greater-than logic happen outside of conditionality, we must use the step function,
 				// which returns 0.0 if the second parameter is less than the first, and 1.0 if otherwise.
-				float hasWireframe = step(.1, step(edgeThresh_id, idSobel.r)+	// we check to see if any Sobel result is
+				float hasWireframe = step(1.0, step(edgeThresh_id, idSobel.r)+	// we check to see if any Sobel result is
 										step(edgeThresh_normal, normalSobel.r)+	// greater than its corresponding threshold,
 										step(edgeThresh_normal, normalSobel.g)+ // and add the results. We then send this to
 										step(edgeThresh_depth, depthSobel.r));  // the outer step function, which checks to
 																				// see if we have an edge. We multiply this
-				outputColor = wireframeColor*hasWireframe;						// result by the edge colour to get a wire in the frame.	
+				outputColor = 			wireframeColor*hasWireframe;			// result by the edge colour to get a wire in the frame.	
 					
 				// To test equality without comparison, we multiply by the inverse of the absolute value of the sign of
 				// the ID fragment minus the value of the current ID.
 				int i_fragID = int(fragID.r*256.0);
 				outputColor += texture2D(diffuseSampler, texCoord)*	// Add the diffuse texel...
 				(1.0-abs( sign( float(curRoomID) - float(i_fragID) ) )) // if the texel from the ID buffer matches the ID...
-				*(1.0-normalize(hasWireframe));									// and if we don't already have wire-frame.
+				*(1.0-hasWireframe);									// and if we don't already have wire-frame.
 				
 				// Report our final fragment colour.
 				gl_FragColor = outputColor;
@@ -334,6 +333,17 @@
 			uniform sampler2D gaussianSampler;	// The sampler that contains the blurred wire-frame and highlight pass.
 			uniform sampler2D wireframeSampler; // The sampler that contains the wire-frame rendering.
 			
+			vec4 setVignette(vec2 location, vec4 existingFrag, float strength, float falloff)
+			{
+				vec2 trans = (2.*strength)*(location-.5);
+				return existingFrag*(1.-pow(trans.x, falloff)*pow(trans.y, falloff));
+			}
+
+			vec4 setScanline(vec2 location, vec4 existingFrag, float strength)
+			{
+				return existingFrag-(pow(cos(gl_FragCoord.y*2.0), 2.0)*strength);
+			}
+			
 			void main(void) {
 				gl_FragColor = texture2D(wireframeSampler, texCoord)+ 
 								texture2D(gaussianSampler, texCoord) + 
@@ -368,13 +378,18 @@
 		<div id="map_container">
 			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		</div>
+		<div id="loading_canvas_container">
+			<canvas id="loading_canvas" width="400" height="100"></canvas>
+		</div>
 		<div id="text">
 			<h1>CSH 3D Floor Map</h1>
 				Left-click and drag to move.
-				Right-click and drag to rotate.
-				Click a room for info about it.
-				The info pop-up is draggable for
-				ease of use.
+			<br>Right-click and drag to rotate.
+			<br>Click a room for info about it.
+			<br>The info pop-up is now draggable,
+			<br>and links open within the map.
+			<br>
+			<br>
 		</div>
 		<div id="subtle_links">
 			<script>
@@ -384,9 +399,9 @@
 			</script>
 			<a class="subtle_link" target="_blank" href="https://github.com/Hamneggs/CSH-3D-Map">Github repo</a>
 			<a class="subtle_link" target="_blank" href="https://wiki.csh.rit.edu/wiki/3D_Map">About</a>
-			<a class="subtle_link" target="_blank" href="https://map-old.csh.rit.edu">2D Version</a>
 		</div>
 		<div id="hud_info_popup"></div>
+		<iframe id="webpage_popup" name="webpage_popup" sandbox="allow-same-origin allow-pointer-lock allow-forms allow-scripts allow-top-navigation allow-popups" src="" height=400 width=400 seamless></iframe>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>
 			<p class="datum_container">Resident: <p class="datum" id="res_a"></p></p>

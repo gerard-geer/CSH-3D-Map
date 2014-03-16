@@ -1,0 +1,147 @@
+body
+{
+	background-color: #000000;
+	font-family: helvetica, sans-serif;
+	text-shadow: 1px 1px #010101;
+	font-size: 12px;
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+}
+
+h1
+{
+	color:#20F0A0;
+	font-size: 14px;
+}
+
+div.base_info
+{
+	display: none;
+}
+
+p.datum_container
+{
+	color:#10F060;
+	font-weight: bold;
+	display: inline;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+p.datum
+{
+	color: #05D050;
+	display: inline;
+}
+
+#qualificationsA
+{
+	display: none;
+}
+
+#qualificationsB
+{
+	display: none;
+}
+
+a{color:#10F820;}
+a:link {text-decoration:underline;}
+a:visited {text-decoration:underline;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+#map_container
+{
+	position: absolute;
+	margin: auto;
+	text-align:center;
+	display: none;
+}
+#hud_info_popup
+{
+	position: absolute;
+	top: 10%;
+	right: 5%;
+	height: auto;
+	padding: 10px 10px 10px 10px;
+	width: 25%;
+	
+	color: #10F060;
+	background-image: url(../img/bg.png);
+	
+	border-left-style: ridge;
+	border-right-style: ridge;
+	border-left-color: #10F060;
+	border-right-color: #10F060;
+	border-radius:18px;
+	-moz-border-radius:25px;
+	
+	display: none;
+}
+
+#webpage_popup
+{
+	position: absolute;
+	top: 10%;
+	right: 10%;
+	width: 80%;
+	height: 80%;
+	
+	background-image: url(../img/bgo.png);
+	
+	border-left-style: ridge;
+	border-right-style: ridge;
+	border-left-color: #10F060;
+	border-right-color: #10F060;
+	
+	display:none;
+}
+
+#loading_canvas_container
+{
+	position:absolute;
+	margin: auto;
+	top: 100%;
+	width: 100%;
+	text-align:center;
+	display: block;
+}
+
+#text
+{
+	position:absolute;
+	top: 5%;
+	left: 5%;
+	padding: 10px 10px 10px 10px;
+	
+	color: #10F060;
+	background-image: url(../img/bg.png);
+	
+	border-left-style: ridge;
+	border-right-style: ridge;
+	border-left-color: #10F060;
+	border-right-color: #10F060;
+	border-radius:18px;
+	-moz-border-radius:25px;
+	
+	display: none;
+}
+
+#subtle_links
+{
+	font-size: 10px;
+	position: absolute;
+	bottom: 2%;
+	left: 2%;
+	
+	color: #20402A;
+}
+
+a.subtle_link
+{
+	color: #20402A;
+	padding: 5px 5px 5px 5px;
+}
+	
+
+

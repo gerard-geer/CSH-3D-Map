@@ -36,12 +36,6 @@ var curMouseY;
 var preMouseX;
 var preMouseY;
 
-
-var curTouchX = 0;
-var curTouchY = 0;
-var prevTouchX = 0;
-var prevTouchY = 0;
-
 // Factor by which to scale the mouse movement when applying rotation changes.
 var rotateScale = .3;
 
@@ -154,18 +148,12 @@ function mouseDownFunction(e)
 	preMouseX = e.clientX-rect.left;
 	preMouseY = e.clientY-rect.top;
 	
-	selectRoom(curMouseX, curMouseY);
-	
-}
-
-function selectRoom(x, y)
-{
 	/*
 		Sampling the ID texture.
 	*/
 	// first we need to convert the mouse coordinates to scale with the ID texture.
-	var fbMouseX = x/canvas.width * idFramebuffer.getWidth();
-	var fbMouseY = y/canvas.height * idFramebuffer.getHeight();
+	var fbMouseX = curMouseX/canvas.width * idFramebuffer.getWidth();
+	var fbMouseY = curMouseY/canvas.height * idFramebuffer.getHeight();
 	
 	// sample the data. OH BOY
 	var sample = new Uint8Array(4);
@@ -193,6 +181,7 @@ function selectRoom(x, y)
 	
 	// Make sure that the intro pop-up is gone.
 	$("#text").fadeOut(400);
+	
 }
 
 function mouseUpFunction(e)
@@ -234,43 +223,19 @@ function mouseMoveFunction(e)
 	}		
 }
 
-function touchStartFunction(e)
-{
-	if (e.targetTouches.length == 1)
-	{
-		var touch = e.targetTouches[0];
-		selectRoom(touch.pageX, touch.pageY);
-	}
-}
-
-function touchMoveFunction(e)
-{
-	if (e.targetTouches.length == 1)
-	{
-		var touch = e.targetTouches[0];
-		prevTouchX = curTouchX;
-		prevTouchY = curTouchY;
-		curTouchX = touch.pageX;
-		curTouchY = touch.pageY;
-		
-		translateModel(curTouchX - prevTouchX, curTouchY - prevTouchY);
-	}
-}
-		
-
 function keyDownFunction(e)
 {
 	if(e.shiftKey)
 		shiftPressed = true;	
 	if (e.keyCode == 37) // Left
 		lPressed = true;
-	if (e.keyCode == 38) // Up0
+	if (e.keyCode == 38) // Up
 		uPressed = true;
 	if (e.keyCode == 39) // Right
 		rPressed = true;
 	if (e.keyCode == 40) // Down
 		dPressed = true;
-	if( (shiftPressed || lPressed || uPressed || rPressed || dPressed) && !isRefresh)
+	if(shiftPressed || lPressed || uPressed || rPressed || dPressed)
 	{
 		startRendering();
 	}
@@ -278,16 +243,12 @@ function keyDownFunction(e)
 }
 function keyUpFunction(e)
 {
+	stopRendering();
 	shiftPressed = false;
 	if (e.keyCode == 37) lPressed = false;
 	if (e.keyCode == 38) uPressed = false;
 	if (e.keyCode == 39) rPressed = false;
 	if (e.keyCode == 40) dPressed = false;
-	
-	if( !(shiftPressed || lPressed || uPressed || rPressed || dPressed) && isRefresh)
-	{
-		stopRendering();
-	}
 	
 }
 
@@ -305,12 +266,6 @@ function linkFunction(src)
 	// Prevent the map itself from opening in the iframe.
 	if(src && src != document.URL && src != "")
 		$("#webpage_popup").fadeIn(700);
-}
-
-function windowResizeFunction(e)
-{
-	initContext();
-	renderFrame();
 }
 
 function handleRoomCheck(id)
@@ -337,8 +292,8 @@ function handleRoomCheck(id)
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#res_a").html(room.resA);
 			roomElement.children("#res_b").html(room.resB);
-			roomElement.children("#res_a_link").html("<a target=\"_blank\" href="+room.resALink+">"+room.resALinkTitle+"</a>");
-			roomElement.children("#res_b_link").html("<a target=\"_blank\" href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
+			roomElement.children("#res_a_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.resALink+">"+room.resALinkTitle+"</a>");
+			roomElement.children("#res_b_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
 			roomElement.children("#res_a_year").html(room.resAYear);
 			roomElement.children("#res_b_year").html(room.resAYear);
 			// Add in the special qualifications if there are any.
@@ -371,10 +326,10 @@ function handleRoomCheck(id)
 		case Room.TYPE.SPECIAL:
 			roomElement = $("#base_spec_room");
 			roomElement.children("#name").html(room.name);
-			roomElement.children("#room_link").html("<a target=\"_blank\" href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
+			roomElement.children("#room_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
 			roomElement.children("#eboard").html(room.eb);
-			roomElement.children("#eb_link").html("<a target=\"_blank\" href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
-			roomElement.children("#doorlock").html("<a target=\"_blank\" href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
+			roomElement.children("#eb_link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
+			roomElement.children("#doorlock").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -385,7 +340,7 @@ function handleRoomCheck(id)
 			roomElement = $("#base_restroom");
 			roomElement.children("#name").html(room.name);
 			roomElement.children("#coed").html(room.coed);
-			roomElement.children("#soap").html("<a target=\"_blank\" href="+room.soapLink+">"+room.soapTitle+"</a>");
+			roomElement.children("#soap").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.soapLink+">"+room.soapTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -395,7 +350,7 @@ function handleRoomCheck(id)
 		case Room.TYPE.ELEVATOR:
 			roomElement = $("#base_elevator");
 			roomElement.children("#name").html(room.name);
-			roomElement.children("#harold").html("<a target=\"_blank\" href="+room.haroldLink+">"+room.haroldTitle+"</a>");
+			roomElement.children("#harold").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.haroldLink+">"+room.haroldTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
@@ -431,8 +386,8 @@ function handleRoomCheck(id)
 			break;
 		case Room.TYPE.PROJECT: 		
 			roomElement = $("#base_project");
-			roomElement.children("#name").html("<a target=\"_blank\" href="+room.projectLink+">"+room.name+"</a>");
-			roomElement.children("#link").html("<a target=\"_blank\" href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
+			roomElement.children("#name").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.projectLink+">"+room.name+"</a>");
+			roomElement.children("#link").html("<a target=\"webpage_popup\" onclick=linkFunction(href) href="+room.infoLink+">"+room.infoLinkTitle+"</a>");
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);
