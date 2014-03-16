@@ -1,9 +1,0 @@
-Game-plan:
-
-Render ID model into framebuffer. --> sample this framebuffer against mouse.
-
-Take ID framebuffer and render it onto an FB quad, horizontally Sobel filtering it. This quad is rendered into another framebuffer sobel_h.
-Take ID framebuffer and render it onto an FB quad, vertically Sobel filtering it. This quad is rendered into yet another framebuffer sobel_v.
-
-Take the sobel_h and sobel_v framebuffers and use them to texture another quad. Combine them and maximize all values above a threshold to 1. 
-Then make it green. This quad is what is displayed to the user.
