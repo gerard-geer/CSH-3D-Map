@@ -3,7 +3,7 @@ body
 	background-color: #000000;
 	font-family: helvetica, sans-serif;
 	text-shadow: 1px 1px #010101;
-	font-size: 14px;
+	font-size: 16px;
 	-webkit-user-select: none; /* Chrome/Safari */        
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+ */
@@ -12,7 +12,7 @@ body
 h1
 {
 	color:#20F0A0;
-	font-size: 14px;
+	font-size: 16px;
 }
 
 div.base_info
@@ -177,7 +177,7 @@ a:active {text-decoration:underline;}
 
 #subtle_links
 {
-	font-size: 12px;
+	font-size: 16px;
 	position: absolute;
 	bottom: 2%;
 	left: 2%;
