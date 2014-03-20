@@ -236,10 +236,20 @@ function mouseMoveFunction(e)
 
 function touchStartFunction(e)
 {
+	// Update previous mouse position
+	// at the start of a touch path to
+	// prevent jumping.
+	prevTouchX = curTouchX;
+	prevTouchY = curTouchY;
+	
+	var touch = e.targetTouches[0];
+	curTouchX = touch.screenX;
+	curTouchY = touch.screenY;
+	
 	if (e.targetTouches.length == 1)
-	{
+	{		
 		var touch = e.targetTouches[0];
-		selectRoom(touch.pageX, touch.pageY);
+		selectRoom(curTouchX, curTouchY);
 	}
 }
 
@@ -250,10 +260,21 @@ function touchMoveFunction(e)
 		var touch = e.targetTouches[0];
 		prevTouchX = curTouchX;
 		prevTouchY = curTouchY;
-		curTouchX = touch.pageX;
-		curTouchY = touch.pageY;
+		curTouchX = touch.screenX;
+		curTouchY = touch.screenY;
 		
 		translateModel(curTouchX - prevTouchX, curTouchY - prevTouchY);
+	}
+	
+	if(e.targetTouches.length == 2)
+	{
+		var touchA = e.targetTouches[0];
+		var touchB = e.targetTouches[1];
+		prevTouchX = curTouchX;
+		prevTouchY = curTouchY;
+		curTouchX = touchA.screenX + touchB.screenX /2.0
+		curTouchY = touchA.screenY + touchB.screenY /2.0
+		rotateModel(curTouchX - prevTouchX, curTouchY - prevTouchY);
 	}
 }
 		

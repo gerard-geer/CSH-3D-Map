@@ -53,7 +53,6 @@ function initPageElements()
 	$("#map_container").on("contextmenu", function(e){e.preventDefault();}, false);
 	window.addEventListener('keydown', keyDownFunction, false);
 	window.addEventListener('keyup', keyUpFunction, false);
-	window.addEventListener('resize', windowResizeFunction, false);
 	$("#text").fadeIn().draggable();
 	
 	
@@ -64,10 +63,17 @@ function initPageElements()
 	{
 		canvas.width = window.innerWidth*canvasScale;
 		canvas.height = window.innerHeight*canvasScale;
+		
+		// Make the HUD info popup draggable using JQuery UI.
+		if(window.innerWidth > 500) $("#hud_info_popup").draggable({ disabled: false });
+		else $("#hud_info_popup").draggable({ disabled: true });
+		
+		initContext();
+		renderFrame();
 	}
 	
 	// Make the HUD info popup draggable using JQuery UI.
-	$("#hud_info_popup").draggable();
+	if(window.innerWidth > 500) $("#hud_info_popup").draggable();
 	
 }
 

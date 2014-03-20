@@ -66,7 +66,8 @@ a:active {text-decoration:underline;}
 		right: 5%;
 		height: auto;
 		padding: 10px 10px 10px 10px;
-		width: 25%;
+		width: 50%;
+		max-width: 425px;
 		
 		color: #10F060;
 		background-image: url(../img/bg.png);
@@ -115,11 +116,12 @@ a:active {text-decoration:underline;}
 	{
 		position: absolute;
 		
-		font-size: 12px;
+		font-size: 14px;
 		
 		bottom: 10%;
 		left: 2%;
 		height: auto;
+		max-height: 50%;
 		padding: 10px 10px 10px 10px;
 		width: 90%;
 		
