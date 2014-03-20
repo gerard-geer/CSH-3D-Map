@@ -365,9 +365,7 @@
 	</head>
 	
 	<body onload="initWebGLComponents();">
-		<div id="map_container">
-			<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
-		</div>
+		<canvas id="map_canvas" onmouseup="mouseUpFunction(this)" onmousemove="mouseMoveFunction(this)" width="1003" height="806"></canvas>
 		<div id="text">
 			<h1>CSH 3D Floor Map</h1>
 				Left-click and drag to move.

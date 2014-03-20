@@ -1,5 +1,18 @@
 // This isn't very clean code yet. It's about as redundant as a TPS report report.
 
+function nearestPower2()
+{
+	var maxDim;
+	window.innerWidth > window.innerHeight ? maxDim = window.innerWidth : maxDim = window.innerHeight;
+
+	var pow2 = 2;
+	while ( pow2 < maxDim )
+	{
+		pow2 *= 2;
+	}
+	return pow2;
+}
+
 function initContext()
 {
 	// Extract the canvas from the document.
@@ -7,8 +20,8 @@ function initContext()
 	
 	// Update the initial canvas size to full occupancy.
 	// Fuck lil' posers who don't like it big.
-	canvas.width = window.innerWidth*canvasScale;
-	canvas.height = window.innerHeight*canvasScale;
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 	
 	// Try to get a WebGL context from it. If we can't, well, poop.
 	try{
@@ -50,7 +63,7 @@ function initPageElements()
 	canvas.addEventListener('touchmove', touchMoveFunction, false);
 	canvas.addEventListener("webglcontextlost", onContextLost, false);
 	canvas.addEventListener("webglcontextrestored", onContextRestored, false);
-	$("#map_container").on("contextmenu", function(e){e.preventDefault();}, false);
+	$("#map_canvas").on("contextmenu", function(e){e.preventDefault();}, false);
 	window.addEventListener('keydown', keyDownFunction, false);
 	window.addEventListener('keyup', keyUpFunction, false);
 	$("#text").fadeIn().draggable();
@@ -107,8 +120,9 @@ function initShaders()
 function initFBsAndQuads()
 {
 	// Set up the resolution as specified.
-	var res = 1024;
-	var wireframeRes = 1024;
+	var pow2 = nearestPower2();
+	var res = pow2;
+	var wireframeRes = pow2;
 	if(lowRes)
 	{
 		res = 256;
