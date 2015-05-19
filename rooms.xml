@@ -46,9 +46,9 @@
 		<room name="Random Pillar in the L" 	rgb="116"></room>
 	</other>
 	<projects>
-		<room name="Big Drink" 		project_link="https://members.csh.rit.edu/drink"	info_link="https://wiki.csh.rit.edu/wiki/Big_Drink" 	link_title="Big Drink on the Wiki" rgb="244"></room>
-		<room name="Little Drink" 	project_link="https://members.csh.rit.edu/drink"	info_link="https://wiki.csh.rit.edu/wiki/Little_Drink" 	link_title="Little Drink on the Wiki" rgb="236"></room>
-		<room name="Snack" 			project_link="https://members.csh.rit.edu/drink"	info_link="https://wiki.csh.rit.edu/wiki/Snack" 		link_title="Snack on the Wiki" rgb="240"></room>
+		<room name="Big Drink" 		project_link="https://profiles.csh.rit.edu/user/drink"	info_link="https://wiki.csh.rit.edu/wiki/Big_Drink" 	link_title="Big Drink on the Wiki" rgb="244"></room>
+		<room name="Little Drink" 	project_link="https://profiles.csh.rit.edu/user/drink"	info_link="https://wiki.csh.rit.edu/wiki/Little_Drink" 	link_title="Little Drink on the Wiki" rgb="236"></room>
+		<room name="Snack" 			project_link="https://profiles.csh.rit.edu/user/drink"	info_link="https://wiki.csh.rit.edu/wiki/Snack" 		link_title="Snack on the Wiki" rgb="240"></room>
 	</projects>
 	<residentials>
 		<room name="Room 3009" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="120"></room>
