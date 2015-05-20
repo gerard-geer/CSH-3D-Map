@@ -71,7 +71,7 @@ function loadResRooms(rooms)
 			newRoom.resA 			   = resA.name+" ("+resA.username+")";
 			newRoom.resAYear      	   = resA.memberSince;
 			newRoom.resAQualifications = resA.qualifications;
-			newRoom.resALink           = "https://members.csh.rit.edu/profiles/members/"+resA.username;
+			newRoom.resALink           = "https://profiles.csh.rit.edu/user/"+resA.username;
 			newRoom.resALinkTitle      = resA.name + " on Members";
 		}
 		
@@ -88,7 +88,7 @@ function loadResRooms(rooms)
 			newRoom.resB 			   = resB.name+" ("+resB.username+")";
 			newRoom.resBYear      	   = resB.memberSince;
 			newRoom.resBQualifications = resB.qualifications;
-			newRoom.resBLink           = "https://members.csh.rit.edu/profiles/members/"+resB.username;
+			newRoom.resBLink           = "https://profiles.csh.rit.edu/user/"+resB.username;
 			newRoom.resBLinkTitle      = resB.name + " on Members";
 		}
 		rooms.push(newRoom);
