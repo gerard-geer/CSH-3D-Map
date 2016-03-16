@@ -1,5 +1,6 @@
 <?php
 	require_once('constants.php');
+	require_once('DBWrapper.php');
 	class LdapHelper {
 		private $ldap_conn = null;
 
@@ -24,11 +25,11 @@
 			ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
 			# Connect to LDAP.
 			$this->ldap_conn = ldap_connect($ldap_url);
-			# Bind to LDAP.
-			ldap_bind($this->ldap_conn);
+			# Bind to LDAP
+			ldap_bind($this->ldap_conn, 'uid='.LDAP_USER.',ou=Users,dc=csh,dc=rit,dc=edu', LDAP_PASS);
 			
 			# Try to log in using the currently authenticated Webauth user.
-			if(isset($_ENV["KRB5CCNAME"]))
+			/*if(isset($_ENV["KRB5CCNAME"]))
 			{
 				putenv("KRB5CCNAME=" . getenv("KRB5CCNAME"));
 				ldap_sasl_bind($this->ldap_conn,"","","GSSAPI") or die("Could not bind to LDAP 2: ");
@@ -37,7 +38,7 @@
 			{
 				echo "FATAL ERROR: WEBAUTH inproperly configured (missing KRB5CCNAME).";
 				die(0);
-			}	
+			}*/
 		}
 
 
@@ -53,6 +54,38 @@
 			                       $this->FIND_ALL_MEMBERS_QUERY,
 								   $this->FIND_ALL_MEMBERS_FIELDS);
 			$onfloors = ldap_get_entries($this->ldap_conn, $results);
+
+			# Load the rooms for room numbers (From evals DB) since ldap can't be relied on for that
+			$roster = array();
+		    $db = DBWrapper::getInstance();
+
+		    // Get the roster from the database
+		    $result = $db->getRoster(true);
+
+		    // Process each member in the queue
+		    for($i = 0; $i < count($result); $i++)
+		      {
+		        if( $result[$i][1] ) {
+		            // Add the room to the roster
+					$roster[$result[$i][1]] = $result[$i][0];
+		        } 
+		        else 
+		          {
+		            $r1=NULL;  
+		          }
+
+		        if( $result[$i][2] ) 
+		          {
+		            // Add the room to the roster
+					$roster[$result[$i][2]] = $result[$i][0];            
+		          }
+		        else
+		          {
+		            $r2=NULL;  
+		          }
+
+			
+		      }
 
 			# Calculate the current directory year
 			$curyear = date('Y');
@@ -75,13 +108,13 @@
 				preg_match('/^uid=(.*),o.*\z/', $person['dn'], $matches);
 				$username = $matches[1];
 
-				if(isset($person['roomnumber'][0]))
+				if(isset($roster[$username]))
 				{
 					# echo '"'.$person['dn'].'"<br>';
 					$members[$person['dn']] = array(
-						'name' => (!empty($person['nickname'][0])) ? $person['nickname'][0] : $person['givenname'][0],
+						'name' => $person['cn'][0],
 						'username' => $username,
-						'room' => $person['roomnumber'][0],
+						'room' => $roster[$username],
 						'year' => $yearLevel,
 						'rtp' => false,
 						'eboard' => false,

@@ -28,6 +28,7 @@
 	
 	// Some more LDAP stuff.
 	define('MEMBERS_URL', 'https://profiles.csh.rit.edu/user/');
-	define('LDAP_URL',    'ldaps://ldap.csh.rit.edu');
+	#define('LDAP_URL',    'ldaps://ldap.csh.rit.edu');
+	define('LDAP_URL', 'ldap.csh.rit.edu');
 	define('LDAP_PORT',   636);
 ?>
