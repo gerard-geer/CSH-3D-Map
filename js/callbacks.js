@@ -414,7 +414,7 @@ function handleRoomCheck(id)
 			roomElement.children("#room_link").html("<a target=\"_blank\" href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
 			roomElement.children("#eboard").html(room.eb);
 			roomElement.children("#eb_link").html("<a target=\"_blank\" href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
-			if(roomElement5.doorlockTitle.length>0){
+			if(roomElement.doorlockTitle.length>0){
 				roomElement.children("#doorlock").html("<a target=\"_blank\" href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
 			}
 			else{
