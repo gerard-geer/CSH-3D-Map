@@ -356,12 +356,23 @@ function handleRoomCheck(id)
 		case Room.TYPE.RESIDENTIAL:
 			roomElement = $("#base_res_room");
 			roomElement.children("#name").html(room.name);
-			roomElement.children("#res_a").html(room.resA);
-			roomElement.children("#res_b").html(room.resB);
-			roomElement.children("#res_a_link").html("<a target=\"_blank\" href="+room.resALink+">"+room.resALinkTitle+"</a>");
-			roomElement.children("#res_b_link").html("<a target=\"_blank\" href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
-			roomElement.children("#res_a_year").html(room.resAYear);
-			roomElement.children("#res_b_year").html(room.resAYear);
+			// Add in the room members if there are any.
+			if(room.resA.length>0){
+				roomElement.children("#res_a").html(room.resA);
+				roomElement.children("#res_a_link").html("<a target=\"_blank\" href="+room.resALink+">"+room.resALinkTitle+"</a>");
+				roomElement.children("#res_a_year").html(room.resAYear);
+			}
+			else{
+				roomElement.children(".res_a").css("display", "none");
+			}
+			if(room.resB.length>0){
+				roomElement.children("#res_b").html(room.resB);
+				roomElement.children("#res_b_link").html("<a target=\"_blank\" href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
+				roomElement.children("#res_b_year").html(room.resAYear);
+			}
+			else {
+				roomElement.children(".res_b").css("display", "none");
+			}
 			// Add in the special qualifications if there are any.
 			if(room.resAQualifications.length > 0)
 			{
@@ -395,7 +406,13 @@ function handleRoomCheck(id)
 			roomElement.children("#room_link").html("<a target=\"_blank\" href="+room.roomLink+">"+room.roomLinkTitle+"</a>");
 			roomElement.children("#eboard").html(room.eb);
 			roomElement.children("#eb_link").html("<a target=\"_blank\" href="+room.ebLink+">"+room.ebLinkTitle+"</a>");
-			roomElement.children("#doorlock").html("<a target=\"_blank\" href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
+			if(roomElement5.doorlockTitle.length>0){
+				roomElement.children("#doorlock").html("<a target=\"_blank\" href="+room.doorlockLink+">"+room.doorlockTitle+"</a>");
+			}
+			else{
+				roomElement.children("#doorlock").css("display", "none");
+			}
+			
 			hudElement.fadeOut(100, function()
 									{
 										hudElement.fadeIn(100);

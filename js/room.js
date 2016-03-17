@@ -61,11 +61,11 @@ function loadResRooms(rooms)
 		// It's also a Veety story, b-t-dubs.
 		if(resA.name == 'TittiesNToots')
 		{
-			newRoom.resA 			   = "unknown";
-			newRoom.resAYear      	   = "unknown";
+			newRoom.resA 			   = "";
+			newRoom.resAYear      	   = "";
 			newRoom.resAQualifications = "";
 			newRoom.resALink           = "";
-			newRoom.resALinkTitle      = "No member? No link.";
+			newRoom.resALinkTitle      = "";
 		}
 		else{
 			newRoom.resA 			   = resA.name+" ("+resA.username+")";
@@ -77,11 +77,11 @@ function loadResRooms(rooms)
 		
 		if(resB.name == 'TittiesNToots')
 		{
-			newRoom.resB          	   = "unknown";
-			newRoom.resBYear      	   = "unknown";
+			newRoom.resB          	   = "";
+			newRoom.resBYear      	   = "";
 			newRoom.resBQualifications = "";
 			newRoom.resBLink       	   = "";
-			newRoom.resBLinkTitle      = "No member? No link.";
+			newRoom.resBLinkTitle      = "";
 		}
 		else
 		{
@@ -167,8 +167,6 @@ function loadRooms(filename)
 	{
 		var newRoom = new Room(parseInt(restrooms[i].getAttribute("rgb")), restrooms[i].getAttribute("name"), Room.TYPE.RESTROOM);
 		newRoom.coed = restrooms[i].getAttribute("coed");
-		newRoom.soapLink  = restrooms[i].getAttribute("soap_link");
-		newRoom.soapTitle = restrooms[i].getAttribute("soap_title");
 		roomArray.push(newRoom);
 	}
 	//console.log"Current size of room array: "+roomArray.length);

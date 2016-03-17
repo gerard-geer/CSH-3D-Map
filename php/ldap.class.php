@@ -21,14 +21,14 @@
 		}
 
 		function connect($ldap_url) {
-			# Connect to LDAP.
-			$this->ldap_conn = ldap_connect($ldap_url);
 			# Set some LDAP options.
 			ldap_set_option($this->ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+			# Connect to LDAP.
+			$this->ldap_conn = ldap_connect($ldap_url);
 			# Bind to LDAP
 			ldap_bind($this->ldap_conn, 'uid='.LDAP_USER.',ou=Users,dc=csh,dc=rit,dc=edu', LDAP_PASS);
 			
-			/*ldap_bind($this->ldap_conn);
+			/*ldap_bind($this->ldap_conn) or die("Could not bind to LDAP 1: ");
 			# Try to log in using the currently authenticated Webauth user.
 			if(isset($_ENV["KRB5CCNAME"]))
 			{

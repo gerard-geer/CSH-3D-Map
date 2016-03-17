@@ -1,14 +1,14 @@
 <rooms>
 	<special>	
-		<room name="Conference Room" 	eb="Social"							eb_link="https://wiki.csh.rit.edu/wiki/Social"			eb_link_title="Social Activity on the Wiki"	room_link="https://wiki.csh.rit.edu/wiki/Conference_Room" 	room_link_title="The Conference Room on the Wiki"	doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="12"></room>
-		<room name="EBoard Closet" 		eb="EBoard"							eb_link="https://wiki.csh.rit.edu/wiki/Eboard"			eb_link_title="What is the EBoard?"			room_link="https://wiki.csh.rit.edu/wiki/Eboard_closet" 	room_link_title="Some random Wiki article"			doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="72"></room>
-		<room name="Library" 			eb="History"						eb_link="https://wiki.csh.rit.edu/wiki/History"			eb_link_title="House History on the Wiki"	room_link="https://wiki.csh.rit.edu/wiki/Library" 			room_link_title="The Library on the Wiki"			doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="20"></room>
-		<room name="Lounge"				eb="General"						eb_link="https://wiki.csh.rit.edu/wiki/Eboard"			eb_link_title="What is the EBoard?"			room_link="https://wiki.csh.rit.edu/wiki/Lounge" 			room_link_title="The lounge on the Wiki"			doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="16"></room>
+		<room name="Conference Room" 	eb="Social"							eb_link="https://wiki.csh.rit.edu/wiki/Social"			eb_link_title="Social Activity on the Wiki"	room_link="https://wiki.csh.rit.edu/wiki/Conference_Room" 	room_link_title="The Conference Room on the Wiki"	doorlock_link="" doorlock_title="" rgb="12"></room>
+		<room name="EBoard Closet" 		eb="EBoard"							eb_link="https://wiki.csh.rit.edu/wiki/Eboard"			eb_link_title="What is the EBoard?"			room_link="https://wiki.csh.rit.edu/wiki/Eboard_closet" 	room_link_title="Some random Wiki article"			doorlock_link="" doorlock_title="" rgb="72"></room>
+		<room name="Library" 			eb="History"						eb_link="https://wiki.csh.rit.edu/wiki/History"			eb_link_title="House History on the Wiki"	room_link="https://wiki.csh.rit.edu/wiki/Library" 			room_link_title="The Library on the Wiki"			doorlock_link="" doorlock_title="" rgb="20"></room>
+		<room name="Lounge"				eb="General"						eb_link="https://wiki.csh.rit.edu/wiki/Eboard"			eb_link_title="What is the EBoard?"			room_link="https://wiki.csh.rit.edu/wiki/Lounge" 			room_link_title="The lounge on the Wiki"			doorlock_link="" doorlock_title="" rgb="16"></room>
 		<room name="Project Room"		eb="House Improvements"				eb_link="https://wiki.csh.rit.edu/wiki/Imps"			eb_link_title="House Imps on the Wiki"		room_link="https://wiki.csh.rit.edu/wiki/Project_Room" 		room_link_title="The Project Room on the Wiki"		doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="8"></room>
-		<room name="Research Room"		eb="Research and Development"		eb_link="https://wiki.csh.rit.edu/wiki/R%26D_Director"	eb_link_title="R%D on the Wiki"				room_link="https://wiki.csh.rit.edu/wiki/Research_Room" 	room_link_title="The Research Room on the Wiki"		doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="4"></room>
+		<room name="Research Room"		eb="Research and Development"		eb_link="https://wiki.csh.rit.edu/wiki/R%26D_Director"	eb_link_title="R%D on the Wiki"				room_link="https://wiki.csh.rit.edu/wiki/Research_Room" 	room_link_title="The Research Room on the Wiki"		doorlock_link="" doorlock_title="" rgb="4"></room>
 		<room name="Server Room"		eb="Operations and Communications"	eb_link="https://wiki.csh.rit.edu/wiki/Opcomm"			eb_link_title="OpComm on the Wiki"			room_link="https://wiki.csh.rit.edu/wiki/Server_Room" 		room_link_title="The Server Room on the Wiki"		doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="0"></room>
-		<room name="Social Closet"		eb="Social"							eb_link="https://wiki.csh.rit.edu/wiki/Social"			eb_link_title="Social on the Wiki?"			room_link="https://wiki.csh.rit.edu/wiki/Social_closet"		room_link_title="Some random Wiki article"			doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="64"></room>
-		<room name="Software Room"		eb="General"						eb_link="https://wiki.csh.rit.edu/wiki/Eboard"			eb_link_title="What is the EBoard?"			room_link="https://wiki.csh.rit.edu/wiki/Software_Room" 	room_link_title="The Software Room on the Wiki"		doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="36"></room>
+		<room name="Social Closet"		eb="Social"							eb_link="https://wiki.csh.rit.edu/wiki/Social"			eb_link_title="Social on the Wiki?"			room_link="https://wiki.csh.rit.edu/wiki/Social_closet"		room_link_title="Some random Wiki article"			doorlock_link="" doorlock_title="" rgb="64"></room>
+		<room name="Software Room"		eb="General"						eb_link="https://wiki.csh.rit.edu/wiki/Eboard"			eb_link_title="What is the EBoard?"			room_link="https://wiki.csh.rit.edu/wiki/Software_Room" 	room_link_title="The Software Room on the Wiki"		doorlock_link="" doorlock_title="" rgb="36"></room>
 		<room name="User Center"		eb="General"						eb_link="https://wiki.csh.rit.edu/wiki/Eboard"			eb_link_title="What is the EBoard?"			room_link="https://wiki.csh.rit.edu/wiki/User_Center"		room_link_title="The User Center on the Wiki"		doorlock_link="https://www.gatekeeper.csh.rit.edu" doorlock_title="Open with Gatekeeper" rgb="32"></room>
 	</special>
 	<stairs>
@@ -17,16 +17,16 @@
 		<room name="Southside Stairs"			exit_to="C-Lot"		rgb="92"></room>
 	</stairs>
 	<restrooms>
-		<room name="Handicrapper"		coed="Yes"						soap_link="https://soap.csh.rit.edu" soap_title="SOAP still needs IButton readers" rgb="40"></room>
-		<room name="L Mens'"			coed="Yes (If you are brave)"	soap_link="https://soap.csh.rit.edu" soap_title="SOAP still needs IButton readers" rgb="60"></room>
-		<room name="Northside Mens'"	coed="Yes"						soap_link="https://soap.csh.rit.edu" soap_title="SOAP still needs IButton readers" rgb="56"></room>
-		<room name="Northside Womens'"	coed="No"						soap_link="https://soap.csh.rit.edu" soap_title="SOAP still needs IButton readers" rgb="52"></room>
-		<room name="Southside Mens'"	coed="Yes"						soap_link="https://soap.csh.rit.edu" soap_title="SOAP still needs IButton readers" rgb="48"></room>
-		<room name="Southside Womens'"	coed="Yes"						soap_link="https://soap.csh.rit.edu" soap_title="SOAP still needs IButton readers" rgb="44"></room>
+		<room name="Handicrapper"		coed="Yes"						rgb="40"></room>
+		<room name="L Mens'"			coed="Yes (If you are brave)"	rgb="60"></room>
+		<room name="Northside Mens'"	coed="Yes"						rgb="56"></room>
+		<room name="Northside Womens'"	coed="No"						rgb="52"></room>
+		<room name="Southside Mens'"	coed="Yes"						rgb="48"></room>
+		<room name="Southside Womens'"	coed="Yes"						rgb="44"></room>
 	</restrooms>
 	<elevators>
-		<room name="Northside Elevator"	harold_title="Directions..." harold_link="https://harold.csh.rit.edu" rgb="108"></room>
-		<room name="Southside Elevator"	harold_title="Directions..." harold_link="https://harold.csh.rit.edu" rgb="104"></room>
+		<room name="Northside Elevator"	harold_title="Directions..." harold_link="https://wiki.csh.rit.edu/wiki/HAROLD#How_To_Set_A_HAROLD_Song" rgb="108"></room>
+		<room name="Southside Elevator"	harold_title="Directions..." harold_link="https://wiki.csh.rit.edu/wiki/HAROLD#How_To_Set_A_HAROLD_Song" rgb="104"></room>
 	</elevators>
 	<facilities>
 		<room name="Garbage Room" 				rgb="28"></room>
@@ -51,34 +51,34 @@
 		<room name="Snack" 			project_link="https://webdrink.csh.rit.edu"	info_link="https://wiki.csh.rit.edu/wiki/Snack" 		link_title="Snack on the Wiki" rgb="240"></room>
 	</projects>
 	<residentials>
-		<room name="Room 3009" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="120"></room>
-		<room name="Room 3013" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="124"></room>
-		<room name="Room 3016" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="128"></room>
-		<room name="Room 3020" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="132"></room>
-		<room name="Room 3024" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="136"></room>
-		<room name="Room 3050" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="140"></room>
-		<room name="Room 3051" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="144"></room>
-		<room name="Room 3054" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="148"></room>
-		<room name="Room 3055" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="152"></room>
-		<room name="Room 3059" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="156"></room>
-		<room name="Room 3063" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="160"></room>
-		<room name="Room 3066" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="164"></room>
-		<room name="Room 3067" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="168"></room>
-		<room name="Room 3070" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="172"></room>
-		<room name="Room 3071" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="176"></room>
-		<room name="Room 3074" resA="Unknown resident A" resA_year="unknown" resA_qualifications="R.A." resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="None"						 rgb="180"></room>
-		<room name="Room 3086" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="184"></room>
-		<room name="Room 3090" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="188"></room>
-		<room name="Room 3091" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="192"></room>
-		<room name="Room 3094" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="196"></room>
-		<room name="Room 3095" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="200"></room>
-		<room name="Room 3099" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="204"></room>
-		<room name="Room 3103" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="208"></room>
-		<room name="Room 3106" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="212"></room>
-		<room name="Room 3107" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="216"></room>
-		<room name="Room 3110" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="220"></room>
-		<room name="Room 3111" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="224"></room>
-		<room name="Room 3125" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="None"						 rgb="228"></room>
-		<room name="Room 3126" resA="Unknown resident A" resA_year="unknown" resA_qualifications="" 	resA_link="" resA_link_title="future link for resident A" resB="None" resB_year="unknown" resB_qualifications="" resB_link="" resB_link_title="future link for resident B" rgb="232"></room>
+		<room name="Room 3009" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="120"></room>
+		<room name="Room 3013" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="124"></room>
+		<room name="Room 3016" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="128"></room>
+		<room name="Room 3020" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="132"></room>
+		<room name="Room 3024" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="136"></room>
+		<room name="Room 3050" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="140"></room>
+		<room name="Room 3051" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="144"></room>
+		<room name="Room 3054" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="148"></room>
+		<room name="Room 3055" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="152"></room>
+		<room name="Room 3059" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="156"></room>
+		<room name="Room 3063" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="160"></room>
+		<room name="Room 3066" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="164"></room>
+		<room name="Room 3067" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="168"></room>
+		<room name="Room 3070" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="172"></room>
+		<room name="Room 3071" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="176"></room>
+		<room name="Room 3074" resA="" resA_year="" resA_qualifications="R.A." resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title=""	rgb="180"></room>
+		<room name="Room 3086" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="184"></room>
+		<room name="Room 3090" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="188"></room>
+		<room name="Room 3091" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="192"></room>
+		<room name="Room 3094" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="196"></room>
+		<room name="Room 3095" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="200"></room>
+		<room name="Room 3099" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="204"></room>
+		<room name="Room 3103" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="208"></room>
+		<room name="Room 3106" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="212"></room>
+		<room name="Room 3107" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="216"></room>
+		<room name="Room 3110" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="220"></room>
+		<room name="Room 3111" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="224"></room>
+		<room name="Room 3125" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title=""	rgb="228"></room>
+		<room name="Room 3126" resA="" resA_year="" resA_qualifications="" 	resA_link="" resA_link_title="" resB="" resB_year="" resB_qualifications="" resB_link="" resB_link_title="" rgb="232"></room>
 	</residentials>
 </rooms>
