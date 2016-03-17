@@ -358,20 +358,28 @@ function handleRoomCheck(id)
 			roomElement.children("#name").html(room.name);
 			// Add in the room members if there are any.
 			if(room.resA.length>0){
+				roomElement.children(".res_a").css("display", "inline");
 				roomElement.children("#res_a").html(room.resA);
 				roomElement.children("#res_a_link").html("<a target=\"_blank\" href="+room.resALink+">"+room.resALinkTitle+"</a>");
 				roomElement.children("#res_a_year").html(room.resAYear);
 			}
 			else{
 				roomElement.children(".res_a").css("display", "none");
+				roomElement.children("#res_a").html("");
+				roomElement.children("#res_a_link").html("");
+				roomElement.children("#res_a_year").html("");
 			}
 			if(room.resB.length>0){
+				roomElement.children(".res_b").css("display", "inline");
 				roomElement.children("#res_b").html(room.resB);
 				roomElement.children("#res_b_link").html("<a target=\"_blank\" href="+room.resBLink+">"+room.resBLinkTitle+"</a>");
-				roomElement.children("#res_b_year").html(room.resAYear);
+				roomElement.children("#res_b_year").html(room.resBYear);
 			}
 			else {
 				roomElement.children(".res_b").css("display", "none");
+				roomElement.children("#res_b").html("");
+				roomElement.children("#res_b_link").html("");
+				roomElement.children("#res_b_year").html("");
 			}
 			// Add in the special qualifications if there are any.
 			if(room.resAQualifications.length > 0)
