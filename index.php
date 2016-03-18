@@ -387,14 +387,14 @@
 		<div id="hud_info_popup"></div>
 		<div class="base_info" id="base_res_room">
 			<p class="datum_container">Room #: <p class="datum" id="name"></p></p>
-			<p class="datum_container">Resident: <p class="datum" id="res_a"></p></p>
-			<p class="datum_container">Year: <p class="datum" id="res_a_year"></p></p>
-			<p class="datum_container" id="qualificationsA">Qualifications: <p class="datum" id="res_a_qualifications"></p></p>
-			<p class="datum_container">Info: <p class="datum" id="res_a_link"></p></p>
-			<p class="datum_container">Resident: <p class="datum" id="res_b"></p></p>
-			<p class="datum_container">Year: <p class="datum" id="res_b_year"></p></p>
-			<p class="datum_container" id="qualificationsB">Qualifications: <p class="datum" id="res_b_qualifications"></p></p>
-			<p class="datum_container">Info: <p class="datum" id="res_b_link"></p></p>
+			<p class="datum_container res_a">Resident: <p class="datum" id="res_a"></p></p>
+			<p class="datum_container res_a">Year: <p class="datum" id="res_a_year"></p></p>
+			<p class="datum_container res_a" id="qualificationsA">Qualifications: <p class="datum" id="res_a_qualifications"></p></p>
+			<p class="datum_container res_a">Info: <p class="datum" id="res_a_link"></p></p>
+			<p class="datum_container res_b">Resident: <p class="datum" id="res_b"></p></p>
+			<p class="datum_container res_b">Year: <p class="datum" id="res_b_year"></p></p>
+			<p class="datum_container res_b" id="qualificationsB">Qualifications: <p class="datum" id="res_b_qualifications"></p></p>
+			<p class="datum_container res_b">Info: <p class="datum" id="res_b_link"></p></p>
 		</div>
 		<div class="base_info" id="base_spec_room">
 			<p class="datum_container">Room: <p class="datum" id="name"></p></p>
@@ -405,7 +405,6 @@
 		</div>
 		<div class="base_info" id="base_restroom">
 			<p class="datum_container">Restroom: <p class="datum" id="name"></p></p>
-			<p class="datum_container">SOAP: <p class="datum" id="soap"></p></p>
 			<p class="datum_container">Coed?: <p class="datum" id="coed"></p></p>
 		</div>
 		<div class="base_info" id="base_stairs">
